@@ -1,0 +1,57 @@
+[gd_scene load_steps=6 format=3 uid="uid://xgniktnq5h3y"]
+
+[ext_resource type="Texture2D" uid="uid://d2o5qqmbw6yhl" path="res://img/enemy.png" id="1_lcbo6"]
+[ext_resource type="Script" path="res://enemy/enemy.gd" id="1_peu0a"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nwudy"]
+radius = 13.0384
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b5o70"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.0823529, 0.0823529, 0.0823529, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xxrlg"]
+bg_color = Color(1, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.662745, 0, 0.34902, 0)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[node name="Enemy" type="Node2D"]
+script = ExtResource("1_peu0a")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_lcbo6")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_nwudy")
+
+[node name="ProgressBar" type="ProgressBar" parent="."]
+offset_left = -18.0
+offset_top = -30.0
+offset_right = 19.0
+offset_bottom = -22.0
+theme_override_styles/background = SubResource("StyleBoxFlat_b5o70")
+theme_override_styles/fill = SubResource("StyleBoxFlat_xxrlg")
+step = 0.0
+value = 46.94
+show_percentage = false
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
