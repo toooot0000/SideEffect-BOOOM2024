@@ -36,5 +36,5 @@ func _on_area_2d_area_entered(area:Area2D):
 	if _spawnTimer.time_left > 0:
 		return
 	if area.get_parent() is Bullet:
-		area.get_parent().queue_free()
-	hp -= 1
+		# area.get_parent().queue_free()
+		hp -= 1

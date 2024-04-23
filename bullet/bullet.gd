@@ -1,10 +1,12 @@
 extends Node2D
 class_name Bullet
 
-@export var spd: = 200
+@export var spd: = 300
 @export_file("*.tscn") var enemyPath: String
 
 @onready var enemyScene := load(enemyPath) as PackedScene
+@onready var anim: AnimationPlayer = $AnimationPlayer
+@onready var part: GPUParticles2D = $GPUParticles2D
 
 var dir := Vector2.ZERO
 var isDeleted := false
@@ -26,3 +28,12 @@ func _turnIntoEnemy():
 	G.bg.ripple(position)
 	queue_free()
 	isDeleted = true
+
+
+func _on_area_2d_area_entered(_area:Area2D):
+	($Sprite as Sprite2D).visible = false
+	($Area2D as Area2D).monitoring = false
+	dir = Vector2.ZERO
+	part.restart()
+	await part.finished
+	queue_free()

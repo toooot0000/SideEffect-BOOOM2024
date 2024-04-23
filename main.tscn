@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://l825ae460lwx"]
+[gd_scene load_steps=10 format=3 uid="uid://l825ae460lwx"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_edicv"]
 [ext_resource type="Texture2D" uid="uid://3kcafr6ubypi" path="res://img/bg.png" id="1_fyxfo"]
@@ -14,6 +14,31 @@ shader_parameter/thicknessInPixel = 3.0
 shader_parameter/normaledCenter = Vector2(0.5, 0.5)
 shader_parameter/ripplePosition = -1.19
 shader_parameter/rippleTime = 1.88
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yegdu"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+anti_aliasing = false
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iyvlt"]
+bg_color = Color(1, 0, 0, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.8, 0.8, 0.8, 0)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_edicv")
@@ -42,13 +67,37 @@ anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -221.0
-offset_top = 15.0
+offset_top = 19.0
 offset_right = -18.0
-offset_bottom = 72.0
+offset_bottom = 76.0
 grow_horizontal = 0
 size_flags_horizontal = 0
 size_flags_vertical = 1
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 41
+theme_override_font_sizes/font_size = 25
 text = "Points: 0"
 horizontal_alignment = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="UI"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 17.0
+offset_right = 214.0
+offset_bottom = 52.0
+theme_override_styles/background = SubResource("StyleBoxFlat_yegdu")
+theme_override_styles/fill = SubResource("StyleBoxFlat_iyvlt")
+value = 89.52
+show_percentage = false
+
+[node name="Label" type="Label" parent="UI/ProgressBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "10/10"
+horizontal_alignment = 1
+vertical_alignment = 1
