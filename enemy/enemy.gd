@@ -22,7 +22,7 @@ func _ready():
 	_spawnTimer = Timer.new()
 	add_child(_spawnTimer)
 	_spawnTimer.one_shot = true
-	_spawnTimer.start(.5)
+	_spawnTimer.start(.1)
 
 
 func _process(delta):

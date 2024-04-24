@@ -1,10 +1,8 @@
 extends Node2D
 class_name Bullet
 
-@export var spd: = 300
-@export_file("*.tscn") var enemyPath: String
+@export var spd: = 400
 
-@onready var enemyScene := load(enemyPath) as PackedScene
 @onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var part: GPUParticles2D = $GPUParticles2D
 
@@ -22,10 +20,8 @@ func _process(delta):
 	global_position = G.clampInsideCircle(global_position)
 
 func _turnIntoEnemy():
-	var enemy := enemyScene.instantiate() as Node2D
-	enemy.global_position = global_position
-	G.shared.add_child(enemy)
 	G.bg.ripple(position)
+	G.enemySpawnerManager.spawnEnemyFrom(global_position)
 	queue_free()
 	isDeleted = true
 

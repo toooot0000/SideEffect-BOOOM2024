@@ -1,0 +1,68 @@
+[gd_scene load_steps=7 format=3 uid="uid://c658qp2dtj8lx"]
+
+[ext_resource type="Script" path="res://enemy/enemySpawner.gd" id="1_2lffv"]
+[ext_resource type="Texture2D" uid="uid://bp1j5hjcdc3he" path="res://img/bullet.png" id="2_rgh7p"]
+
+[sub_resource type="Curve2D" id="Curve2D_0mlo8"]
+resource_local_to_scene = true
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 7.315, 68.617, 128.531, 0, 0, 0, 0, 252.66, 156.595)
+}
+point_count = 3
+
+[sub_resource type="Animation" id="Animation_ojrpj"]
+resource_name = "follow_path"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
+[sub_resource type="Animation" id="Animation_f2n38"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(2),
+"update": 0,
+"values": [0.05]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_82ort"]
+_data = {
+"RESET": SubResource("Animation_f2n38"),
+"follow_path": SubResource("Animation_ojrpj")
+}
+
+[node name="Path2D" type="Path2D"]
+curve = SubResource("Curve2D_0mlo8")
+script = ExtResource("1_2lffv")
+randRangeInDeg = 5.0
+
+[node name="PathFollow2D" type="PathFollow2D" parent="."]
+rotation = 1.08043
+
+[node name="Sprite2D" type="Sprite2D" parent="PathFollow2D"]
+texture = ExtResource("2_rgh7p")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../PathFollow2D")
+libraries = {
+"": SubResource("AnimationLibrary_82ort")
+}
+autoplay = "follow_path"
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

@@ -5,6 +5,7 @@ class_name G
 
 @onready var _center :Node2D = $BG
 @onready var _player :Player = $Player
+@onready var _enemySpawnerManager: EnemySpawnerManager = $EnemySpawnerManager
 
 static var shared: G
 
@@ -13,8 +14,9 @@ func _init():
 		G.shared = self
 	else:
 		queue_free()
+	randomize()
 
-
+# global
 static var center: Vector2:
 	get:
 		return G.shared._center.global_position
@@ -37,3 +39,7 @@ static var player: Player:
 static var bg: BG:
 	get:
 		return shared._center
+
+static var enemySpawnerManager: EnemySpawnerManager:
+	get:
+		return shared._enemySpawnerManager

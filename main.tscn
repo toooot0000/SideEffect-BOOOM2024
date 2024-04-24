@@ -1,19 +1,24 @@
-[gd_scene load_steps=10 format=3 uid="uid://l825ae460lwx"]
+[gd_scene load_steps=13 format=3 uid="uid://l825ae460lwx"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_edicv"]
 [ext_resource type="Texture2D" uid="uid://3kcafr6ubypi" path="res://img/bg.png" id="1_fyxfo"]
 [ext_resource type="Shader" path="res://shaders/circle.gdshader" id="2_vsuno"]
 [ext_resource type="Script" path="res://BG.gd" id="4_5d2x7"]
 [ext_resource type="PackedScene" uid="uid://bf18to5tse1bg" path="res://player/player.tscn" id="4_y4vg7"]
+[ext_resource type="PackedScene" uid="uid://c658qp2dtj8lx" path="res://enemy/spawner/enemySpawner.tscn" id="5_8bgcd"]
+[ext_resource type="Script" path="res://enemy/enemySpawnerManager.gd" id="5_u2n4j"]
 [ext_resource type="Script" path="res://ui.gd" id="6_d4hxr"]
+[ext_resource type="PackedScene" uid="uid://xgniktnq5h3y" path="res://enemy/enemy.tscn" id="7_v6epm"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qmdp5"]
 shader = ExtResource("2_vsuno")
 shader_parameter/radiusInPixel = 200.0
 shader_parameter/thicknessInPixel = 3.0
 shader_parameter/normaledCenter = Vector2(0.5, 0.5)
-shader_parameter/ripplePosition = -1.19
-shader_parameter/rippleTime = 1.88
+shader_parameter/ripplePositions = null
+shader_parameter/rippleTimes = null
+shader_parameter/reRipplePositions = null
+shader_parameter/reRippleTimes = null
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yegdu"]
 bg_color = Color(1, 1, 1, 1)
@@ -46,12 +51,18 @@ _radius = 250
 
 [node name="BG" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_qmdp5")
-position = Vector2(487, 254)
+position = Vector2(578, 297)
 scale = Vector2(1.88, 1.78167)
 texture = ExtResource("1_fyxfo")
 script = ExtResource("4_5d2x7")
 
+[node name="EnemySpawnerManager" type="Node2D" parent="."]
+script = ExtResource("5_u2n4j")
+spawnerScene = ExtResource("5_8bgcd")
+enemyScene = ExtResource("7_v6epm")
+
 [node name="Player" parent="." instance=ExtResource("4_y4vg7")]
+spd = 120.0
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
