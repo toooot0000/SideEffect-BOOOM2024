@@ -3,16 +3,22 @@ extends Sprite2D
 class_name BG
 
 @onready var shMat := (material as ShaderMaterial)
+@onready var rippleLength := 10
 
-var rippleTimes :Array[float] = [5, 5, 5, 5, 5]
-var ripplePositions :Array[float] = [0, 0, 0, 0, 0]
+var rippleTimes :Array[float] = []
+var ripplePositions :Array[float] = []
 var rippleInd := 0
 
-var reRippleTimes :Array[float] = [5, 5, 5, 5, 5]
-var reRipplePositions :Array[float] = [0, 0, 0, 0, 0]
+var reRippleTimes :Array[float] = []
+var reRipplePositions :Array[float] = []
 var reRippleInd := 0
 
 func _ready():
+	for i in range(rippleLength):
+		rippleTimes.append(5)
+		reRippleTimes.append(5)
+		ripplePositions.append(0)
+		reRipplePositions.append(0)
 	shMat.set_shader_parameter("radiusInPixel", G.radius)
 	shMat.set_shader_parameter("rippleTimes", rippleTimes)
 	shMat.set_shader_parameter("reRippleTimes", reRippleTimes)

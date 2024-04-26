@@ -6,16 +6,17 @@ class_name  Player
 @export_file("*.tscn") var bulletScenePath
 @export var kickBackTime := 0.1
 @export var kickBackSpd := 120.0
+@export var hpLimit := 10
 
-@onready var bulletScene := load(bulletScenePath) as PackedScene
 @onready var arrow := $Pivot/Arrow
 @onready var arrowPivot: Node2D = $Pivot
 @onready var anim: AnimationPlayer = $AnimationPlayer
 
-signal point_changed(newPoint)
+signal pointChangedFromTo(old, newPoint)
 signal hpChangedFromTo(old, new)
+signal curBulletChangedFromTo(old, new)
 
-var hp: int = 5:
+var hp: int = hpLimit:
 	set(value):
 		var o = hp
 		hp = value
@@ -23,8 +24,22 @@ var hp: int = 5:
 
 var point: int = 0:
 	set(value):
+		var o = point
 		point = value
-		point_changed.emit(value)
+		pointChangedFromTo.emit(o, value)
+
+@export var curBullet: BulletConfig:
+	set(value):
+		var o = curBullet
+		curBullet = value
+		curBulletChangedFromTo.emit(o, value)
+
+
+var _bulletScene: PackedScene:
+	get:
+		if curBullet == null:
+			return null
+		return curBullet.bulletPackedScene
 
 var isKickingBack := false
 var kickBackDir := Vector2.ZERO
@@ -72,10 +87,11 @@ func _process(delta):
 
 
 func shoot(shootDir: Vector2):
-	var bullet := bulletScene.instantiate() as Bullet
+	var bullet := _bulletScene.instantiate() as Bullet
 	$"..".add_child(bullet)
 	bullet.dir = shootDir
 	bullet.global_position = arrow.global_position
+	bullet.config = curBullet
 	print("Generate bullet at %s" % bullet.global_position)
 	anim.play("arrow_shake")
 	

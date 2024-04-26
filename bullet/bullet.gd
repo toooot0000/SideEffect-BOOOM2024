@@ -8,7 +8,7 @@ class_name Bullet
 
 var dir := Vector2.ZERO
 var isDeleted := false
-
+var config :BulletConfig
 
 func _process(delta):
 	if isDeleted:
@@ -21,7 +21,7 @@ func _process(delta):
 
 func _turnIntoEnemy():
 	G.bg.ripple(position)
-	G.enemySpawnerManager.spawnEnemyFrom(global_position)
+	G.enemySpawnerManager.spawnEnemyFrom(self)
 	queue_free()
 	isDeleted = true
 

@@ -4,10 +4,10 @@ extends Node2D
 @export var spawnerScene: PackedScene
 @export var enemyScene: PackedScene
 
-func spawnEnemyFrom(bulletPosition: Vector2):
+func spawnEnemyFrom(bullet: Bullet):
 	var new = spawnerScene.instantiate() as EnemySpawner
 	add_child(new)
-	new.makeSpawnCurve(bulletPosition)
+	new.makeSpawnCurve(bullet.global_position)
 	await new.shouldSpawnEnemyAt
 	var enemy := enemyScene.instantiate() as Node2D
 	enemy.global_position = new.spawnGlobalPosition

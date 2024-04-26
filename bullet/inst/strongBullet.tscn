@@ -1,0 +1,66 @@
+[gd_scene load_steps=10 format=3 uid="uid://djuxs3xufaljk"]
+
+[ext_resource type="Script" path="res://bullet/bullet.gd" id="1_1jtsv"]
+[ext_resource type="Texture2D" uid="uid://bp1j5hjcdc3he" path="res://img/bullet.png" id="2_bffu0"]
+[ext_resource type="Texture2D" uid="uid://bi15awytervnp" path="res://img/4x4.png" id="3_dwxgq"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mv14b"]
+radius = 4.0
+
+[sub_resource type="Curve" id="Curve_4khwa"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.669173, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -8.69432, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_rb7si"]
+curve = SubResource("Curve_4khwa")
+
+[sub_resource type="Curve" id="Curve_ewmjd"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.982456, 0.0215724), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ga8rs"]
+curve = SubResource("Curve_ewmjd")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_cv81w"]
+lifetime_randomness = 0.35
+particle_flag_disable_z = true
+angle_min = -395.5
+angle_max = 378.6
+direction = Vector3(0, 0, 0)
+angular_velocity_min = -180.0
+angular_velocity_max = 180.0
+radial_velocity_min = 60.0
+radial_velocity_max = 100.0
+radial_velocity_curve = SubResource("CurveTexture_ga8rs")
+gravity = Vector3(0, 0, 0)
+alpha_curve = SubResource("CurveTexture_rb7si")
+
+[node name="Bullet" type="Node2D"]
+script = ExtResource("1_1jtsv")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_bffu0")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_mv14b")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 15
+process_material = SubResource("ParticleProcessMaterial_cv81w")
+texture = ExtResource("3_dwxgq")
+lifetime = 0.4
+one_shot = true
+speed_scale = 2.5
+explosiveness = 0.88
+randomness = 0.47
+fixed_fps = 60
+collision_base_size = 0.5
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

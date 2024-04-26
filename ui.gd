@@ -21,6 +21,11 @@ func _ready():
 
 
 func _connectSignals():
-	G.player.point_changed.connect(func(point: int):
+	G.player.pointChangedFromTo.connect(func(_o:int, point: int):
 		pointLabel.text = "Point: %d" % point
+	)
+
+	G.player.hpChangedFromTo.connect(func(_o:int, n:int):
+		($HpBar as ProgressBar).value = float(n) / G.player.hpLimit * 100
+		($HpBar/HpLabel as Label).text = "%d / %d" % [n, G.player.hpLimit]
 	)

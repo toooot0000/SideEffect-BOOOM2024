@@ -6,6 +6,7 @@ class_name G
 @onready var _center :Node2D = $BG
 @onready var _player :Player = $Player
 @onready var _enemySpawnerManager: EnemySpawnerManager = $EnemySpawnerManager
+@onready var _bullets :Array = U.getAllResUnderDir("res://bullet/configs/")
 
 static var shared: G
 
@@ -43,3 +44,7 @@ static var bg: BG:
 static var enemySpawnerManager: EnemySpawnerManager:
 	get:
 		return shared._enemySpawnerManager
+
+static var bullets: Array[BulletConfig]:
+	get:
+		return shared._bullets

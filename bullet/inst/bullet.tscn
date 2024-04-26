@@ -1,8 +1,8 @@
 [gd_scene load_steps=10 format=3 uid="uid://423kpae8nhq2"]
 
-[ext_resource type="Texture2D" uid="uid://bp1j5hjcdc3he" path="res://img/bullet.png" id="1_ftwhy"]
-[ext_resource type="Script" path="res://bullet/bullet.gd" id="1_ntyoi"]
-[ext_resource type="Texture2D" uid="uid://bi15awytervnp" path="res://img/4x4.png" id="3_2oftm"]
+[ext_resource type="Script" path="res://bullet/bullet.gd" id="1_1ssbq"]
+[ext_resource type="Texture2D" uid="uid://bp1j5hjcdc3he" path="res://img/bullet.png" id="2_13bvs"]
+[ext_resource type="Texture2D" uid="uid://bi15awytervnp" path="res://img/4x4.png" id="3_2l0tg"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mv14b"]
 radius = 4.0
@@ -36,12 +36,12 @@ gravity = Vector3(0, 0, 0)
 alpha_curve = SubResource("CurveTexture_rb7si")
 
 [node name="Bullet" type="Node2D"]
-script = ExtResource("1_ntyoi")
+script = ExtResource("1_1ssbq")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
 [node name="Sprite" type="Sprite2D" parent="."]
-texture = ExtResource("1_ftwhy")
+texture = ExtResource("2_13bvs")
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 2
@@ -54,7 +54,7 @@ shape = SubResource("CircleShape2D_mv14b")
 emitting = false
 amount = 15
 process_material = SubResource("ParticleProcessMaterial_cv81w")
-texture = ExtResource("3_2oftm")
+texture = ExtResource("3_2l0tg")
 lifetime = 0.4
 one_shot = true
 speed_scale = 2.5

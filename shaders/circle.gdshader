@@ -4,13 +4,15 @@ render_mode unshaded;
 #include "include/noise.gdshaderinc"
 #include "include/polarProjection.gdshaderinc"
 
+#define RippleLength 10
+
 uniform float radiusInPixel = 200.f;
 uniform float thicknessInPixel = 3.f;
 uniform vec2 normaledCenter = vec2(.5f);
-uniform float ripplePositions[5];
-uniform float rippleTimes[5];
-uniform float reRipplePositions[5];
-uniform float reRippleTimes[5];
+uniform float ripplePositions[RippleLength];
+uniform float rippleTimes[RippleLength];
+uniform float reRipplePositions[RippleLength];
+uniform float reRippleTimes[RippleLength];
 
 float stepRange(float front_edge, float back_edge, float a){
 	a = (a - front_edge)/(back_edge - front_edge);
@@ -57,14 +59,14 @@ void fragment() {
 	
 	float rippleLength = 0.f;
 	float reRippleLength = 0.f;
-	for(int i = 0; i < 5; i++){
+	for(int i = 0; i < RippleLength; i++){
 		float ripplePosition = ripplePositions[i];
 		float time = rippleTimes[i];
 		float offset = positionToOffset(ripplePosition, point);
 		rippleLength += ripple(offset, time) * 20.0f;
 	}
 	
-	for(int i = 0; i < 5; i++){
+	for(int i = 0; i < RippleLength; i++){
 		float ripplePosition = reRipplePositions[i];
 		float time = reRippleTimes[i];
 		float offset = positionToOffset(ripplePosition, point);

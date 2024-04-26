@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://l825ae460lwx"]
+[gd_scene load_steps=14 format=3 uid="uid://l825ae460lwx"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_edicv"]
 [ext_resource type="Texture2D" uid="uid://3kcafr6ubypi" path="res://img/bg.png" id="1_fyxfo"]
@@ -8,7 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://c658qp2dtj8lx" path="res://enemy/spawner/enemySpawner.tscn" id="5_8bgcd"]
 [ext_resource type="Script" path="res://enemy/enemySpawnerManager.gd" id="5_u2n4j"]
 [ext_resource type="Script" path="res://ui.gd" id="6_d4hxr"]
-[ext_resource type="PackedScene" uid="uid://xgniktnq5h3y" path="res://enemy/enemy.tscn" id="7_v6epm"]
+[ext_resource type="PackedScene" uid="uid://xgniktnq5h3y" path="res://enemy/inst/enemy.tscn" id="7_v6epm"]
+[ext_resource type="Resource" uid="uid://b3qjeg3qjmkv8" path="res://bullet/configs/smallBullet.tres" id="9_xd0c4"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qmdp5"]
 shader = ExtResource("2_vsuno")
@@ -63,6 +64,7 @@ enemyScene = ExtResource("7_v6epm")
 
 [node name="Player" parent="." instance=ExtResource("4_y4vg7")]
 spd = 120.0
+curBullet = ExtResource("9_xd0c4")
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -89,7 +91,7 @@ theme_override_font_sizes/font_size = 25
 text = "Points: 0"
 horizontal_alignment = 2
 
-[node name="ProgressBar" type="ProgressBar" parent="UI"]
+[node name="HpBar" type="ProgressBar" parent="UI"]
 layout_mode = 0
 offset_left = 24.0
 offset_top = 17.0
@@ -97,10 +99,10 @@ offset_right = 214.0
 offset_bottom = 52.0
 theme_override_styles/background = SubResource("StyleBoxFlat_yegdu")
 theme_override_styles/fill = SubResource("StyleBoxFlat_iyvlt")
-value = 89.52
+value = 100.0
 show_percentage = false
 
-[node name="Label" type="Label" parent="UI/ProgressBar"]
+[node name="HpLabel" type="Label" parent="UI/HpBar"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
