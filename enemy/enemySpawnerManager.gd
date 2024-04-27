@@ -8,9 +8,9 @@ func spawnEnemyFrom(bullet: Bullet):
 	var new = spawnerScene.instantiate() as EnemySpawner
 	add_child(new)
 	new.makeSpawnCurve(bullet)
-	var config = bullet.config
+	var config := bullet.config.relatedEnemy
 	await new.shouldSpawnEnemyAt
-	var enemy := config.enemyPackedScene.instantiate() as Enemy
+	var enemy := config.scene.instantiate() as Enemy
 	enemy.global_position = new.spawnGlobalPosition
 	G.bg.reRipple(new.spawnGlobalPosition)
 	G.shared.add_child(enemy)

@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://xgniktnq5h3y"]
 
 [ext_resource type="Script" path="res://enemy/enemy.gd" id="1_bsg5c"]
-[ext_resource type="Texture2D" uid="uid://d2o5qqmbw6yhl" path="res://img/enemy.png" id="2_g4gqs"]
+[ext_resource type="Texture2D" uid="uid://d2o5qqmbw6yhl" path="res://img/enemies/enemy.png" id="2_slw7i"]
 
 [sub_resource type="Animation" id="Animation_5mam3"]
 resource_name = "spawned"
@@ -92,7 +92,7 @@ libraries = {
 }
 
 [node name="Sprite" type="Sprite2D" parent="."]
-texture = ExtResource("2_g4gqs")
+texture = ExtResource("2_slw7i")
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 4

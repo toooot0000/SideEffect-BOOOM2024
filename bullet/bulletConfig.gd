@@ -1,10 +1,11 @@
 class_name BulletConfig
 extends Resource
 
-@export_category("Numbers")
+@export_category("Basic")
 @export var bulletDamage := 1
 @export var enemyLife := 10
 
-@export_category("Scenes")
+@export var displayTexture: Texture2D
 @export var bulletPackedScene: PackedScene
-@export var enemyPackedScene: PackedScene
+
+@export var relatedEnemy: EnemyConfig

@@ -3,10 +3,15 @@
     "res://bullet/configs/": {
       "resource_local_to_scene": true,
       "resource_name": true
+    },
+    "res://enemy/configs/": {
+      "resource_local_to_scene": true,
+      "resource_name": true
     }
   },
   "recent_paths": [
-    "res://bullet/configs/"
+    "res://bullet/configs/",
+    "res://enemy/configs/"
   ],
   "table_functions": {
     "filter": [

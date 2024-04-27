@@ -42,5 +42,4 @@ func _on_area_2d_area_entered(area:Area2D):
 		return
 	var bullet = area.get_parent() as Bullet
 	if bullet != null:
-		# area.get_parent().queue_free()
 		hp -= bullet.config.bulletDamage
