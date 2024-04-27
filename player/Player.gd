@@ -92,6 +92,7 @@ func shoot(shootDir: Vector2):
 	bullet.dir = shootDir
 	bullet.global_position = arrow.global_position
 	bullet.config = curBullet
+	bullet.rotate(shootDir.angle())
 	print("Generate bullet at %s" % bullet.global_position)
 	anim.play("arrow_shake")
 	

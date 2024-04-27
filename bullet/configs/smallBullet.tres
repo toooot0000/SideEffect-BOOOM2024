@@ -7,6 +7,6 @@
 [resource]
 script = ExtResource("1_qtp4u")
 bulletDamage = 2
-enemyLife = 8
+enemyLife = 5
 bulletPackedScene = ExtResource("1_4ji8g")
 enemyPackedScene = ExtResource("2_1x543")

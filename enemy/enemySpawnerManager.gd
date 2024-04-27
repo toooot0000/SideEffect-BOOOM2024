@@ -7,10 +7,14 @@ extends Node2D
 func spawnEnemyFrom(bullet: Bullet):
 	var new = spawnerScene.instantiate() as EnemySpawner
 	add_child(new)
-	new.makeSpawnCurve(bullet.global_position)
+	new.makeSpawnCurve(bullet)
+	var config = bullet.config
 	await new.shouldSpawnEnemyAt
-	var enemy := enemyScene.instantiate() as Node2D
+	var enemy := config.enemyPackedScene.instantiate() as Enemy
 	enemy.global_position = new.spawnGlobalPosition
 	G.bg.reRipple(new.spawnGlobalPosition)
 	G.shared.add_child(enemy)
 	new.queue_free()
+	await enemy.ready
+	enemy.hpUplimit = config.enemyLife
+	enemy.hp = config.enemyLife

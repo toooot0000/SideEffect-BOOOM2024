@@ -15,8 +15,10 @@ func cross(v:Vector2, vup: Vector3 = Vector3.BACK) -> Vector2:
 	ret = Vector2(ret.x, ret.y).normalized()
 	return ret
 
-func makeSpawnCurve(bulletGlobalPosition: Vector2):
+func makeSpawnCurve(bullet:Bullet):
+	var bulletGlobalPosition := bullet.global_position
 	($PathFollow2D as PathFollow2D).progress_ratio = 0
+	($PathFollow2D/Sprite2D as Sprite2D).texture = bullet.sprite.texture
 	($AnimationPlayer as AnimationPlayer).stop()
 	($AnimationPlayer as AnimationPlayer).play("follow_path")
 	var center = G.center

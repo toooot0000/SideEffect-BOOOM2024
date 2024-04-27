@@ -25,16 +25,9 @@ static func foreach(array: Array, callable: Callable):
 		var item = array[i]
 		callable.callv([item, i])
 
-static func map(array: Array, callable: Callable) -> Array:
-	var ret = []
+static func first(array: Array, callable: Callable):
 	for i in range(len(array)):
 		var item = array[i]
-		ret.append(callable.callv([item, i]))
-	return ret
-
-static func reduce(array: Array, start, callable: Callable):
-	var ret = start
-	for i in range(len(array)):
-		var item = array[i]
-		ret = callable.callv([ret, item, i])
-	return ret
+		if callable.callv([item, i]):
+			return item
+	return null

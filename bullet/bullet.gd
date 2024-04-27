@@ -2,6 +2,7 @@ extends Node2D
 class_name Bullet
 
 @export var spd: = 400
+@export var sprite: Sprite2D
 
 @onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var part: GPUParticles2D = $GPUParticles2D

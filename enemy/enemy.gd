@@ -27,6 +27,7 @@ func _ready():
 	($AnimationPlayer as AnimationPlayer).play("spawned")
 	await animator.animation_finished
 	animator.play("walking")
+	ready.emit()
 
 
 func _process(delta):

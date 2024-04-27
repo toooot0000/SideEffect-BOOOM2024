@@ -9,7 +9,7 @@
 [ext_resource type="Script" path="res://enemy/enemySpawnerManager.gd" id="5_u2n4j"]
 [ext_resource type="Script" path="res://ui.gd" id="6_d4hxr"]
 [ext_resource type="PackedScene" uid="uid://xgniktnq5h3y" path="res://enemy/inst/enemy.tscn" id="7_v6epm"]
-[ext_resource type="Resource" uid="uid://b3qjeg3qjmkv8" path="res://bullet/configs/smallBullet.tres" id="9_xd0c4"]
+[ext_resource type="Resource" uid="uid://dlo7rvu1r41g7" path="res://bullet/configs/strongBullet.tres" id="9_0857n"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qmdp5"]
 shader = ExtResource("2_vsuno")
@@ -64,7 +64,7 @@ enemyScene = ExtResource("7_v6epm")
 
 [node name="Player" parent="." instance=ExtResource("4_y4vg7")]
 spd = 120.0
-curBullet = ExtResource("9_xd0c4")
+curBullet = ExtResource("9_0857n")
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
