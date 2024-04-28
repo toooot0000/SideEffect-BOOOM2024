@@ -1,9 +1,12 @@
 extends CenterContainer
 class_name MagzineItem
 
-@export var time := 0.2
+@export var time := 0.2 :
+	set(value):
+		time = value
+		anim.speed_scale = 1 / value
 
-@onready var part: GPUParticles2D = $GPUParticles2D
+@onready var anim: AnimationPlayer = $AnimationPlayer
 
-func disappear():
-	
+func used():
+	anim.play("used")

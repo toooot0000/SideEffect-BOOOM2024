@@ -1,7 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://c658qp2dtj8lx"]
+[gd_scene load_steps=6 format=3 uid="uid://c658qp2dtj8lx"]
 
 [ext_resource type="Script" path="res://enemy/enemySpawner.gd" id="1_2lffv"]
-[ext_resource type="Texture2D" path="res://img/bullet.png" id="2_rgh7p"]
 
 [sub_resource type="Curve2D" id="Curve2D_0mlo8"]
 resource_local_to_scene = true
@@ -58,7 +57,6 @@ rotation = 1.08043
 progress = 16.6152
 
 [node name="Sprite2D" type="Sprite2D" parent="PathFollow2D"]
-texture = ExtResource("2_rgh7p")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../PathFollow2D")

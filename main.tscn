@@ -154,7 +154,9 @@ offset_bottom = 688.0
 [node name="SubViewport" type="SubViewport" parent="UI/SubViewportContainer"]
 disable_3d = true
 transparent_bg = true
+handle_input_locally = false
 size = Vector2i(220, 260)
+render_target_update_mode = 4
 
 [node name="Panel" type="Panel" parent="UI/SubViewportContainer/SubViewport"]
 offset_left = 55.0
@@ -163,8 +165,6 @@ offset_right = 165.0
 offset_bottom = 195.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_c8yb0")
 script = ExtResource("11_u5a7g")
-rotRange = null
-rotSpd = null
 
 [node name="Bullet" type="TextureRect" parent="UI/SubViewportContainer/SubViewport/Panel"]
 texture_filter = 1
@@ -215,8 +215,6 @@ stretch_mode = 2
 [node name="Shaker" type="Timer" parent="UI/SubViewportContainer/SubViewport/Panel"]
 one_shot = true
 script = ExtResource("15_2qrwi")
-freqency = null
-time = null
 randomness = 1.305
 axisOffet = 1.215
 minX = -10.0
