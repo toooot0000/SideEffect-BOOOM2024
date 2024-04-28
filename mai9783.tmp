@@ -164,7 +164,6 @@ offset_bottom = 195.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_c8yb0")
 script = ExtResource("11_u5a7g")
 rotRange = null
-rotSpd = null
 
 [node name="Bullet" type="TextureRect" parent="UI/SubViewportContainer/SubViewport/Panel"]
 texture_filter = 1

@@ -1,0 +1,174 @@
+[gd_scene load_steps=15 format=3 uid="uid://ch5w5vbqjvu87"]
+
+[ext_resource type="Texture2D" uid="uid://bi15awytervnp" path="res://img/4x4.png" id="1_0w0i2"]
+[ext_resource type="Script" path="res://ui/magzineItem.gd" id="1_4l260"]
+
+[sub_resource type="Animation" id="Animation_4unco"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control/Panel:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_dylfm"]
+resource_name = "used"
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control/Panel:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.87, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -5), Vector2(0, 5), Vector2(0, 9)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Control/Panel:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.83, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Control/Panel:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.78),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.5708]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("GPUParticles2D:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.85),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_pcbbn"]
+_data = {
+"RESET": SubResource("Animation_4unco"),
+"used": SubResource("Animation_dylfm")
+}
+
+[sub_resource type="Gradient" id="Gradient_fmatl"]
+offsets = PackedFloat32Array(0, 0.722689, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_1blga"]
+gradient = SubResource("Gradient_fmatl")
+
+[sub_resource type="Curve" id="Curve_l3ent"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_mtjh1"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_4nqqi"]
+curve_x = SubResource("Curve_l3ent")
+curve_y = SubResource("Curve_mtjh1")
+
+[sub_resource type="Curve" id="Curve_5rmnu"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.746032, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -3.90693, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_pufx6"]
+curve = SubResource("Curve_5rmnu")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hbks2"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 2.0
+angle_min = -180.0
+angle_max = 180.0
+direction = Vector3(0, 0, 1)
+initial_velocity_min = 50.0
+initial_velocity_max = 80.0
+directional_velocity_min = -10.0
+directional_velocity_max = 10.0
+directional_velocity_curve = SubResource("CurveXYZTexture_4nqqi")
+gravity = Vector3(0, 98, 0)
+scale_min = 0.45
+scale_max = 0.5
+scale_curve = SubResource("CurveTexture_pufx6")
+color_ramp = SubResource("GradientTexture1D_1blga")
+turbulence_noise_strength = 1.32
+turbulence_noise_scale = 6.39
+turbulence_noise_speed_random = 2.98
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_u8lgq"]
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
+[node name="CenterContainer" type="CenterContainer"]
+size_flags_horizontal = 3
+script = ExtResource("1_4l260")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_pcbbn")
+}
+speed_scale = 5.0
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+position = Vector2(2, 5)
+emitting = false
+amount = 15
+process_material = SubResource("ParticleProcessMaterial_hbks2")
+texture = ExtResource("1_0w0i2")
+lifetime = 0.2
+one_shot = true
+explosiveness = 1.0
+randomness = 0.7
+fixed_fps = 60
+
+[node name="Control" type="Control" parent="."]
+custom_minimum_size = Vector2(4, 10)
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="Control"]
+custom_minimum_size = Vector2(4, 10)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = -5.0
+offset_right = 2.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(2, 5)
+theme_override_styles/panel = SubResource("StyleBoxFlat_u8lgq")

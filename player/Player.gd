@@ -3,7 +3,6 @@ class_name  Player
 
 @export var spd: float = 70
 
-@export_file("*.tscn") var bulletScenePath
 @export var kickBackTime := 0.1
 @export var kickBackSpd := 120.0
 @export var hpLimit := 10
@@ -15,6 +14,7 @@ class_name  Player
 signal pointChangedFromTo(old, newPoint)
 signal hpChangedFromTo(old, new)
 signal curBulletChangedFromTo(old, new)
+signal shootBullet(direction: Vector2, bulletConfig: BulletConfig)
 
 var hp: int = hpLimit:
 	set(value):
@@ -95,6 +95,7 @@ func shoot(shootDir: Vector2):
 	bullet.rotate(shootDir.angle())
 	print("Generate bullet at %s" % bullet.global_position)
 	anim.play("arrow_shake")
+	shootBullet.emit(shootDir, curBullet)
 	
 
 func _checkKickBack():
