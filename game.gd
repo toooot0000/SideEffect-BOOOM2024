@@ -15,6 +15,7 @@ enum State { Idle, End, Pause }
 signal startTimeChangedFromTo(o, n)
 signal stateChangedFromTo(o, n)
 signal remainingTimeChangedFromTo(o, n)
+signal targetPointChangedFromTo(o, n)
 
 signal gameOver
 signal levelClear
@@ -69,16 +70,19 @@ var startTime := 0:
 var _state: State = State.Idle:
 	set(v):
 		var o = _state
-		state = v
+		_state = v
 		stateChangedFromTo.emit(o, v)
 
 var __remainingTime := 60.0
-var _remainingTime := 60.0:
+var _remainingTime:float :
 	set(v):
 		U.makeGetter(self, "__remainingTime").call(v)
 	get:
 		return __remainingTime
 
+var _targetPoint := 200:
+	set(v):
+		U.makeGetter(self, "_targetPoint").call(v)
 
 func _init():
 	if G.shared == null :
@@ -92,13 +96,13 @@ func _ready():
 	start()
 
 func _process(_delta):
-	if state != State.Idle:
+	if _state != State.Idle:
 		return
 	var cur = Time.get_ticks_msec()
-	_remainingTime = (60.0 - (cur - startTime)/1000.0)
+	_remainingTime = (3.0 - (cur - startTime)/1000.0)
 	if _remainingTime > 0:
 		return
-	state = State.End
+	_state = State.End
 	gameOver.emit()
 
 
@@ -113,7 +117,7 @@ func start():
 
 
 func _on_player_point_changed_from_to(_old:Variant, newPoint:Variant):
-	if newPoint > 200:
+	if newPoint > _targetPoint:
 		_state = State.Pause
 		levelClear.emit()
 

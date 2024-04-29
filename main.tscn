@@ -186,6 +186,7 @@ script = ExtResource("14_7k8gi")
 
 [node name="Shaker" type="Timer" parent="UI/CountDown"]
 wait_time = 0.1
+one_shot = true
 script = ExtResource("15_2qrwi")
 randomness = 1.0
 axisOffet = 2.0
