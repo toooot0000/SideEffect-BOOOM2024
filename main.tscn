@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://l825ae460lwx"]
+[gd_scene load_steps=20 format=3 uid="uid://l825ae460lwx"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_edicv"]
 [ext_resource type="Texture2D" uid="uid://3kcafr6ubypi" path="res://img/bg.png" id="1_fyxfo"]
@@ -14,6 +14,8 @@
 [ext_resource type="PackedScene" uid="uid://bsxvwgk0nac82" path="res://ui/cards/cards.tscn" id="11_u2sko"]
 [ext_resource type="Script" path="res://ui/countDown/countDown.gd" id="14_7k8gi"]
 [ext_resource type="Script" path="res://util/shaker.gd" id="15_2qrwi"]
+[ext_resource type="StyleBox" uid="uid://b12m3whupcw2e" path="res://ui/commonUIStyle.tres" id="15_h32ag"]
+[ext_resource type="StyleBox" uid="uid://db8sle3o7nkad" path="res://ui/commonButtonStyle.tres" id="16_6ggvg"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qmdp5"]
 shader = ExtResource("2_vsuno")
@@ -103,6 +105,7 @@ offset_left = 108.0
 offset_top = 30.0
 offset_right = 205.0
 offset_bottom = 134.0
+theme_override_constants/separation = 0
 
 [node name="TargetLabel" type="Label" parent="UI"]
 layout_mode = 1
@@ -194,6 +197,84 @@ minX = -10.0
 maxX = 10.0
 minY = -10.0
 maxY = 10.0
+
+[node name="GameOver" type="Panel" parent="UI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -510.0
+offset_top = -274.0
+offset_right = 510.0
+offset_bottom = 274.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("15_h32ag")
+
+[node name="Label" type="Label" parent="UI/GameOver"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = -3.5
+offset_top = 37.0
+offset_right = -3.5
+offset_bottom = 124.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "你鼠了"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="UI/GameOver"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 0.5
+offset_top = 128.0
+offset_right = 0.5
+offset_bottom = 215.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "你坚持了一小会儿，拿了些分数"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="RestartBtn" type="Button" parent="UI/GameOver"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.387
+anchor_top = 0.5
+anchor_right = 0.614
+anchor_bottom = 0.681
+offset_left = -0.240021
+offset_right = 0.219971
+offset_bottom = -0.188019
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = ExtResource("16_6ggvg")
+text = "重新开始"
+
+[node name="QuitBtn" type="Button" parent="UI/GameOver"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.388
+anchor_top = 0.737
+anchor_right = 0.615
+anchor_bottom = 0.918
+offset_left = -0.26001
+offset_top = 0.123962
+offset_right = 0.200012
+offset_bottom = -0.0640259
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = ExtResource("16_6ggvg")
+text = "退出游戏"
 
 [connection signal="hpChangedFromTo" from="Player" to="." method="_on_player_hp_changed_from_to"]
 [connection signal="pointChangedFromTo" from="Player" to="." method="_on_player_point_changed_from_to"]

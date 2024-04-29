@@ -25,6 +25,7 @@ func _ready():
 func _connectSignals():
 	G.player.pointChangedFromTo.connect(func(_o:int, point: int):
 		var inst = pointItem.instantiate() as PointItem
+		inst.point = point - _o
 		$PointLabel/VBoxContainer.add_child(inst)
 		await inst.animation_finished
 		inst.queue_free()

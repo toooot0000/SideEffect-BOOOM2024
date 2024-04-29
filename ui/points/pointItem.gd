@@ -4,6 +4,10 @@ class_name PointItem
 
 signal animation_finished(anim_name)
 
+var point: int :
+	set(v):
+		$Control/Label.text = "+ %d" % v
+
 func _ready():
 	($AnimationPlayer as AnimationPlayer).speed_scale = 1 + 0.2 * (randf() - 0.5)
 
