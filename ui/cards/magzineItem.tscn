@@ -1,7 +1,7 @@
 [gd_scene load_steps=15 format=3 uid="uid://ch5w5vbqjvu87"]
 
 [ext_resource type="Texture2D" uid="uid://bi15awytervnp" path="res://img/4x4.png" id="1_0w0i2"]
-[ext_resource type="Script" path="res://ui/magzineItem.gd" id="1_4l260"]
+[ext_resource type="Script" path="res://ui/cards/magzineItem.gd" id="1_4l260"]
 
 [sub_resource type="Animation" id="Animation_4unco"]
 length = 0.001

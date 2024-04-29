@@ -10,12 +10,14 @@ class_name G
 
 static var shared: G
 
-func _init():
-	if G.shared == null :
-		G.shared = self
-	else:
-		queue_free()
-	randomize()
+enum State { Idle, End, Pause }
+
+signal startTimeChangedFromTo(o, n)
+signal stateChangedFromTo(o, n)
+signal remainingTimeChangedFromTo(o, n)
+
+signal gameOver
+signal levelClear
 
 # global
 static var center: Vector2:
@@ -48,3 +50,78 @@ static var enemySpawnerManager: EnemySpawnerManager:
 static var bullets: Array[BulletConfig]:
 	get:
 		return shared._bullets
+
+static var state: State:
+	get:
+		return shared._state
+
+static var remainingTime: float:
+	get:
+		return shared._remainingTime
+
+
+var startTime := 0:
+	set(v):
+		var o = startTime
+		startTime = v
+		startTimeChangedFromTo.emit(o, startTime)
+
+var _state: State = State.Idle:
+	set(v):
+		var o = _state
+		state = v
+		stateChangedFromTo.emit(o, v)
+
+var __remainingTime := 60.0
+var _remainingTime := 60.0:
+	set(v):
+		U.makeGetter(self, "__remainingTime").call(v)
+	get:
+		return __remainingTime
+
+
+func _init():
+	if G.shared == null :
+		G.shared = self
+	else:
+		queue_free()
+	randomize()
+
+
+func _ready():
+	start()
+
+func _process(_delta):
+	if state != State.Idle:
+		return
+	var cur = Time.get_ticks_msec()
+	_remainingTime = (60.0 - (cur - startTime)/1000.0)
+	if _remainingTime > 0:
+		return
+	state = State.End
+	gameOver.emit()
+
+
+func start():
+	
+	player.hpLimit = 10
+	player.hp = 10
+	player.point = 0
+	player.global_position = center
+
+	startTime = Time.get_ticks_msec()
+
+
+func _on_player_point_changed_from_to(_old:Variant, newPoint:Variant):
+	if newPoint > 200:
+		_state = State.Pause
+		levelClear.emit()
+
+
+
+func _on_player_hp_changed_from_to(_old:Variant, new:Variant):
+	if new > 0:
+		return 
+	gameOver.emit()
+	_state = State.End
+

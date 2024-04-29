@@ -31,3 +31,11 @@ static func first(array: Array, callable: Callable):
 		if callable.callv([item, i]):
 			return item
 	return null
+
+static func makeGetter(obj: Object, name: String) -> Callable:
+	return func(newValue):
+		var o = obj.get(name)
+		obj.set(name, newValue)
+		while name[0] == "_":
+			name = name.substr(1)
+		obj.emit_signal("%sChangedFromTo" % name, o, newValue)

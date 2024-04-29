@@ -5,16 +5,20 @@ class_name Enemy
 
 @onready var hpBar: ProgressBar = $ProgressBar
 @onready var animator: AnimationPlayer = $AnimationPlayer
+
+var enemyConfig: EnemyConfig
+var hpUplimit = 5
  
 var hp = 5:
 	set(value):
 		hp = value
 		hpBar.value = hp / float(hpUplimit) * 100
 		if hp <= 0:
+			animator.play("die")
+			await animator.animation_finished
 			G.player.point += 5
 			queue_free()
 
-var hpUplimit = 5
 
 var _spawnTimer :Timer
 
@@ -31,6 +35,8 @@ func _ready():
 
 
 func _process(delta):
+	if hp <= 0:
+		return
 	var playerPos = G.player.global_position
 	var dir = (playerPos - global_position).normalized()
 	var vel = dir * spd
@@ -39,6 +45,8 @@ func _process(delta):
 
 func _on_area_2d_area_entered(area:Area2D):
 	if _spawnTimer.time_left > 0:
+		return
+	if hp <= 0:
 		return
 	var bullet = area.get_parent() as Bullet
 	if bullet != null:

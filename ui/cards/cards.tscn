@@ -1,0 +1,155 @@
+[gd_scene load_steps=9 format=3 uid="uid://bsxvwgk0nac82"]
+
+[ext_resource type="Shader" path="res://shaders/flipCard.gdshader" id="1_lrnfl"]
+[ext_resource type="Script" path="res://ui/cards/flipCard.gd" id="2_s5q2x"]
+[ext_resource type="Texture2D" uid="uid://bp1j5hjcdc3he" path="res://img/bullets/bullet.png" id="3_5so3b"]
+[ext_resource type="Texture2D" uid="uid://dvbbqgvsexm1c" path="res://img/inf.png" id="4_k567s"]
+[ext_resource type="Script" path="res://util/shaker.gd" id="5_7m72q"]
+[ext_resource type="Texture2D" uid="uid://d2o5qqmbw6yhl" path="res://img/enemies/enemy.png" id="6_wakm8"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sn7da"]
+shader = ExtResource("1_lrnfl")
+shader_parameter/rotation_pivot = Vector2(0.5, 0.5)
+shader_parameter/fov = 100.996
+shader_parameter/y_rot = 8.55e-06
+shader_parameter/x_rot = 8.55e-06
+shader_parameter/inset = 0.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c8yb0"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+anti_aliasing = false
+
+[node name="SubViewportContainer" type="SubViewportContainer"]
+material = SubResource("ShaderMaterial_sn7da")
+offset_left = 957.0
+offset_top = 428.0
+offset_right = 1177.0
+offset_bottom = 688.0
+script = ExtResource("2_s5q2x")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+disable_3d = true
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(220, 260)
+render_target_update_mode = 4
+
+[node name="Bullet" type="Panel" parent="SubViewport"]
+offset_left = 55.0
+offset_top = 65.0
+offset_right = 165.0
+offset_bottom = 195.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_c8yb0")
+
+[node name="Sprite" type="TextureRect" parent="SubViewport/Bullet"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -21.0
+offset_top = 11.0
+offset_right = 20.0
+offset_bottom = 52.0
+grow_horizontal = 2
+mouse_filter = 2
+texture = ExtResource("3_5so3b")
+
+[node name="Label" type="Label" parent="SubViewport/Bullet"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 64.0
+offset_right = 80.0
+offset_bottom = 87.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "伤害：1"
+
+[node name="MagzineContainer" type="HBoxContainer" parent="SubViewport/Bullet"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -42.5
+offset_top = -39.0
+offset_right = 41.5
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Inf" type="TextureRect" parent="SubViewport/Bullet"]
+layout_mode = 0
+offset_left = 37.0
+offset_top = 94.0
+offset_right = 72.0
+offset_bottom = 113.0
+mouse_filter = 2
+texture = ExtResource("4_k567s")
+stretch_mode = 2
+
+[node name="Shaker" type="Timer" parent="SubViewport/Bullet"]
+one_shot = true
+script = ExtResource("5_7m72q")
+randomness = 0.5
+axisOffet = 1.215
+minX = -5.0
+maxX = 5.0
+minY = -5.0
+maxY = 5.0
+
+[node name="Enemy" type="Panel" parent="SubViewport"]
+visible = false
+offset_left = 55.0
+offset_top = 65.0
+offset_right = 165.0
+offset_bottom = 195.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_c8yb0")
+
+[node name="Sprite" type="TextureRect" parent="SubViewport/Enemy"]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -21.0
+offset_top = 11.0
+offset_right = 20.0
+offset_bottom = 52.0
+grow_horizontal = 2
+texture = ExtResource("6_wakm8")
+
+[node name="Label" type="Label" parent="SubViewport/Enemy"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 64.0
+offset_right = 80.0
+offset_bottom = 87.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "生命：10
+分数：10"
+
+[node name="Shaker" type="Timer" parent="SubViewport/Enemy"]
+one_shot = true
+script = ExtResource("5_7m72q")
+randomness = 1.305
+axisOffet = 1.215
+minX = -10.0
+maxX = 10.0
+minY = -10.0
+maxY = 10.0
+
+[connection signal="mouse_entered" from="SubViewport/Bullet" to="." method="_on_bullet_mouse_entered"]
+[connection signal="mouse_exited" from="SubViewport/Bullet" to="." method="_on_bullet_mouse_exited"]

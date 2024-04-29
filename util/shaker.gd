@@ -3,7 +3,6 @@ extends Timer
 
 
 @export var freqency := 1.0
-@export var time := 0.2
 
 @export var randomness := 0.0
 @export var axisOffet := 0.0
@@ -25,14 +24,18 @@ func _process(_delta):
 	_callable.callv([_getI(), getPosition()])
 
 func startWithCallable(time_sec: float, callable: Callable):
+	wait_time = time_sec
+	startShake(callable)
+
+func startShake(callable: Callable):
 	if !is_stopped():
 		stop()
-	super.start(time_sec)
+	super.start()
 	_callable = callable
-	pass
+
 
 func _getI() -> float:
-	return time_left / time
+	return time_left / wait_time
 
 func getPosition() -> Vector2:
 	var i := _getI()

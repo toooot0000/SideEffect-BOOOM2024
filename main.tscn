@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://l825ae460lwx"]
+[gd_scene load_steps=18 format=3 uid="uid://l825ae460lwx"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_edicv"]
 [ext_resource type="Texture2D" uid="uid://3kcafr6ubypi" path="res://img/bg.png" id="1_fyxfo"]
@@ -7,13 +7,12 @@
 [ext_resource type="PackedScene" uid="uid://bf18to5tse1bg" path="res://player/player.tscn" id="4_y4vg7"]
 [ext_resource type="PackedScene" uid="uid://c658qp2dtj8lx" path="res://enemy/spawner/enemySpawner.tscn" id="5_8bgcd"]
 [ext_resource type="Script" path="res://enemy/enemySpawnerManager.gd" id="5_u2n4j"]
-[ext_resource type="Script" path="res://ui.gd" id="6_d4hxr"]
+[ext_resource type="Script" path="res://ui/ui.gd" id="6_d4hxr"]
 [ext_resource type="PackedScene" uid="uid://xgniktnq5h3y" path="res://enemy/inst/enemy.tscn" id="7_v6epm"]
-[ext_resource type="Texture2D" uid="uid://bp1j5hjcdc3he" path="res://img/bullets/bullet.png" id="8_h356s"]
 [ext_resource type="Resource" uid="uid://dlo7rvu1r41g7" path="res://bullet/configs/strongBullet.tres" id="9_0857n"]
-[ext_resource type="Shader" path="res://shaders/flipCard.gdshader" id="11_chein"]
-[ext_resource type="Script" path="res://ui/bulletCard.gd" id="11_u5a7g"]
-[ext_resource type="Texture2D" uid="uid://dvbbqgvsexm1c" path="res://img/inf.png" id="12_xn4jd"]
+[ext_resource type="PackedScene" uid="uid://cip8qhdh6aftm" path="res://ui/points/pointItem.tscn" id="11_fi257"]
+[ext_resource type="PackedScene" uid="uid://bsxvwgk0nac82" path="res://ui/cards/cards.tscn" id="11_u2sko"]
+[ext_resource type="Script" path="res://ui/countDown/countDown.gd" id="14_7k8gi"]
 [ext_resource type="Script" path="res://util/shaker.gd" id="15_2qrwi"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qmdp5"]
@@ -51,27 +50,6 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_sn7da"]
-shader = ExtResource("11_chein")
-shader_parameter/rotation_pivot = Vector2(0.5, 0.5)
-shader_parameter/fov = 100.996
-shader_parameter/y_rot = 8.55e-06
-shader_parameter/x_rot = 8.55e-06
-shader_parameter/inset = 0.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_c8yb0"]
-bg_color = Color(1, 1, 1, 1)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
-border_color = Color(0, 0, 0, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
-anti_aliasing = false
-
 [node name="Game" type="Node2D"]
 script = ExtResource("1_edicv")
 _radius = 250
@@ -99,6 +77,7 @@ anchors_preset = 0
 offset_right = 1153.0
 offset_bottom = 648.0
 script = ExtResource("6_d4hxr")
+pointItem = ExtResource("11_fi257")
 
 [node name="PointLabel" type="Label" parent="UI"]
 layout_mode = 1
@@ -114,9 +93,33 @@ size_flags_horizontal = 0
 size_flags_vertical = 1
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 25
-text = "Points: 0"
+text = "当前分数: 0"
 horizontal_alignment = 2
 metadata/_edit_lock_ = true
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/PointLabel"]
+layout_mode = 0
+offset_left = 108.0
+offset_top = 30.0
+offset_right = 205.0
+offset_bottom = 134.0
+
+[node name="TargetLabel" type="Label" parent="UI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -222.0
+offset_top = 55.0
+offset_right = -19.0
+offset_bottom = 122.0
+grow_horizontal = 0
+size_flags_horizontal = 0
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "目标: 200"
+horizontal_alignment = 2
 
 [node name="HpBar" type="ProgressBar" parent="UI"]
 layout_mode = 0
@@ -143,84 +146,55 @@ text = "10/10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="UI"]
-material = SubResource("ShaderMaterial_sn7da")
-layout_mode = 0
-offset_left = 957.0
-offset_top = 428.0
-offset_right = 1177.0
-offset_bottom = 688.0
-
-[node name="SubViewport" type="SubViewport" parent="UI/SubViewportContainer"]
-disable_3d = true
-transparent_bg = true
-handle_input_locally = false
-size = Vector2i(220, 260)
-render_target_update_mode = 4
-
-[node name="Panel" type="Panel" parent="UI/SubViewportContainer/SubViewport"]
-offset_left = 55.0
-offset_top = 65.0
-offset_right = 165.0
-offset_bottom = 195.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_c8yb0")
-script = ExtResource("11_u5a7g")
-
-[node name="Bullet" type="TextureRect" parent="UI/SubViewportContainer/SubViewport/Panel"]
-texture_filter = 1
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -21.0
-offset_top = 11.0
-offset_right = 20.0
-offset_bottom = 52.0
-grow_horizontal = 2
-texture = ExtResource("8_h356s")
-
-[node name="Label" type="Label" parent="UI/SubViewportContainer/SubViewport/Panel"]
-layout_mode = 0
-offset_left = 22.0
-offset_top = 64.0
-offset_right = 80.0
-offset_bottom = 87.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "伤害：1"
-
-[node name="MagzineContainer" type="HBoxContainer" parent="UI/SubViewportContainer/SubViewport/Panel"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -42.5
-offset_top = -39.0
-offset_right = 41.5
-offset_bottom = -10.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_constants/separation = 0
-
-[node name="Inf" type="TextureRect" parent="UI/SubViewportContainer/SubViewport/Panel"]
-layout_mode = 0
-offset_left = 37.0
-offset_top = 94.0
-offset_right = 72.0
-offset_bottom = 113.0
-texture = ExtResource("12_xn4jd")
-stretch_mode = 2
-
-[node name="Shaker" type="Timer" parent="UI/SubViewportContainer/SubViewport/Panel"]
+[node name="Shaker" type="Timer" parent="UI/HpBar"]
+wait_time = 0.2
 one_shot = true
 script = ExtResource("15_2qrwi")
-randomness = 1.305
-axisOffet = 1.215
+freqency = 0.2
+randomness = 1.0
+minX = -5.0
+maxX = 5.0
+minY = -5.0
+maxY = 5.0
+
+[node name="SubViewportContainer" parent="UI" instance=ExtResource("11_u2sko")]
+layout_mode = 0
+offset_left = 954.0
+offset_top = 419.0
+offset_right = 1174.0
+offset_bottom = 679.0
+
+[node name="CountDown" type="Label" parent="UI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -660.5
+offset_top = -409.0
+offset_right = 660.5
+offset_bottom = 409.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 0.117647)
+theme_override_font_sizes/font_size = 600
+text = "00"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("14_7k8gi")
+
+[node name="Shaker" type="Timer" parent="UI/CountDown"]
+wait_time = 0.1
+script = ExtResource("15_2qrwi")
+randomness = 1.0
+axisOffet = 2.0
 minX = -10.0
 maxX = 10.0
 minY = -10.0
 maxY = 10.0
 
-[connection signal="shootBullet" from="Player" to="UI/SubViewportContainer/SubViewport/Panel" method="_on_player_shoot_bullet"]
-[connection signal="mouse_entered" from="UI/SubViewportContainer/SubViewport/Panel" to="UI/SubViewportContainer/SubViewport/Panel" method="_on_mouse_entered"]
+[connection signal="hpChangedFromTo" from="Player" to="." method="_on_player_hp_changed_from_to"]
+[connection signal="pointChangedFromTo" from="Player" to="." method="_on_player_point_changed_from_to"]
+[connection signal="shootBullet" from="Player" to="UI/SubViewportContainer" method="_on_player_shoot_bullet"]
+[connection signal="timeout" from="UI/CountDown/Shaker" to="UI/CountDown" method="_on_shaker_timeout"]
