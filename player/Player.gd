@@ -48,6 +48,8 @@ var kickBackTween :Tween
 var _overlappingEnemies : Array[Enemy] = []
 
 func _input(event):
+	if G.state != G.State.Idle:
+		return
 	if isKickingBack: return
 	var shootDir: Vector2 = Vector2.ZERO
 
@@ -68,6 +70,8 @@ func _input(event):
 
 
 func _process(delta):
+	if G.state != G.State.Idle:
+		return
 	var vel := Vector2.ZERO
 	if isKickingBack:
 		vel = kickBackSpd * kickBackDir.normalized()

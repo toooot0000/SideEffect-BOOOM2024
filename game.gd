@@ -66,15 +66,22 @@ var startTime := 0:
 		startTime = v
 		startTimeChangedFromTo.emit(o, startTime)
 
+var __state := State.Idle
 var _state: State = State.Idle:
 	set(v):
-		var o = _state
-		state = v
-		stateChangedFromTo.emit(o, v)
+		U.makeGetter(self, "__state").call(v)
+		match v:
+			State.End:
+				gameOver.emit()
+	get:
+		return __state				
 
+var __remainingTime := 60.0
 var _remainingTime := 60.0:
 	set(v):
-		U.makeGetter(self, "_remainingTime").call(v)
+		U.makeGetter(self, "__remainingTime").call(v)
+	get:
+		return __remainingTime
 
 
 func _init():
@@ -89,15 +96,18 @@ func _ready():
 	start()
 
 func _process(_delta):
-	if state != State.Idle:
+	if _state != State.Idle:
 		return
 	var cur = Time.get_ticks_msec()
 	_remainingTime = (60.0 - (cur - startTime)/1000.0)
 	if _remainingTime > 0:
 		return
-	state = State.End
-	gameOver.emit()
+	_state = State.End
 
+func _input(event):
+	if event is InputEventKey:
+		if (event as InputEventKey).keycode == KEY_F:
+			_state = State.End
 
 func start():
 	
@@ -112,13 +122,12 @@ func start():
 func _on_player_point_changed_from_to(_old:Variant, newPoint:Variant):
 	if newPoint > 200:
 		_state = State.Pause
-		levelClear.emit()
 
 
 
 func _on_player_hp_changed_from_to(_old:Variant, new:Variant):
 	if new > 0:
 		return 
-	gameOver.emit()
 	_state = State.End
+
 

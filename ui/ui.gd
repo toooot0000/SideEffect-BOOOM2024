@@ -40,3 +40,7 @@ func _connectSignals():
 			$HpBar.position = pos + p
 		)
 	)
+
+
+func _on_game_game_over():
+	$GameOver.visible = true

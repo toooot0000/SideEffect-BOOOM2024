@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://l825ae460lwx"]
+[gd_scene load_steps=21 format=3 uid="uid://l825ae460lwx"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_edicv"]
 [ext_resource type="Texture2D" uid="uid://3kcafr6ubypi" path="res://img/bg.png" id="1_fyxfo"]
@@ -16,6 +16,7 @@
 [ext_resource type="Script" path="res://util/shaker.gd" id="15_2qrwi"]
 [ext_resource type="StyleBox" uid="uid://b12m3whupcw2e" path="res://ui/commonUIStyle.tres" id="15_h32ag"]
 [ext_resource type="StyleBox" uid="uid://db8sle3o7nkad" path="res://ui/commonButtonStyle.tres" id="16_6ggvg"]
+[ext_resource type="StyleBox" uid="uid://xl3v4grsbh6x" path="res://ui/commonButtonStylePressed.tres" id="17_wfln6"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qmdp5"]
 shader = ExtResource("2_vsuno")
@@ -199,16 +200,17 @@ minY = -10.0
 maxY = 10.0
 
 [node name="GameOver" type="Panel" parent="UI"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -510.0
-offset_top = -274.0
-offset_right = 510.0
-offset_bottom = 274.0
+offset_left = -410.5
+offset_top = -221.0
+offset_right = 410.5
+offset_bottom = 221.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = ExtResource("15_h32ag")
@@ -224,7 +226,7 @@ offset_bottom = 124.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 50
-text = "你鼠了"
+text = "游戏结束力"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -256,8 +258,16 @@ offset_bottom = -0.188019
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 35
 theme_override_styles/normal = ExtResource("16_6ggvg")
+theme_override_styles/hover = ExtResource("16_6ggvg")
+theme_override_styles/pressed = ExtResource("17_wfln6")
 text = "重新开始"
 
 [node name="QuitBtn" type="Button" parent="UI/GameOver"]
@@ -272,10 +282,19 @@ offset_top = 0.123962
 offset_right = 0.200012
 offset_bottom = -0.0640259
 theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 35
 theme_override_styles/normal = ExtResource("16_6ggvg")
+theme_override_styles/hover = ExtResource("16_6ggvg")
+theme_override_styles/pressed = ExtResource("17_wfln6")
 text = "退出游戏"
 
+[connection signal="gameOver" from="." to="UI" method="_on_game_game_over"]
 [connection signal="hpChangedFromTo" from="Player" to="." method="_on_player_hp_changed_from_to"]
 [connection signal="pointChangedFromTo" from="Player" to="." method="_on_player_point_changed_from_to"]
 [connection signal="shootBullet" from="Player" to="UI/SubViewportContainer" method="_on_player_shoot_bullet"]

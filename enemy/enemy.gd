@@ -33,6 +33,10 @@ func _ready():
 	animator.play("walking")
 	ready.emit()
 
+	G.shared.gameOver.connect(func():
+		queue_free()
+	)
+
 
 func _process(delta):
 	if hp <= 0:
