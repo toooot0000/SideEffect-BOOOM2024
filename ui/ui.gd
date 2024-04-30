@@ -44,3 +44,8 @@ func _connectSignals():
 
 func _on_game_game_over():
 	$GameOver.visible = true
+
+
+func _on_game_game_start():
+	$GameOver.visible = false
+	$Main.visible = false

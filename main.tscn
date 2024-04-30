@@ -294,8 +294,99 @@ theme_override_styles/hover = ExtResource("16_6ggvg")
 theme_override_styles/pressed = ExtResource("17_wfln6")
 text = "退出游戏"
 
+[node name="Main" type="Panel" parent="UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("15_h32ag")
+
+[node name="Label" type="Label" parent="UI/Main"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = -3.5
+offset_top = 37.0
+offset_right = -3.5
+offset_bottom = 124.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "Side Effect"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="UI/Main"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 0.5
+offset_top = 128.0
+offset_right = 0.5
+offset_bottom = 215.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "WASD： 移动；鼠标左键：射击"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StartBtn" type="Button" parent="UI/Main"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.387
+anchor_top = 0.5
+anchor_right = 0.614
+anchor_bottom = 0.681
+offset_left = -0.240021
+offset_right = 0.219971
+offset_bottom = -0.188019
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = ExtResource("16_6ggvg")
+theme_override_styles/hover = ExtResource("16_6ggvg")
+theme_override_styles/pressed = ExtResource("17_wfln6")
+text = "开始游戏"
+
+[node name="QuitBtn" type="Button" parent="UI/Main"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.388
+anchor_top = 0.737
+anchor_right = 0.615
+anchor_bottom = 0.918
+offset_left = -0.26001
+offset_top = 0.123962
+offset_right = 0.200012
+offset_bottom = -0.0640259
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = ExtResource("16_6ggvg")
+theme_override_styles/hover = ExtResource("16_6ggvg")
+theme_override_styles/pressed = ExtResource("17_wfln6")
+text = "退出游戏"
+
 [connection signal="gameOver" from="." to="UI" method="_on_game_game_over"]
 [connection signal="hpChangedFromTo" from="Player" to="." method="_on_player_hp_changed_from_to"]
 [connection signal="pointChangedFromTo" from="Player" to="." method="_on_player_point_changed_from_to"]
 [connection signal="shootBullet" from="Player" to="UI/SubViewportContainer" method="_on_player_shoot_bullet"]
 [connection signal="timeout" from="UI/CountDown/Shaker" to="UI/CountDown" method="_on_shaker_timeout"]
+[connection signal="pressed" from="UI/GameOver/QuitBtn" to="." method="_on_quit_btn_pressed"]
+[connection signal="pressed" from="UI/Main/StartBtn" to="." method="_on_start_btn_pressed"]
+[connection signal="pressed" from="UI/Main/QuitBtn" to="." method="_on_quit_btn_pressed"]

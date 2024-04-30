@@ -16,6 +16,7 @@ signal startTimeChangedFromTo(o, n)
 signal stateChangedFromTo(o, n)
 signal remainingTimeChangedFromTo(o, n)
 
+signal gameStart
 signal gameOver
 signal levelClear
 
@@ -118,6 +119,8 @@ func start():
 
 	startTime = Time.get_ticks_msec()
 
+	gameStart.emit()
+
 
 func _on_player_point_changed_from_to(_old:Variant, newPoint:Variant):
 	if newPoint > 200:
@@ -131,3 +134,9 @@ func _on_player_hp_changed_from_to(_old:Variant, new:Variant):
 	_state = State.End
 
 
+func _on_quit_btn_pressed():
+	get_tree().quit()
+
+
+func _on_start_btn_pressed():
+	start()
