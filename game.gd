@@ -10,7 +10,7 @@ class_name G
 
 static var shared: G
 
-enum State { Idle, End, Pause }
+enum State { Launch, Idle, End, Pause }
 
 signal startTimeChangedFromTo(o, n)
 signal stateChangedFromTo(o, n)
@@ -67,15 +67,15 @@ var startTime := 0:
 		startTime = v
 		startTimeChangedFromTo.emit(o, startTime)
 
-var __state := State.Idle
-var _state: State = State.Idle:
+var __state := State.Launch
+var _state: State:
 	set(v):
 		U.makeGetter(self, "__state").call(v)
 		match v:
 			State.End:
 				gameOver.emit()
 	get:
-		return __state				
+		return __state
 
 var __remainingTime := 60.0
 var _remainingTime := 60.0:
@@ -91,10 +91,6 @@ func _init():
 	else:
 		queue_free()
 	randomize()
-
-
-func _ready():
-	start()
 
 func _process(_delta):
 	if _state != State.Idle:
@@ -119,6 +115,7 @@ func start():
 
 	startTime = Time.get_ticks_msec()
 
+	_state = State.Idle
 	gameStart.emit()
 
 

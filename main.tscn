@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://l825ae460lwx"]
+[gd_scene load_steps=25 format=3 uid="uid://l825ae460lwx"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_edicv"]
 [ext_resource type="Texture2D" uid="uid://3kcafr6ubypi" path="res://img/bg.png" id="1_fyxfo"]
@@ -17,6 +17,7 @@
 [ext_resource type="StyleBox" uid="uid://b12m3whupcw2e" path="res://ui/commonUIStyle.tres" id="15_h32ag"]
 [ext_resource type="StyleBox" uid="uid://db8sle3o7nkad" path="res://ui/commonButtonStyle.tres" id="16_6ggvg"]
 [ext_resource type="StyleBox" uid="uid://xl3v4grsbh6x" path="res://ui/commonButtonStylePressed.tres" id="17_wfln6"]
+[ext_resource type="Shader" path="res://shaders/flipCard.gdshader" id="18_sddf0"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qmdp5"]
 shader = ExtResource("2_vsuno")
@@ -52,6 +53,30 @@ corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qj5e6"]
+shader = ExtResource("18_sddf0")
+shader_parameter/rotation_pivot = Vector2(0.5, 0.5)
+shader_parameter/fov = 100.996
+shader_parameter/y_rot = 8.55e-06
+shader_parameter/x_rot = 8.55e-06
+shader_parameter/inset = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_as8d3"]
+shader = ExtResource("18_sddf0")
+shader_parameter/rotation_pivot = Vector2(0.5, 0.5)
+shader_parameter/fov = 100.996
+shader_parameter/y_rot = 8.55e-06
+shader_parameter/x_rot = 8.55e-06
+shader_parameter/inset = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x7t0b"]
+shader = ExtResource("18_sddf0")
+shader_parameter/rotation_pivot = Vector2(0.5, 0.5)
+shader_parameter/fov = 100.996
+shader_parameter/y_rot = 8.55e-06
+shader_parameter/x_rot = 8.55e-06
+shader_parameter/inset = 0.0
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_edicv")
@@ -162,6 +187,7 @@ minY = -5.0
 maxY = 5.0
 
 [node name="SubViewportContainer" parent="UI" instance=ExtResource("11_u2sko")]
+material = SubResource("ShaderMaterial_qj5e6")
 layout_mode = 0
 offset_left = 954.0
 offset_top = 419.0
@@ -294,7 +320,112 @@ theme_override_styles/hover = ExtResource("16_6ggvg")
 theme_override_styles/pressed = ExtResource("17_wfln6")
 text = "退出游戏"
 
+[node name="LevelClear" type="Panel" parent="UI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -410.5
+offset_top = -221.0
+offset_right = 410.5
+offset_bottom = 221.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("15_h32ag")
+
+[node name="Label" type="Label" parent="UI/LevelClear"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = -3.5
+offset_top = 6.0
+offset_right = -3.5
+offset_bottom = 93.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "过关！"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="UI/LevelClear"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 76.0
+offset_bottom = 128.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "选择奖励："
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/LevelClear"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -152.0
+offset_top = -86.0
+offset_right = 152.0
+offset_bottom = -27.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 40
+
+[node name="RestartBtn" type="Button" parent="UI/LevelClear/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = ExtResource("16_6ggvg")
+theme_override_styles/hover = ExtResource("16_6ggvg")
+theme_override_styles/pressed = ExtResource("17_wfln6")
+text = "退出游戏"
+
+[node name="QuitBtn" type="Button" parent="UI/LevelClear/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = ExtResource("16_6ggvg")
+theme_override_styles/hover = ExtResource("16_6ggvg")
+theme_override_styles/pressed = ExtResource("17_wfln6")
+text = "下一关"
+
+[node name="SubViewportContainer2" parent="UI/LevelClear" instance=ExtResource("11_u2sko")]
+material = SubResource("ShaderMaterial_as8d3")
+layout_mode = 0
+offset_left = 180.0
+offset_top = 86.0
+offset_right = 400.0
+offset_bottom = 346.0
+
+[node name="SubViewportContainer3" parent="UI/LevelClear" instance=ExtResource("11_u2sko")]
+material = SubResource("ShaderMaterial_x7t0b")
+layout_mode = 0
+offset_left = 401.0
+offset_top = 86.0
+offset_right = 621.0
+offset_bottom = 346.0
+
 [node name="Main" type="Panel" parent="UI"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -322,14 +453,16 @@ vertical_alignment = 1
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_left = 0.5
+offset_left = 1.0
 offset_top = 128.0
-offset_right = 0.5
-offset_bottom = 215.0
+offset_right = 1.0
+offset_bottom = 263.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
-text = "WASD： 移动；鼠标左键：射击"
+text = "WASD： 移动；鼠标左键：射击
+你射出的子弹会变成敌人，打败敌人会获得分数
+尽可能获得高分吧！"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -383,10 +516,12 @@ theme_override_styles/pressed = ExtResource("17_wfln6")
 text = "退出游戏"
 
 [connection signal="gameOver" from="." to="UI" method="_on_game_game_over"]
+[connection signal="gameStart" from="." to="UI" method="_on_game_game_start"]
 [connection signal="hpChangedFromTo" from="Player" to="." method="_on_player_hp_changed_from_to"]
 [connection signal="pointChangedFromTo" from="Player" to="." method="_on_player_point_changed_from_to"]
 [connection signal="shootBullet" from="Player" to="UI/SubViewportContainer" method="_on_player_shoot_bullet"]
 [connection signal="timeout" from="UI/CountDown/Shaker" to="UI/CountDown" method="_on_shaker_timeout"]
 [connection signal="pressed" from="UI/GameOver/QuitBtn" to="." method="_on_quit_btn_pressed"]
 [connection signal="pressed" from="UI/Main/StartBtn" to="." method="_on_start_btn_pressed"]
+[connection signal="pressed" from="UI/Main/StartBtn" to="UI" method="_on_start_btn_pressed"]
 [connection signal="pressed" from="UI/Main/QuitBtn" to="." method="_on_quit_btn_pressed"]

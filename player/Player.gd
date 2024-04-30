@@ -1,11 +1,24 @@
 extends Node2D
 class_name  Player
 
+class BulletInfo:
+	var config: BulletConfig
+	var remainingCount: int
+
+	func _init(c: BulletConfig, count: int):
+		config = c
+		remainingCount = count
+
 @export var spd: float = 70
 
 @export var kickBackTime := 0.1
 @export var kickBackSpd := 120.0
 @export var hpLimit := 10
+@export var initBullet :BulletConfig:
+	set(v):
+		initBullet = v
+		var info = BulletInfo.new(v, -1)
+		bulletInfo.append(info)
 
 @onready var arrow := $Pivot/Arrow
 @onready var arrowPivot: Node2D = $Pivot
@@ -13,8 +26,7 @@ class_name  Player
 
 signal pointChangedFromTo(old, newPoint)
 signal hpChangedFromTo(old, new)
-signal curBulletChangedFromTo(old, new)
-signal shootBullet(direction: Vector2, bulletConfig: BulletConfig)
+signal shootBullet(direction: Vector2, bulletConfig: BulletConfig, indexOfMag: int)
 
 var hp: int = hpLimit:
 	set(value):
@@ -29,10 +41,8 @@ var point: int = 0:
 		pointChangedFromTo.emit(o, value)
 
 @export var curBullet: BulletConfig:
-	set(value):
-		var o = curBullet
-		curBullet = value
-		curBulletChangedFromTo.emit(o, value)
+	get:
+		return bulletInfo[-1].config
 
 
 var _bulletScene: PackedScene:
@@ -46,6 +56,7 @@ var kickBackDir := Vector2.ZERO
 var kickBackTimer := 0.0
 var kickBackTween :Tween
 var _overlappingEnemies : Array[Enemy] = []
+var bulletInfo: Array[BulletInfo] = []
 
 func _input(event):
 	if G.state != G.State.Idle:
@@ -91,6 +102,11 @@ func _process(delta):
 
 
 func shoot(shootDir: Vector2):
+	if bulletInfo[-1].remainingCount > 0:
+		bulletInfo[-1].remainingCount -= 1
+		if bulletInfo[-1].remainingCount == 0:
+			# TODO: Add auto change bullet mach
+			pass
 	var bullet := _bulletScene.instantiate() as Bullet
 	$"..".add_child(bullet)
 	bullet.dir = shootDir
@@ -99,7 +115,7 @@ func shoot(shootDir: Vector2):
 	bullet.rotate(shootDir.angle())
 	print("Generate bullet at %s" % bullet.global_position)
 	anim.play("arrow_shake")
-	shootBullet.emit(shootDir, curBullet)
+	shootBullet.emit(shootDir, curBullet, curBullet.magazineSize - bulletInfo[-1].remainingCount - 1)
 	
 
 func _checkKickBack():
@@ -132,3 +148,8 @@ func _on_area_2d_area_exited(area:Area2D):
 	var ind =_overlappingEnemies.find(area.get_parent() as Enemy)
 	if ind >= 0 && ind < len(_overlappingEnemies):
 		_overlappingEnemies.remove_at(ind)
+
+
+func shiftBullet():
+	pass
+

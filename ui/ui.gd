@@ -48,4 +48,7 @@ func _on_game_game_over():
 
 func _on_game_game_start():
 	$GameOver.visible = false
+
+
+func _on_start_btn_pressed():
 	$Main.visible = false
