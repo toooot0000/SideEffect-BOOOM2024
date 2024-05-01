@@ -49,6 +49,14 @@ func _on_game_game_over():
 func _on_game_game_start():
 	$GameOver.visible = false
 
+func show_dialog(on: Node, dialog: NodePath):
+	on.get_node(dialog).visible = true
 
-func _on_start_btn_pressed():
-	$Main.visible = false
+func hide_dialog(on: Node, dialog: NodePath):
+	on.get_node(dialog).visible = false
+
+
+func _on_game_state_changed_from_to(_o:Variant, n:G.State):
+	match n:
+		G.State.Pause:
+			pass

@@ -36,6 +36,6 @@ static func makeGetter(obj: Object, name: String) -> Callable:
 	return func(newValue):
 		var o = obj.get(name)
 		obj.set(name, newValue)
-		if name[0] == "_":
+		while name[0] == "_":
 			name = name.substr(1)
 		obj.emit_signal("%sChangedFromTo" % name, o, newValue)

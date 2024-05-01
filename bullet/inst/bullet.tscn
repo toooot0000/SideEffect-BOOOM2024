@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://423kpae8nhq2"]
+[gd_scene load_steps=10 format=3 uid="uid://423kpae8nhq2"]
 
 [ext_resource type="Script" path="res://bullet/bullet.gd" id="1_1ssbq"]
+[ext_resource type="Texture2D" uid="uid://bp1j5hjcdc3he" path="res://img/bullets/bullet.png" id="2_csi08"]
 [ext_resource type="Texture2D" uid="uid://bi15awytervnp" path="res://img/4x4.png" id="3_2l0tg"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mv14b"]
@@ -41,6 +42,8 @@ sprite = NodePath("Sprite")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
 [node name="Sprite" type="Sprite2D" parent="."]
+texture_filter = 3
+texture = ExtResource("2_csi08")
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 2

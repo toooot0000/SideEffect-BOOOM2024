@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://l825ae460lwx"]
+[gd_scene load_steps=28 format=3 uid="uid://l825ae460lwx"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_edicv"]
 [ext_resource type="Texture2D" uid="uid://3kcafr6ubypi" path="res://img/bg.png" id="1_fyxfo"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" path="res://ui/ui.gd" id="6_d4hxr"]
 [ext_resource type="PackedScene" uid="uid://xgniktnq5h3y" path="res://enemy/inst/enemy.tscn" id="7_v6epm"]
 [ext_resource type="Resource" uid="uid://dlo7rvu1r41g7" path="res://bullet/configs/strongBullet.tres" id="9_0857n"]
+[ext_resource type="Resource" uid="uid://b3qjeg3qjmkv8" path="res://bullet/configs/smallBullet.tres" id="9_bqfcr"]
 [ext_resource type="PackedScene" uid="uid://cip8qhdh6aftm" path="res://ui/points/pointItem.tscn" id="11_fi257"]
 [ext_resource type="PackedScene" uid="uid://bsxvwgk0nac82" path="res://ui/cards/cards.tscn" id="11_u2sko"]
 [ext_resource type="Script" path="res://ui/countDown/countDown.gd" id="14_7k8gi"]
@@ -18,6 +19,8 @@
 [ext_resource type="StyleBox" uid="uid://db8sle3o7nkad" path="res://ui/commonButtonStyle.tres" id="16_6ggvg"]
 [ext_resource type="StyleBox" uid="uid://xl3v4grsbh6x" path="res://ui/commonButtonStylePressed.tres" id="17_wfln6"]
 [ext_resource type="Shader" path="res://shaders/flipCard.gdshader" id="18_sddf0"]
+[ext_resource type="Script" path="res://ui/levelClear/levelClear.gd" id="19_8vfjg"]
+[ext_resource type="Script" path="res://ui/commonBtn.gd" id="19_jdxc1"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qmdp5"]
 shader = ExtResource("2_vsuno")
@@ -97,6 +100,7 @@ enemyScene = ExtResource("7_v6epm")
 
 [node name="Player" parent="." instance=ExtResource("4_y4vg7")]
 spd = 120.0
+initBullet = ExtResource("9_bqfcr")
 curBullet = ExtResource("9_0857n")
 
 [node name="UI" type="Control" parent="."]
@@ -295,6 +299,7 @@ theme_override_styles/normal = ExtResource("16_6ggvg")
 theme_override_styles/hover = ExtResource("16_6ggvg")
 theme_override_styles/pressed = ExtResource("17_wfln6")
 text = "重新开始"
+script = ExtResource("19_jdxc1")
 
 [node name="QuitBtn" type="Button" parent="UI/GameOver"]
 layout_mode = 1
@@ -319,8 +324,10 @@ theme_override_styles/normal = ExtResource("16_6ggvg")
 theme_override_styles/hover = ExtResource("16_6ggvg")
 theme_override_styles/pressed = ExtResource("17_wfln6")
 text = "退出游戏"
+script = ExtResource("19_jdxc1")
 
 [node name="LevelClear" type="Panel" parent="UI"]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -334,6 +341,7 @@ offset_bottom = 221.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = ExtResource("15_h32ag")
+script = ExtResource("19_8vfjg")
 
 [node name="Label" type="Label" parent="UI/LevelClear"]
 layout_mode = 1
@@ -392,6 +400,7 @@ theme_override_styles/normal = ExtResource("16_6ggvg")
 theme_override_styles/hover = ExtResource("16_6ggvg")
 theme_override_styles/pressed = ExtResource("17_wfln6")
 text = "退出游戏"
+script = ExtResource("19_jdxc1")
 
 [node name="QuitBtn" type="Button" parent="UI/LevelClear/HBoxContainer"]
 layout_mode = 2
@@ -407,6 +416,7 @@ theme_override_styles/normal = ExtResource("16_6ggvg")
 theme_override_styles/hover = ExtResource("16_6ggvg")
 theme_override_styles/pressed = ExtResource("17_wfln6")
 text = "下一关"
+script = ExtResource("19_jdxc1")
 
 [node name="SubViewportContainer2" parent="UI/LevelClear" instance=ExtResource("11_u2sko")]
 material = SubResource("ShaderMaterial_as8d3")
@@ -425,7 +435,6 @@ offset_right = 621.0
 offset_bottom = 346.0
 
 [node name="Main" type="Panel" parent="UI"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -490,6 +499,7 @@ theme_override_styles/normal = ExtResource("16_6ggvg")
 theme_override_styles/hover = ExtResource("16_6ggvg")
 theme_override_styles/pressed = ExtResource("17_wfln6")
 text = "开始游戏"
+script = ExtResource("19_jdxc1")
 
 [node name="QuitBtn" type="Button" parent="UI/Main"]
 layout_mode = 1
@@ -514,14 +524,123 @@ theme_override_styles/normal = ExtResource("16_6ggvg")
 theme_override_styles/hover = ExtResource("16_6ggvg")
 theme_override_styles/pressed = ExtResource("17_wfln6")
 text = "退出游戏"
+script = ExtResource("19_jdxc1")
+
+[node name="Pause" type="Panel" parent="UI"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -410.5
+offset_top = -221.0
+offset_right = 410.5
+offset_bottom = 221.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("15_h32ag")
+
+[node name="Label" type="Label" parent="UI/Pause"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = -3.5
+offset_top = 37.0
+offset_right = -3.5
+offset_bottom = 124.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "游戏暂停"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="UI/Pause"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 0.5
+offset_top = 128.0
+offset_right = 0.5
+offset_bottom = 215.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "怎么？这就累了吗？"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UI/Pause"]
+layout_mode = 0
+offset_left = 173.0
+offset_top = 265.0
+offset_right = 663.0
+offset_bottom = 324.0
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="RestartBtn" type="Button" parent="UI/Pause/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = ExtResource("16_6ggvg")
+theme_override_styles/hover = ExtResource("16_6ggvg")
+theme_override_styles/pressed = ExtResource("17_wfln6")
+text = "重新开始"
+script = ExtResource("19_jdxc1")
+
+[node name="ResumeBtn" type="Button" parent="UI/Pause/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = ExtResource("16_6ggvg")
+theme_override_styles/hover = ExtResource("16_6ggvg")
+theme_override_styles/pressed = ExtResource("17_wfln6")
+text = "继续游戏"
+script = ExtResource("19_jdxc1")
+
+[node name="QuitBtn" type="Button" parent="UI/Pause/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_disabled_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 35
+theme_override_styles/normal = ExtResource("16_6ggvg")
+theme_override_styles/hover = ExtResource("16_6ggvg")
+theme_override_styles/pressed = ExtResource("17_wfln6")
+text = "退出游戏"
 
 [connection signal="gameOver" from="." to="UI" method="_on_game_game_over"]
 [connection signal="gameStart" from="." to="UI" method="_on_game_game_start"]
+[connection signal="stateChangedFromTo" from="." to="UI" method="_on_game_state_changed_from_to"]
 [connection signal="hpChangedFromTo" from="Player" to="." method="_on_player_hp_changed_from_to"]
 [connection signal="pointChangedFromTo" from="Player" to="." method="_on_player_point_changed_from_to"]
 [connection signal="shootBullet" from="Player" to="UI/SubViewportContainer" method="_on_player_shoot_bullet"]
 [connection signal="timeout" from="UI/CountDown/Shaker" to="UI/CountDown" method="_on_shaker_timeout"]
 [connection signal="pressed" from="UI/GameOver/QuitBtn" to="." method="_on_quit_btn_pressed"]
 [connection signal="pressed" from="UI/Main/StartBtn" to="." method="_on_start_btn_pressed"]
-[connection signal="pressed" from="UI/Main/StartBtn" to="UI" method="_on_start_btn_pressed"]
+[connection signal="pressedOn" from="UI/Main/StartBtn" to="UI" method="hide_dialog" binds= [NodePath("..")]]
 [connection signal="pressed" from="UI/Main/QuitBtn" to="." method="_on_quit_btn_pressed"]
+[connection signal="pressed" from="UI/Pause/HBoxContainer/RestartBtn" to="." method="_on_restart_btn_pressed"]
+[connection signal="pressedOn" from="UI/Pause/HBoxContainer/RestartBtn" to="UI" method="hide_dialog" binds= [NodePath("../..")]]
+[connection signal="pressed" from="UI/Pause/HBoxContainer/ResumeBtn" to="." method="_on_resume_btn_pressed"]
+[connection signal="pressedOn" from="UI/Pause/HBoxContainer/ResumeBtn" to="UI" method="hide_dialog" binds= [NodePath("../..")]]
+[connection signal="pressed" from="UI/Pause/HBoxContainer/QuitBtn" to="." method="_on_quit_btn_pressed"]

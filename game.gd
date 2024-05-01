@@ -103,8 +103,13 @@ func _process(_delta):
 
 func _input(event):
 	if event is InputEventKey:
-		if (event as InputEventKey).keycode == KEY_F:
+		var keyInput = event as InputEventKey
+		if !keyInput.is_released():
+			return
+		if keyInput.keycode == KEY_F:
 			_state = State.End
+		elif keyInput.keycode == KEY_ESCAPE:
+			_state = State.Pause
 
 func start():
 	
@@ -117,6 +122,7 @@ func start():
 
 	_state = State.Idle
 	gameStart.emit()
+
 
 
 func _on_player_point_changed_from_to(_old:Variant, newPoint:Variant):
@@ -136,4 +142,10 @@ func _on_quit_btn_pressed():
 
 
 func _on_start_btn_pressed():
+	start()
+
+func _on_resume_btn_pressed():
+	_state = State.Idle
+
+func _on_restart_btn_pressed():
 	start()

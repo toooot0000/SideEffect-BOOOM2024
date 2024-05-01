@@ -35,9 +35,6 @@ offset_top = 428.0
 offset_right = 1177.0
 offset_bottom = 688.0
 script = ExtResource("2_s5q2x")
-rotRange = null
-rotSpd = null
-flipTime = null
 
 [node name="SubViewport" type="SubViewport" parent="."]
 disable_3d = true
