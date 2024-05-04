@@ -50,7 +50,10 @@ static var enemySpawnerManager: EnemySpawnerManager:
 
 static var bullets: Array[BulletConfig]:
 	get:
-		return shared._bullets
+		var ret :Array[BulletConfig]= []
+		for obj in shared._bullets:
+			ret.append(obj as BulletConfig)
+		return ret
 
 static var state: State:
 	get:
@@ -83,7 +86,6 @@ var _remainingTime := 60.0:
 		U.makeGetter(self, "__remainingTime").call(v)
 	get:
 		return __remainingTime
-
 
 func _init():
 	if G.shared == null :
@@ -126,9 +128,9 @@ func start():
 
 
 func _on_player_point_changed_from_to(_old:Variant, newPoint:Variant):
-	if newPoint >= 200:
-		
+	if newPoint >= 10:
 		_state = State.Pause
+		levelClear.emit()
 
 
 
@@ -150,3 +152,6 @@ func _on_resume_btn_pressed():
 
 func _on_restart_btn_pressed():
 	start()
+
+func _on_next_lv_btn_pressed():
+	pass

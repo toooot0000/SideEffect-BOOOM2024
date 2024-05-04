@@ -55,8 +55,6 @@ func show_dialog(on: Node, dialog: NodePath):
 func hide_dialog(on: Node, dialog: NodePath):
 	on.get_node(dialog).visible = false
 
-
-func _on_game_state_changed_from_to(_o:Variant, n:G.State):
-	match n:
-		G.State.Pause:
-			pass
+func _on_game_level_clear():
+	$LevelClear.visible = true
+	($LevelClear as LevelClear).updateReward()

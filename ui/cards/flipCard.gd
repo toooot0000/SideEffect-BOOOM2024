@@ -1,4 +1,5 @@
 extends Control
+class_name FlipCard
 
 @export var rotRange := 0.1
 @export var rotSpd := 0.8
@@ -43,6 +44,7 @@ var bulletConfig: BulletConfig:
 var _idleTimer := 0.0
 var _flipTimer := 0.0
 var _startYRot := 0.0
+var _magItem :Array[MagzineItem] = []
 
 func _ready():
 	_idleTimer = randf_range(0, 30)
@@ -92,26 +94,51 @@ func _setFlipYRot(forward: bool):
 		bulletCard.modulate.a = 0
 		enemyCard.visible = true
 
-func _on_player_shoot_bullet(_direction:Vector2, _bulletConfig:BulletConfig):
+func _on_player_shoot_bullet(_direction:Vector2, _bulletConfig:BulletConfig, ind: int):
 	var curPos = position
 	shaker.startWithCallable(0.1, func(_i, pos):
 		position = pos + curPos
 	)
+	if ind >= 0:
+		_magItem[ind].used()
 
 func setUpUI():
+	for item in _magItem:
+		item.queue_free()
+	_magItem.clear()
 	$SubViewport/Bullet/Label.text = "伤害：%d" % bulletConfig.bulletDamage
 	$SubViewport/Bullet/Sprite.texture = bulletConfig.displayTexture
 	if bulletConfig.magazineSize < 0:
 		$SubViewport/Bullet/Inf.visible = true
 	else:
+		$SubViewport/Bullet/Inf.visible = false
 		var cont = $SubViewport/Bullet/MagzineContainer
 		for i in range(bulletConfig.magazineSize):
 			var inst = magItem.instantiate() as MagzineItem
 			cont.add_child(inst)
-			G.player.shootBullet.connect(func(_dir, _conf, _ind):
-				# TODO: Add bullet item logic
-				pass
-			)
+			_magItem.append(inst)
+
 	$SubViewport/Enemy/Sprite.texture = bulletConfig.relatedEnemy.sprite
 	$SubViewport/Enemy/Label.text = "生命：%d\n分数：%d" %[bulletConfig.relatedEnemy.enemyLife, bulletConfig.relatedEnemy.point]
-	
+
+
+func _on_player_bullet_changed_from_to(_from:BulletConfig, to:BulletConfig):
+	bulletConfig = to
+
+
+func _on_player_start_reload(time:float):
+	var reloadAnim = $SubViewport/Bullet/Line/AnimationPlayer as AnimationPlayer
+	reloadAnim.speed_scale = 1.0 / time
+	reloadAnim.play("reload")
+	await reloadAnim.animation_finished
+	setUpUI()
+
+
+func _on_player_shoot_in_reload():
+	if !shaker.is_stopped():
+		return
+	var curPos = position
+	shaker.startWithCallable(0.1, func(_i, pos):
+		position = pos + curPos
+	)
+

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EnemyConfig" load_steps=4 format=3 uid="uid://cip4wjqbsd2we"]
+
+[ext_resource type="PackedScene" uid="uid://dpx7crhhs40ny" path="res://enemy/inst/redSlime.tscn" id="1_aiwi8"]
+[ext_resource type="Script" path="res://enemy/enemyConfig.gd" id="2_x4kaj"]
+[ext_resource type="Texture2D" uid="uid://dqp6l7m0syojx" path="res://img/enemies/red slime.png" id="3_33ct7"]
+
+[resource]
+script = ExtResource("2_x4kaj")
+enemyLife = 10
+point = 5
+sprite = ExtResource("3_33ct7")
+scene = ExtResource("1_aiwi8")

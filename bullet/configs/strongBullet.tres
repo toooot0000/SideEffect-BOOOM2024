@@ -2,13 +2,14 @@
 
 [ext_resource type="PackedScene" uid="uid://djuxs3xufaljk" path="res://bullet/inst/strongBullet.tscn" id="1_fl7e7"]
 [ext_resource type="Texture2D" uid="uid://dg5mo2ddtpp46" path="res://img/bullets/strongBullet.png" id="2_2fnxw"]
-[ext_resource type="Resource" uid="uid://dx0xl0d7kxe54" path="res://enemy/configs/enemy.tres" id="2_wdhyk"]
 [ext_resource type="Script" path="res://bullet/bulletConfig.gd" id="3_6pb78"]
+[ext_resource type="Resource" uid="uid://cip4wjqbsd2we" path="res://enemy/configs/redSlime.tres" id="3_xgr31"]
 
 [resource]
 script = ExtResource("3_6pb78")
 bulletDamage = 3
-enemyLife = 10
+magazineSize = 10
+reloadTime = 1.0
 displayTexture = ExtResource("2_2fnxw")
 bulletPackedScene = ExtResource("1_fl7e7")
-relatedEnemy = ExtResource("2_wdhyk")
+relatedEnemy = ExtResource("3_xgr31")

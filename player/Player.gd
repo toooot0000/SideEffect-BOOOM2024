@@ -17,8 +17,9 @@ class BulletInfo:
 @export var initBullet :BulletConfig:
 	set(v):
 		initBullet = v
-		var info = BulletInfo.new(v, -1)
+		var info = BulletInfo.new(v, v.magazineSize)
 		bulletInfo.append(info)
+		bulletChangedFromTo.emit(null, info)
 
 @onready var arrow := $Pivot/Arrow
 @onready var arrowPivot: Node2D = $Pivot
@@ -26,7 +27,11 @@ class BulletInfo:
 
 signal pointChangedFromTo(old, newPoint)
 signal hpChangedFromTo(old, new)
+signal bulletChangedFromTo(from: BulletConfig, to: BulletConfig)
 signal shootBullet(direction: Vector2, bulletConfig: BulletConfig, indexOfMag: int)
+signal shootInReload
+signal startReload(time)
+signal finishReload
 
 var hp: int = hpLimit:
 	set(value):
@@ -40,7 +45,7 @@ var point: int = 0:
 		point = value
 		pointChangedFromTo.emit(o, value)
 
-@export var curBullet: BulletConfig:
+var curBullet: BulletConfig:
 	get:
 		return bulletInfo[-1].config
 
@@ -57,6 +62,12 @@ var kickBackTimer := 0.0
 var kickBackTween :Tween
 var _overlappingEnemies : Array[Enemy] = []
 var bulletInfo: Array[BulletInfo] = []
+var _reloadTimer := 0.0
+
+
+func _ready():
+	bulletChangedFromTo.emit(null, initBullet)
+
 
 func _input(event):
 	if G.state != G.State.Idle:
@@ -75,6 +86,9 @@ func _input(event):
 
 	#Shoot
 	if event is InputEventMouseButton:
+		if _reloadTimer > 0:
+			shootInReloading()
+			return
 		var mouseEvn := event as InputEventMouseButton
 		if mouseEvn.is_released() && mouseEvn.button_index == MOUSE_BUTTON_LEFT:
 			shoot(shootDir)
@@ -83,6 +97,8 @@ func _input(event):
 func _process(delta):
 	if G.state != G.State.Idle:
 		return
+
+	# Moving
 	var vel := Vector2.ZERO
 	if isKickingBack:
 		vel = kickBackSpd * kickBackDir.normalized()
@@ -94,19 +110,29 @@ func _process(delta):
 	position += vel * delta
 	global_position = G.clampInsideCircle(global_position)
 
+	# KickBack
 	_checkKickBack()
 	if isKickingBack:
 		kickBackTimer += delta
 	if kickBackTimer > kickBackTime:
 		isKickingBack = false
 
+	# Reload
+	if _reloadTimer > 0:
+		_reloadTimer -= delta
+	if _reloadTimer < 0:
+		_reloadTimer = 0
+		bulletInfo[-1].remainingCount = bulletInfo[-1].config.magazineSize
+		finishReload.emit()
+	
 
 func shoot(shootDir: Vector2):
 	if bulletInfo[-1].remainingCount > 0:
 		bulletInfo[-1].remainingCount -= 1
-		if bulletInfo[-1].remainingCount == 0:
-			# TODO: Add auto change bullet mach
-			pass
+	
+	if bulletInfo[-1].remainingCount == 0:
+		reloadBullet()
+	
 	var bullet := _bulletScene.instantiate() as Bullet
 	$"..".add_child(bullet)
 	bullet.dir = shootDir
@@ -115,7 +141,9 @@ func shoot(shootDir: Vector2):
 	bullet.rotate(shootDir.angle())
 	print("Generate bullet at %s" % bullet.global_position)
 	anim.play("arrow_shake")
-	shootBullet.emit(shootDir, curBullet, curBullet.magazineSize - bulletInfo[-1].remainingCount - 1)
+	var magSize = curBullet.magazineSize
+	var rem = bulletInfo[-1].remainingCount
+	shootBullet.emit(shootDir, curBullet, magSize - rem - 1)
 	
 
 func _checkKickBack():
@@ -150,6 +178,12 @@ func _on_area_2d_area_exited(area:Area2D):
 		_overlappingEnemies.remove_at(ind)
 
 
-func shiftBullet():
-	pass
+func reloadBullet():
+	_reloadTimer = curBullet.reloadTime
+	startReload.emit(_reloadTimer)
+
+
+func shootInReloading():
+	print("Shoot in reload!")
+	shootInReload.emit()
 

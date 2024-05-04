@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://bsxvwgk0nac82"]
+[gd_scene load_steps=12 format=3 uid="uid://bsxvwgk0nac82"]
 
 [ext_resource type="Shader" path="res://shaders/flipCard.gdshader" id="1_lrnfl"]
 [ext_resource type="Script" path="res://ui/cards/flipCard.gd" id="2_s5q2x"]
 [ext_resource type="Texture2D" uid="uid://bp1j5hjcdc3he" path="res://img/bullets/bullet.png" id="3_5so3b"]
 [ext_resource type="Texture2D" uid="uid://dvbbqgvsexm1c" path="res://img/inf.png" id="4_k567s"]
 [ext_resource type="Script" path="res://util/shaker.gd" id="5_7m72q"]
+[ext_resource type="Texture2D" uid="uid://ceugc71teyroh" path="res://img/16x6.png" id="6_0gsjd"]
 [ext_resource type="Texture2D" uid="uid://d2o5qqmbw6yhl" path="res://img/enemies/enemy.png" id="6_wakm8"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sn7da"]
@@ -27,6 +28,39 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 anti_aliasing = false
+
+[sub_resource type="Animation" id="Animation_fqeww"]
+resource_name = "reload"
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MovingBlock:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.1, 0.9),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-3.575, -6.94), Vector2(75, -6.94)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4fypu"]
+_data = {
+"reload": SubResource("Animation_fqeww")
+}
 
 [node name="SubViewportContainer" type="SubViewportContainer"]
 material = SubResource("ShaderMaterial_sn7da")
@@ -108,6 +142,30 @@ minX = -5.0
 maxX = 5.0
 minY = -5.0
 maxY = 5.0
+
+[node name="Line" type="TextureRect" parent="SubViewport/Bullet"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 16.125
+offset_top = 103.625
+offset_right = 96.125
+offset_bottom = 105.625
+texture = ExtResource("6_0gsjd")
+expand_mode = 1
+
+[node name="MovingBlock" type="TextureRect" parent="SubViewport/Bullet/Line"]
+layout_mode = 0
+offset_left = -3.575
+offset_top = -6.94
+offset_right = 4.425
+offset_bottom = 9.05994
+texture = ExtResource("6_0gsjd")
+expand_mode = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="SubViewport/Bullet/Line"]
+libraries = {
+"": SubResource("AnimationLibrary_4fypu")
+}
 
 [node name="Enemy" type="Panel" parent="SubViewport"]
 visible = false

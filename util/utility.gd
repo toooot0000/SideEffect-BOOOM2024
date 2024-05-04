@@ -39,3 +39,7 @@ static func makeGetter(obj: Object, name: String) -> Callable:
 		while name[0] == "_":
 			name = name.substr(1)
 		obj.emit_signal("%sChangedFromTo" % name, o, newValue)
+
+static func rand(arr: Array):
+	var index = randi_range(0, len(arr)-1)
+	return arr[index]

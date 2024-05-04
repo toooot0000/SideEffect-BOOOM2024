@@ -33,10 +33,6 @@ func _ready():
 	animator.play("walking")
 	ready.emit()
 
-	G.shared.gameOver.connect(func():
-		queue_free()
-	)
-
 
 func _process(delta):
 	if hp <= 0:
@@ -45,6 +41,9 @@ func _process(delta):
 	var dir = (playerPos - global_position).normalized()
 	var vel = dir * spd
 	global_position += vel * delta
+	
+	if G.state != G.State.Idle:
+		queue_free()
 
 
 func _on_area_2d_area_entered(area:Area2D):

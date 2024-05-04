@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://l825ae460lwx"]
+[gd_scene load_steps=29 format=3 uid="uid://l825ae460lwx"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_edicv"]
 [ext_resource type="Texture2D" uid="uid://3kcafr6ubypi" path="res://img/bg.png" id="1_fyxfo"]
@@ -8,19 +8,20 @@
 [ext_resource type="PackedScene" uid="uid://c658qp2dtj8lx" path="res://enemy/spawner/enemySpawner.tscn" id="5_8bgcd"]
 [ext_resource type="Script" path="res://enemy/enemySpawnerManager.gd" id="5_u2n4j"]
 [ext_resource type="Script" path="res://ui/ui.gd" id="6_d4hxr"]
-[ext_resource type="PackedScene" uid="uid://xgniktnq5h3y" path="res://enemy/inst/enemy.tscn" id="7_v6epm"]
+[ext_resource type="PackedScene" uid="uid://xgniktnq5h3y" path="res://enemy/inst/blueSlime.tscn" id="7_v6epm"]
 [ext_resource type="Resource" uid="uid://dlo7rvu1r41g7" path="res://bullet/configs/strongBullet.tres" id="9_0857n"]
-[ext_resource type="Resource" uid="uid://b3qjeg3qjmkv8" path="res://bullet/configs/smallBullet.tres" id="9_bqfcr"]
 [ext_resource type="PackedScene" uid="uid://cip8qhdh6aftm" path="res://ui/points/pointItem.tscn" id="11_fi257"]
 [ext_resource type="PackedScene" uid="uid://bsxvwgk0nac82" path="res://ui/cards/cards.tscn" id="11_u2sko"]
 [ext_resource type="Script" path="res://ui/countDown/countDown.gd" id="14_7k8gi"]
 [ext_resource type="Script" path="res://util/shaker.gd" id="15_2qrwi"]
+[ext_resource type="PackedScene" uid="uid://ch5w5vbqjvu87" path="res://ui/cards/magzineItem.tscn" id="15_b3duu"]
 [ext_resource type="StyleBox" uid="uid://b12m3whupcw2e" path="res://ui/commonUIStyle.tres" id="15_h32ag"]
 [ext_resource type="StyleBox" uid="uid://db8sle3o7nkad" path="res://ui/commonButtonStyle.tres" id="16_6ggvg"]
 [ext_resource type="StyleBox" uid="uid://xl3v4grsbh6x" path="res://ui/commonButtonStylePressed.tres" id="17_wfln6"]
 [ext_resource type="Shader" path="res://shaders/flipCard.gdshader" id="18_sddf0"]
 [ext_resource type="Script" path="res://ui/levelClear/levelClear.gd" id="19_8vfjg"]
 [ext_resource type="Script" path="res://ui/commonBtn.gd" id="19_jdxc1"]
+[ext_resource type="Texture2D" uid="uid://ceugc71teyroh" path="res://img/16x6.png" id="22_hk71w"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qmdp5"]
 shader = ExtResource("2_vsuno")
@@ -65,7 +66,7 @@ shader_parameter/y_rot = 8.55e-06
 shader_parameter/x_rot = 8.55e-06
 shader_parameter/inset = 0.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_as8d3"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x7t0b"]
 shader = ExtResource("18_sddf0")
 shader_parameter/rotation_pivot = Vector2(0.5, 0.5)
 shader_parameter/fov = 100.996
@@ -73,7 +74,7 @@ shader_parameter/y_rot = 8.55e-06
 shader_parameter/x_rot = 8.55e-06
 shader_parameter/inset = 0.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_x7t0b"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_as8d3"]
 shader = ExtResource("18_sddf0")
 shader_parameter/rotation_pivot = Vector2(0.5, 0.5)
 shader_parameter/fov = 100.996
@@ -100,8 +101,7 @@ enemyScene = ExtResource("7_v6epm")
 
 [node name="Player" parent="." instance=ExtResource("4_y4vg7")]
 spd = 120.0
-initBullet = ExtResource("9_bqfcr")
-curBullet = ExtResource("9_0857n")
+initBullet = ExtResource("9_0857n")
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
@@ -197,6 +197,7 @@ offset_left = 954.0
 offset_top = 419.0
 offset_right = 1174.0
 offset_bottom = 679.0
+magItem = ExtResource("15_b3duu")
 
 [node name="CountDown" type="Label" parent="UI"]
 layout_mode = 1
@@ -326,8 +327,7 @@ theme_override_styles/pressed = ExtResource("17_wfln6")
 text = "退出游戏"
 script = ExtResource("19_jdxc1")
 
-[node name="LevelClear" type="Panel" parent="UI"]
-visible = false
+[node name="LevelClear" type="Panel" parent="UI" node_paths=PackedStringArray("cards")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -342,6 +342,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = ExtResource("15_h32ag")
 script = ExtResource("19_8vfjg")
+cards = [NodePath("Rewards/SubViewportContainer2"), NodePath("Rewards/SubViewportContainer3")]
 
 [node name="Label" type="Label" parent="UI/LevelClear"]
 layout_mode = 1
@@ -371,7 +372,7 @@ text = "选择奖励："
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UI/LevelClear"]
+[node name="Buttons" type="HBoxContainer" parent="UI/LevelClear"]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -386,7 +387,7 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_constants/separation = 40
 
-[node name="RestartBtn" type="Button" parent="UI/LevelClear/HBoxContainer"]
+[node name="QuitBtn" type="Button" parent="UI/LevelClear/Buttons"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
@@ -402,7 +403,7 @@ theme_override_styles/pressed = ExtResource("17_wfln6")
 text = "退出游戏"
 script = ExtResource("19_jdxc1")
 
-[node name="QuitBtn" type="Button" parent="UI/LevelClear/HBoxContainer"]
+[node name="NextLvBtn" type="Button" parent="UI/LevelClear/Buttons"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
@@ -418,23 +419,42 @@ theme_override_styles/pressed = ExtResource("17_wfln6")
 text = "下一关"
 script = ExtResource("19_jdxc1")
 
-[node name="SubViewportContainer2" parent="UI/LevelClear" instance=ExtResource("11_u2sko")]
-material = SubResource("ShaderMaterial_as8d3")
-layout_mode = 0
-offset_left = 180.0
-offset_top = 86.0
-offset_right = 400.0
-offset_bottom = 346.0
+[node name="Selected" type="TextureRect" parent="UI/LevelClear"]
+layout_mode = 2
+offset_left = 228.0
+offset_top = 141.0
+offset_right = 368.0
+offset_bottom = 301.0
+pivot_offset = Vector2(-110, -130)
+texture = ExtResource("22_hk71w")
 
-[node name="SubViewportContainer3" parent="UI/LevelClear" instance=ExtResource("11_u2sko")]
+[node name="Rewards" type="HBoxContainer" parent="UI/LevelClear"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -222.0
+offset_top = -130.0
+offset_right = 222.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="SubViewportContainer3" parent="UI/LevelClear/Rewards" instance=ExtResource("11_u2sko")]
 material = SubResource("ShaderMaterial_x7t0b")
-layout_mode = 0
-offset_left = 401.0
-offset_top = 86.0
-offset_right = 621.0
-offset_bottom = 346.0
+layout_mode = 2
+magItem = ExtResource("15_b3duu")
+
+[node name="SubViewportContainer2" parent="UI/LevelClear/Rewards" instance=ExtResource("11_u2sko")]
+material = SubResource("ShaderMaterial_as8d3")
+layout_mode = 2
+magItem = ExtResource("15_b3duu")
 
 [node name="Main" type="Panel" parent="UI"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -630,14 +650,23 @@ text = "退出游戏"
 
 [connection signal="gameOver" from="." to="UI" method="_on_game_game_over"]
 [connection signal="gameStart" from="." to="UI" method="_on_game_game_start"]
+[connection signal="levelClear" from="." to="UI" method="_on_game_level_clear"]
 [connection signal="stateChangedFromTo" from="." to="UI" method="_on_game_state_changed_from_to"]
+[connection signal="bulletChangedFromTo" from="Player" to="UI/SubViewportContainer" method="_on_player_bullet_changed_from_to"]
 [connection signal="hpChangedFromTo" from="Player" to="." method="_on_player_hp_changed_from_to"]
 [connection signal="pointChangedFromTo" from="Player" to="." method="_on_player_point_changed_from_to"]
 [connection signal="shootBullet" from="Player" to="UI/SubViewportContainer" method="_on_player_shoot_bullet"]
+[connection signal="shootInReload" from="Player" to="UI/SubViewportContainer" method="_on_player_shoot_in_reload"]
+[connection signal="startReload" from="Player" to="UI/SubViewportContainer" method="_on_player_start_reload"]
 [connection signal="timeout" from="UI/CountDown/Shaker" to="UI/CountDown" method="_on_shaker_timeout"]
 [connection signal="pressed" from="UI/GameOver/RestartBtn" to="." method="_on_restart_btn_pressed"]
 [connection signal="pressedOn" from="UI/GameOver/RestartBtn" to="UI" method="hide_dialog" binds= [NodePath("..")]]
 [connection signal="pressed" from="UI/GameOver/QuitBtn" to="." method="_on_quit_btn_pressed"]
+[connection signal="pressed" from="UI/LevelClear/Buttons/QuitBtn" to="." method="_on_quit_btn_pressed"]
+[connection signal="pressed" from="UI/LevelClear/Buttons/NextLvBtn" to="." method="_on_next_lv_btn_pressed"]
+[connection signal="pressedOn" from="UI/LevelClear/Buttons/NextLvBtn" to="UI" method="hide_dialog" binds= [NodePath("../..")]]
+[connection signal="gui_input" from="UI/LevelClear/Rewards/SubViewportContainer3" to="UI/LevelClear" method="_on_card2_gui_input"]
+[connection signal="gui_input" from="UI/LevelClear/Rewards/SubViewportContainer2" to="UI/LevelClear" method="_on_card1_gui_input"]
 [connection signal="pressed" from="UI/Main/StartBtn" to="." method="_on_start_btn_pressed"]
 [connection signal="pressedOn" from="UI/Main/StartBtn" to="UI" method="hide_dialog" binds= [NodePath("..")]]
 [connection signal="pressed" from="UI/Main/QuitBtn" to="." method="_on_quit_btn_pressed"]
