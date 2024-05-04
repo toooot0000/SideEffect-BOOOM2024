@@ -635,6 +635,8 @@ text = "退出游戏"
 [connection signal="pointChangedFromTo" from="Player" to="." method="_on_player_point_changed_from_to"]
 [connection signal="shootBullet" from="Player" to="UI/SubViewportContainer" method="_on_player_shoot_bullet"]
 [connection signal="timeout" from="UI/CountDown/Shaker" to="UI/CountDown" method="_on_shaker_timeout"]
+[connection signal="pressed" from="UI/GameOver/RestartBtn" to="." method="_on_restart_btn_pressed"]
+[connection signal="pressedOn" from="UI/GameOver/RestartBtn" to="UI" method="hide_dialog" binds= [NodePath("..")]]
 [connection signal="pressed" from="UI/GameOver/QuitBtn" to="." method="_on_quit_btn_pressed"]
 [connection signal="pressed" from="UI/Main/StartBtn" to="." method="_on_start_btn_pressed"]
 [connection signal="pressedOn" from="UI/Main/StartBtn" to="UI" method="hide_dialog" binds= [NodePath("..")]]

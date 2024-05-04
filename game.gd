@@ -126,7 +126,8 @@ func start():
 
 
 func _on_player_point_changed_from_to(_old:Variant, newPoint:Variant):
-	if newPoint > 200:
+	if newPoint >= 200:
+		
 		_state = State.Pause
 
 
