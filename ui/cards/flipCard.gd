@@ -4,8 +4,8 @@ class_name FlipCard
 @export var rotRange := 0.1
 @export var rotSpd := 0.8
 @export var flipTime := 0.1
-
 @export var magItem: PackedScene
+@export var anim :AnimationPlayer
 
 @onready var mat: ShaderMaterial = material as ShaderMaterial
 @onready var bulletCard: Control = $SubViewport/Bullet
@@ -20,11 +20,14 @@ var state := State.IDLE :
 		state = val
 		match val:
 			State.IDLE:
-				print("Start IDLE")
+				# print("Start IDLE")
+				pass
 			State.FLIP:
-				print("Start FLIPPING")
+				# print("Start FLIPPING")
+				pass
 			State.RE_FLIP:
-				print("Start RE_FLIPPING")
+				# print("Start RE_FLIPPING")
+				pass
 
 var xRot := 0.0:
 	set(val):
@@ -71,7 +74,6 @@ func _process(delta):
 			if _flipTimer < 0:
 				state = State.IDLE
 			pass
-	pass
 
 func _on_bullet_mouse_entered():
 	state = State.FLIP
@@ -110,8 +112,11 @@ func setUpUI():
 	$SubViewport/Bullet/Sprite.texture = bulletConfig.displayTexture
 	if bulletConfig.magazineSize < 0:
 		$SubViewport/Bullet/Inf.visible = true
+		$SubViewport/Bullet/ReloadLabel.visible = false
 	else:
 		$SubViewport/Bullet/Inf.visible = false
+		$SubViewport/Bullet/ReloadLabel.visible = true
+		$SubViewport/Bullet/ReloadLabel.text = "装弹：%2.1f" % bulletConfig.reloadTime
 		var cont = $SubViewport/Bullet/MagzineContainer
 		for i in range(bulletConfig.magazineSize):
 			var inst = magItem.instantiate() as MagzineItem
@@ -120,10 +125,6 @@ func setUpUI():
 
 	$SubViewport/Enemy/Sprite.texture = bulletConfig.relatedEnemy.sprite
 	$SubViewport/Enemy/Label.text = "生命：%d\n分数：%d" %[bulletConfig.relatedEnemy.enemyLife, bulletConfig.relatedEnemy.point]
-
-
-func _on_player_bullet_changed_from_to(_from:BulletConfig, to:BulletConfig):
-	bulletConfig = to
 
 
 func _on_player_start_reload(time:float):
@@ -142,3 +143,18 @@ func _on_player_shoot_in_reload():
 		position = pos + curPos
 	)
 
+
+func shiftBack(_targetPosition: Vector2):
+	var shiftAnim := anim.get_animation("shifted")
+	var trackIdx := shiftAnim.find_track(".:position", Animation.TYPE_VALUE)
+	var keyCount = shiftAnim.track_get_key_count(trackIdx)
+	shiftAnim.track_set_key_value(trackIdx, keyCount-1, _targetPosition)
+	anim.play("shifted")
+
+
+func newlyAdded(_targetPosition: Vector2):
+	var shiftAnim := anim.get_animation("added")
+	var trackIdx := shiftAnim.find_track(".:position", Animation.TYPE_VALUE)
+	var keyCount = shiftAnim.track_get_key_count(trackIdx)
+	shiftAnim.track_set_key_value(trackIdx, keyCount-1, _targetPosition)
+	anim.play("added")

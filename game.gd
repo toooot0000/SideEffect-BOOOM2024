@@ -2,6 +2,8 @@ extends Node2D
 class_name G
 
 @export var _radius := 230
+@export var _initlevelTarget := 200
+@export var _levelTargetGrowth := 100
 
 @onready var _center :Node2D = $BG
 @onready var _player :Player = $Player
@@ -15,10 +17,12 @@ enum State { Launch, Idle, End, Pause }
 signal startTimeChangedFromTo(o, n)
 signal stateChangedFromTo(o, n)
 signal remainingTimeChangedFromTo(o, n)
+signal currentTargetPointChangedFromTo(o, n)
 
 signal gameStart
 signal gameOver
 signal levelClear
+signal enterNewLevel
 
 # global
 static var center: Vector2:
@@ -87,12 +91,23 @@ var _remainingTime := 60.0:
 	get:
 		return __remainingTime
 
+
+var __currentTargetPoint :int
+var _currentTargetPoint :int :
+	set(v):
+		U.makeGetter(self, "__currentTargetPoint").call(v)
+	get:
+		return __currentTargetPoint
+
 func _init():
 	if G.shared == null :
 		G.shared = self
 	else:
 		queue_free()
 	randomize()
+
+func _ready():
+	_currentTargetPoint = _initlevelTarget
 
 func _process(_delta):
 	if _state != State.Idle:
@@ -119,6 +134,8 @@ func start():
 	player.hp = 10
 	player.point = 0
 	player.global_position = center
+
+	_currentTargetPoint = _initlevelTarget
 
 	startTime = Time.get_ticks_msec()
 
@@ -154,4 +171,18 @@ func _on_restart_btn_pressed():
 	start()
 
 func _on_next_lv_btn_pressed():
-	pass
+
+	var bullet = ($UI/LevelClear as LevelClear).chosenBullet
+	if bullet != null:
+		player.getNewBullet(bullet)
+
+	player.hpLimit = 10
+	player.hp = 10
+	player.point = 0
+	player.global_position = center
+
+	startTime = Time.get_ticks_msec()
+	_currentTargetPoint += _levelTargetGrowth
+
+	_state = State.Idle
+	enterNewLevel.emit()

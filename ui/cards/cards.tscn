@@ -1,15 +1,78 @@
-[gd_scene load_steps=12 format=3 uid="uid://bsxvwgk0nac82"]
+[gd_scene load_steps=17 format=3 uid="uid://bsxvwgk0nac82"]
 
-[ext_resource type="Shader" path="res://shaders/flipCard.gdshader" id="1_lrnfl"]
 [ext_resource type="Script" path="res://ui/cards/flipCard.gd" id="2_s5q2x"]
 [ext_resource type="Texture2D" uid="uid://bp1j5hjcdc3he" path="res://img/bullets/bullet.png" id="3_5so3b"]
+[ext_resource type="PackedScene" uid="uid://ch5w5vbqjvu87" path="res://ui/cards/magzineItem.tscn" id="3_ht4k1"]
 [ext_resource type="Texture2D" uid="uid://dvbbqgvsexm1c" path="res://img/inf.png" id="4_k567s"]
 [ext_resource type="Script" path="res://util/shaker.gd" id="5_7m72q"]
 [ext_resource type="Texture2D" uid="uid://ceugc71teyroh" path="res://img/16x6.png" id="6_0gsjd"]
 [ext_resource type="Texture2D" uid="uid://d2o5qqmbw6yhl" path="res://img/enemies/enemy.png" id="6_wakm8"]
 
+[sub_resource type="Shader" id="Shader_gsypi"]
+code = "shader_type canvas_item;
+
+// Camera FOV
+uniform vec2 rotation_pivot = vec2(0.5);
+
+uniform float fov : hint_range(1, 179) = 90;
+uniform float y_rot : hint_range(-180, 180) = 0.0;
+uniform float x_rot : hint_range(-180, 180) = 0.0;
+// At 0, the image retains its size when unrotated.
+// At 1, the image is resized so that it can do a full
+// rotation without clipping inside its rect.
+uniform float inset : hint_range(0, 1) = 0.0;
+// Consider changing this to a uniform and change it from code
+varying mat3 rotmat;
+varying float tang;
+
+// Creates rotation matrix
+void vertex(){
+	float sin_b = sin(y_rot / 180.0 * PI);
+	float cos_b = cos(y_rot / 180.0 * PI);
+	float sin_c = sin(x_rot / 180.0 * PI);
+	float cos_c = cos(x_rot / 180.0 * PI);
+	
+	rotmat[0][0] = cos_b;
+	rotmat[0][1] = sin_b * sin_c;
+	rotmat[0][2] = sin_b * cos_c;
+	
+	rotmat[1][0] = 0.0;
+	rotmat[1][1] = cos_c;
+	rotmat[1][2] = -sin_c;
+	
+	rotmat[2][0] = -sin_b;
+	rotmat[2][1] = cos_b * sin_c;
+	rotmat[2][2] = cos_b * cos_c;
+	tang = tan(fov / 360.0 * PI);
+	VERTEX += (UV - 0.5) / TEXTURE_PIXEL_SIZE * tang * (1.0 - inset) * 2.0;
+	
+	// Since we can, why not precalculate this too.
+	tang = 0.5 / tang;
+	
+}
+
+
+void fragment(){
+	// p is a vector from camera origo to camera nearplane.
+	vec3 p = vec3(UV - 0.5, tang);
+	vec3 plane_offset = vec3(vec2(0.5) - rotation_pivot, tang + 1.);
+	vec3 plane_normal = rotmat[2];
+	
+    float dot_prod = dot(plane_normal, p);
+	if (dot_prod <= 0.0) discard;
+	
+    float fac = dot(plane_normal, plane_offset) / dot_prod;
+	vec2 uv = (inverse(rotmat) * (p * fac - plane_offset)).xy;
+	
+	uv += vec2(0.5) - rotation_pivot;
+	if (any(greaterThan(abs(uv), vec2(0.5)))) discard;
+	
+	COLOR = texture(TEXTURE, uv + 0.5);
+}"
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_sn7da"]
-shader = ExtResource("1_lrnfl")
+resource_local_to_scene = true
+shader = SubResource("Shader_gsypi")
 shader_parameter/rotation_pivot = Vector2(0.5, 0.5)
 shader_parameter/fov = 100.996
 shader_parameter/y_rot = 8.55e-06
@@ -42,7 +105,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0.1, 0.9),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(-3.575, -6.94), Vector2(75, -6.94)]
+"values": [Vector2(-3.575, -6.94), Vector2(79, -6.94)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -62,13 +125,107 @@ _data = {
 "reload": SubResource("Animation_fqeww")
 }
 
-[node name="SubViewportContainer" type="SubViewportContainer"]
+[sub_resource type="Animation" id="Animation_laf3c"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_0107a"]
+resource_name = "added"
+length = 0.1
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_ydjhp"]
+resource_name = "shifted"
+length = 0.2
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.06, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(130, 0), Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.06, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.479966, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_wakf1"]
+resource_local_to_scene = true
+_data = {
+"RESET": SubResource("Animation_laf3c"),
+"added": SubResource("Animation_0107a"),
+"shifted": SubResource("Animation_ydjhp")
+}
+
+[node name="SubViewportContainer" type="SubViewportContainer" node_paths=PackedStringArray("anim")]
 material = SubResource("ShaderMaterial_sn7da")
-offset_left = 957.0
-offset_top = 428.0
-offset_right = 1177.0
-offset_bottom = 688.0
+offset_right = 220.0
+offset_bottom = 260.0
+pivot_offset = Vector2(110, 130)
 script = ExtResource("2_s5q2x")
+magItem = ExtResource("3_ht4k1")
+anim = NodePath("AnimationPlayer")
 
 [node name="SubViewport" type="SubViewport" parent="."]
 disable_3d = true
@@ -101,11 +258,20 @@ texture = ExtResource("3_5so3b")
 [node name="Label" type="Label" parent="SubViewport/Bullet"]
 layout_mode = 0
 offset_left = 22.0
-offset_top = 64.0
+offset_top = 60.2
 offset_right = 80.0
-offset_bottom = 87.0
+offset_bottom = 83.2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "伤害：1"
+
+[node name="ReloadLabel" type="Label" parent="SubViewport/Bullet"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 80.365
+offset_right = 80.0
+offset_bottom = 103.365
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "装弹：1"
 
 [node name="MagzineContainer" type="HBoxContainer" parent="SubViewport/Bullet"]
 layout_mode = 1
@@ -115,9 +281,9 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -42.5
-offset_top = -39.0
+offset_top = -35.0
 offset_right = 41.5
-offset_bottom = -10.0
+offset_bottom = -6.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
@@ -146,10 +312,10 @@ maxY = 5.0
 [node name="Line" type="TextureRect" parent="SubViewport/Bullet"]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 0
-offset_left = 16.125
-offset_top = 103.625
-offset_right = 96.125
-offset_bottom = 105.625
+offset_left = 14.015
+offset_top = 112.405
+offset_right = 96.8
+offset_bottom = 114.405
 texture = ExtResource("6_0gsjd")
 expand_mode = 1
 
@@ -208,6 +374,11 @@ minX = -10.0
 maxX = 10.0
 minY = -10.0
 maxY = 10.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_wakf1")
+}
 
 [connection signal="mouse_entered" from="SubViewport/Bullet" to="." method="_on_bullet_mouse_entered"]
 [connection signal="mouse_exited" from="SubViewport/Bullet" to="." method="_on_bullet_mouse_exited"]

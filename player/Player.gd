@@ -19,7 +19,8 @@ class BulletInfo:
 		initBullet = v
 		var info = BulletInfo.new(v, v.magazineSize)
 		bulletInfo.append(info)
-		bulletChangedFromTo.emit(null, info)
+		didAddNewBullet.emit(bulletInfo, bulletInfo[-1])
+
 
 @onready var arrow := $Pivot/Arrow
 @onready var arrowPivot: Node2D = $Pivot
@@ -27,11 +28,14 @@ class BulletInfo:
 
 signal pointChangedFromTo(old, newPoint)
 signal hpChangedFromTo(old, new)
-signal bulletChangedFromTo(from: BulletConfig, to: BulletConfig)
 signal shootBullet(direction: Vector2, bulletConfig: BulletConfig, indexOfMag: int)
 signal shootInReload
 signal startReload(time)
 signal finishReload
+
+signal shiftBullet(bulletInfo:Array[BulletInfo])
+signal didAddNewBullet(bulletInfo:Array[BulletInfo], added: BulletInfo)
+signal didRemoveBullet(bulletInfo:Array[BulletInfo], removed: BulletInfo)
 
 var hp: int = hpLimit:
 	set(value):
@@ -66,7 +70,7 @@ var _reloadTimer := 0.0
 
 
 func _ready():
-	bulletChangedFromTo.emit(null, initBullet)
+	didAddNewBullet.emit(bulletInfo, bulletInfo[-1])
 
 
 func _input(event):
@@ -187,3 +191,6 @@ func shootInReloading():
 	print("Shoot in reload!")
 	shootInReload.emit()
 
+func getNewBullet(bullet: BulletConfig):
+	bulletInfo.append(BulletInfo.new(bullet, bullet.magazineSize))
+	didAddNewBullet.emit(bulletInfo, bulletInfo[-1])

@@ -10,6 +10,12 @@ var chosenIndex = -1 :
 		chosenIndex = v
 		updateHightlight()
 
+var chosenBullet: BulletConfig:
+	get:
+		if chosenIndex < 0:
+			return null
+		return candidatesBullets[chosenIndex]
+
 
 func _ready():
 	await G.shared.ready

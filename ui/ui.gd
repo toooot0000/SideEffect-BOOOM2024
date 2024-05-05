@@ -58,3 +58,6 @@ func hide_dialog(on: Node, dialog: NodePath):
 func _on_game_level_clear():
 	$LevelClear.visible = true
 	($LevelClear as LevelClear).updateReward()
+
+func _on_game_current_target_point_changed_from_to(_o:Variant, n:Variant):
+	$TargetLabel.text = "目标：%d" % n
