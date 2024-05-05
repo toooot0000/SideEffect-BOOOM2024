@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bsxvwgk0nac82"]
+[gd_scene load_steps=19 format=3 uid="uid://bsxvwgk0nac82"]
 
 [ext_resource type="Script" path="res://ui/cards/flipCard.gd" id="2_s5q2x"]
 [ext_resource type="Texture2D" uid="uid://bp1j5hjcdc3he" path="res://img/bullets/bullet.png" id="3_5so3b"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://util/shaker.gd" id="5_7m72q"]
 [ext_resource type="Texture2D" uid="uid://ceugc71teyroh" path="res://img/16x6.png" id="6_0gsjd"]
 [ext_resource type="Texture2D" uid="uid://d2o5qqmbw6yhl" path="res://img/enemies/enemy.png" id="6_wakm8"]
+[ext_resource type="Script" path="res://ui/cards/easeMove.gd" id="8_4y2vw"]
 
 [sub_resource type="Shader" id="Shader_gsypi"]
 code = "shader_type canvas_item;
@@ -209,6 +210,20 @@ tracks/1/keys = {
 "update": 0,
 "values": [0.0, 0.479966, 0.0]
 }
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.06),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"moveToBack"
+}]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_wakf1"]
 resource_local_to_scene = true
@@ -217,6 +232,10 @@ _data = {
 "added": SubResource("Animation_0107a"),
 "shifted": SubResource("Animation_ydjhp")
 }
+
+[sub_resource type="Curve" id="Curve_l0hyw"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [node name="SubViewportContainer" type="SubViewportContainer" node_paths=PackedStringArray("anim")]
 material = SubResource("ShaderMaterial_sn7da")
@@ -379,6 +398,12 @@ maxY = 10.0
 libraries = {
 "": SubResource("AnimationLibrary_wakf1")
 }
+
+[node name="EaseMove" type="Node" parent="."]
+script = ExtResource("8_4y2vw")
+maxSpd = 100.0
+maxRange = 10.0
+spdCurve = SubResource("Curve_l0hyw")
 
 [connection signal="mouse_entered" from="SubViewport/Bullet" to="." method="_on_bullet_mouse_entered"]
 [connection signal="mouse_exited" from="SubViewport/Bullet" to="." method="_on_bullet_mouse_exited"]

@@ -21,6 +21,7 @@ func _on_player_did_add_new_bullet(_bulletInfo:Array[Player.BulletInfo], added:P
 	inst.bulletConfig = added.config
 	container.add_child(inst)
 	inst.newlyAdded(_positionOfIdx(len(_bulletInfo)-1, len(_bulletInfo)))
+	inst.move.enable = true
 	_updateCardPosition()
 
 
@@ -28,7 +29,7 @@ func _updateCardPosition():
 	for i in range(container.get_child_count()):
 		var ch = container.get_child(i) as FlipCard
 		var targetPos = _positionOfIdx(i, container.get_child_count())
-		ch.position = targetPos
+		ch.targetPosition = targetPos
 
 func _on_player_shoot_bullet(direction:Vector2, bulletConfig:BulletConfig, indexOfMag:int):
 	var count = container.get_child_count()
@@ -36,8 +37,8 @@ func _on_player_shoot_bullet(direction:Vector2, bulletConfig:BulletConfig, index
 	last._on_player_shoot_bullet(direction, bulletConfig, indexOfMag)
 
 
-func _positionOfIdx(ind: int, total: int) -> Vector2:
-	return float(ind) * dir * dist + start.position
+func _positionOfIdx(ind: int, _total: int) -> Vector2:
+	return - (float(ind * dist) * dir) + end.position
 
 
 func _on_player_start_reload(time:Variant):
@@ -48,7 +49,8 @@ func _on_player_shoot_in_reload():
 	topCard._on_player_shoot_in_reload()
 
 
-func _on_player_shift_bullet(_bulletInfo:Array[Player.BulletInfo]):
-	
-
-	pass
+func _on_player_shift_bullet(_bulletInfo: Array[Player.BulletInfo]):
+	var targetPosition = _positionOfIdx(0, len(_bulletInfo))
+	topCard.shiftBack(targetPosition)
+	await topCard.willShiftBack
+	_updateCardPosition()

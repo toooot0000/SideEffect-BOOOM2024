@@ -11,7 +11,9 @@ class_name FlipCard
 @onready var bulletCard: Control = $SubViewport/Bullet
 @onready var enemyCard: Control = $SubViewport/Enemy
 @onready var shaker: Shaker = $SubViewport/Bullet/Shaker
+@onready var move: EaseMove = $EaseMove
 
+signal willShiftBack
 
 enum State{ IDLE, FLIP, RE_FLIP }
 
@@ -44,6 +46,10 @@ var bulletConfig: BulletConfig:
 		bulletConfig = val
 		setUpUI()
 
+var targetPosition: Vector2:
+	set(val):
+		$EaseMove.targetPosition = val
+
 var _idleTimer := 0.0
 var _flipTimer := 0.0
 var _startYRot := 0.0
@@ -51,6 +57,12 @@ var _magItem :Array[MagzineItem] = []
 
 func _ready():
 	_idleTimer = randf_range(0, 30)
+	move.positionGetter = func():
+		return position
+	move.positionSetter = func(p):
+		position = p
+	
+
 
 func _process(delta):
 	_idleTimer += delta
@@ -74,6 +86,7 @@ func _process(delta):
 			if _flipTimer < 0:
 				state = State.IDLE
 			pass
+	
 
 func _on_bullet_mouse_entered():
 	state = State.FLIP
@@ -145,16 +158,29 @@ func _on_player_shoot_in_reload():
 
 
 func shiftBack(_targetPosition: Vector2):
+	$EaseMove.enable = false
 	var shiftAnim := anim.get_animation("shifted")
 	var trackIdx := shiftAnim.find_track(".:position", Animation.TYPE_VALUE)
 	var keyCount = shiftAnim.track_get_key_count(trackIdx)
+	shiftAnim.track_set_key_value(trackIdx, 0, position)
+	shiftAnim.track_set_key_value(trackIdx, 1, position + Vector2.RIGHT * 120)
 	shiftAnim.track_set_key_value(trackIdx, keyCount-1, _targetPosition)
 	anim.play("shifted")
+	await anim.animation_finished
+	$EaseMove.enable = true
 
 
 func newlyAdded(_targetPosition: Vector2):
+	$EaseMove.enable = false
 	var shiftAnim := anim.get_animation("added")
 	var trackIdx := shiftAnim.find_track(".:position", Animation.TYPE_VALUE)
 	var keyCount = shiftAnim.track_get_key_count(trackIdx)
 	shiftAnim.track_set_key_value(trackIdx, keyCount-1, _targetPosition)
 	anim.play("added")
+	await anim.animation_finished
+	$EaseMove.enable = true
+
+func moveToBack():
+	var p = get_parent()
+	p.move_child(self, 0)
+	willShiftBack.emit()

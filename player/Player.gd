@@ -70,6 +70,7 @@ var _reloadTimer := 0.0
 
 
 func _ready():
+	await UI.shared.ready
 	didAddNewBullet.emit(bulletInfo, bulletInfo[-1])
 
 
@@ -96,6 +97,14 @@ func _input(event):
 		var mouseEvn := event as InputEventMouseButton
 		if mouseEvn.is_released() && mouseEvn.button_index == MOUSE_BUTTON_LEFT:
 			shoot(shootDir)
+	
+	if event is InputEventKey:
+		if _reloadTimer > 0 || len(bulletInfo) < 2:
+			return
+		var ent := event as InputEventKey
+		if ent.is_pressed() && ent.keycode == KEY_TAB:
+			shiftBulletAction()
+	
 
 
 func _process(delta):
@@ -194,3 +203,10 @@ func shootInReloading():
 func getNewBullet(bullet: BulletConfig):
 	bulletInfo.append(BulletInfo.new(bullet, bullet.magazineSize))
 	didAddNewBullet.emit(bulletInfo, bulletInfo[-1])
+
+func shiftBulletAction():
+	var new = [bulletInfo[-1]] + bulletInfo.slice(0, -1)
+	bulletInfo.clear()
+	for i in new:
+		bulletInfo.append(i as BulletInfo)
+	shiftBullet.emit(bulletInfo)
