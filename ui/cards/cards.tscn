@@ -234,7 +234,7 @@ _data = {
 }
 
 [sub_resource type="Curve" id="Curve_l0hyw"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 2.00014, 0, 0, Vector2(1, 1), 0.0909348, 0.0, 0, 0]
 point_count = 2
 
 [node name="SubViewportContainer" type="SubViewportContainer" node_paths=PackedStringArray("anim")]
@@ -402,7 +402,8 @@ libraries = {
 [node name="EaseMove" type="Node" parent="."]
 script = ExtResource("8_4y2vw")
 maxSpd = 100.0
-maxRange = 10.0
+maxRange = 30.0
+tolerance = 2.0
 spdCurve = SubResource("Curve_l0hyw")
 
 [connection signal="mouse_entered" from="SubViewport/Bullet" to="." method="_on_bullet_mouse_entered"]
