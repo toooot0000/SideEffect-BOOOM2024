@@ -129,7 +129,7 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
-[node name="Enemy" type="Node2D"]
+[node name="Enemy" type="Node2D" groups=["enemy"]]
 script = ExtResource("1_mxgtp")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

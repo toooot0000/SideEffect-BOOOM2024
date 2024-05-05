@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="BulletConfig" load_steps=5 format=3 uid="uid://b7vabevtdfhe1"]
+[gd_resource type="Resource" script_class="BulletConfig" load_steps=5 format=3 uid="uid://cp0rjl7xtgn4v"]
 
 [ext_resource type="PackedScene" uid="uid://423kpae8nhq2" path="res://bullet/inst/bullet.tscn" id="1_oolmi"]
 [ext_resource type="Texture2D" uid="uid://bp1j5hjcdc3he" path="res://img/bullets/bullet.png" id="2_yq48y"]
@@ -8,7 +8,8 @@
 [resource]
 script = ExtResource("4_m2fof")
 bulletDamage = 2
-magazineSize = -1
+magazineSize = 15
+reloadTime = 1.5
 displayTexture = ExtResource("2_yq48y")
 bulletPackedScene = ExtResource("1_oolmi")
 relatedEnemy = ExtResource("3_yf7w7")

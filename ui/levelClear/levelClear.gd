@@ -18,6 +18,7 @@ var chosenBullet: BulletConfig:
 
 
 func _ready():
+	$Selected.visible = false
 	await G.shared.ready
 	updateReward()
 
@@ -52,4 +53,3 @@ func updateHightlight():
 		return
 	$Selected.visible = true
 	$Selected.global_position = cards[chosenIndex].global_position + cards[chosenIndex].size * 0.5 - $Selected.size * 0.5
-	pass

@@ -4,11 +4,11 @@ class_name G
 @export var _radius := 230
 @export var _initlevelTarget := 200
 @export var _levelTargetGrowth := 100
+@export var _bullets :Array[BulletConfig]
 
 @onready var _center :Node2D = $BG
 @onready var _player :Player = $Player
 @onready var _enemySpawnerManager: EnemySpawnerManager = $EnemySpawnerManager
-@onready var _bullets :Array = U.getAllResUnderDir("res://bullet/configs/")
 
 static var shared: G
 
@@ -106,27 +106,21 @@ func _init():
 		queue_free()
 	randomize()
 
+var playerLifeTime := 0.0
+var playerLifePoint := 0
+
 func _ready():
 	_currentTargetPoint = _initlevelTarget
 
 func _process(_delta):
 	if _state != State.Idle:
 		return
+	playerLifeTime += _delta
 	var cur = Time.get_ticks_msec()
 	_remainingTime = (60.0 - (cur - startTime)/1000.0)
 	if _remainingTime > 0:
 		return
 	_state = State.End
-
-func _input(event):
-	if event is InputEventKey:
-		var keyInput = event as InputEventKey
-		if !keyInput.is_released():
-			return
-		if keyInput.keycode == KEY_F:
-			_state = State.End
-		elif keyInput.keycode == KEY_ESCAPE:
-			_state = State.Pause
 
 func start():
 	
@@ -134,6 +128,7 @@ func start():
 	player.hp = 10
 	player.point = 0
 	player.global_position = center
+	player.bulletInfo = [Player.BulletInfo.new(player.initBullet, -1)]
 
 	_currentTargetPoint = _initlevelTarget
 
@@ -145,6 +140,7 @@ func start():
 
 
 func _on_player_point_changed_from_to(_old:Variant, newPoint:Variant):
+	playerLifePoint += newPoint - _old
 	if newPoint >= _currentTargetPoint:
 		_state = State.Pause
 		levelClear.emit()
@@ -175,9 +171,7 @@ func _on_next_lv_btn_pressed():
 	var bullet = ($UI/LevelClear as LevelClear).chosenBullet
 	if bullet != null:
 		player.getNewBullet(bullet)
-
-	player.hpLimit = 10
-	player.hp = 10
+	
 	player.point = 0
 	player.global_position = center
 

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="BulletConfig" load_steps=5 format=3 uid="uid://bvlfq3jriyo82"]
+
+[ext_resource type="PackedScene" uid="uid://djuxs3xufaljk" path="res://bullet/inst/strongBullet.tscn" id="1_aos3r"]
+[ext_resource type="Texture2D" uid="uid://dg5mo2ddtpp46" path="res://img/bullets/strongBullet.png" id="2_6fhqf"]
+[ext_resource type="Resource" uid="uid://cpxu41wci07be" path="res://enemy/configs/bigBlueSlime.tres" id="3_3pwdn"]
+[ext_resource type="Script" path="res://bullet/bulletConfig.gd" id="4_a4r75"]
+
+[resource]
+script = ExtResource("4_a4r75")
+bulletDamage = 4
+magazineSize = 5
+reloadTime = 1.2
+displayTexture = ExtResource("2_6fhqf")
+bulletPackedScene = ExtResource("1_aos3r")
+relatedEnemy = ExtResource("3_3pwdn")

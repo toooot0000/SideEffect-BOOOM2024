@@ -69,10 +69,9 @@ _data = {
 [sub_resource type="CircleShape2D" id="CircleShape2D_e6iki"]
 radius = 13.0
 
-[node name="Player" type="Node2D"]
+[node name="Player" type="Node2D" groups=["player"]]
 position = Vector2(445, 335)
 script = ExtResource("1_t4ovx")
-bulletScenePath = "res://bullet/bullet.tscn"
 kickBackTime = 0.15
 kickBackSpd = 150.0
 
@@ -84,7 +83,7 @@ libraries = {
 [node name="Sprite" type="Sprite2D" parent="."]
 texture = ExtResource("2_yifqx")
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Area2D" type="Area2D" parent="." groups=["player"]]
 collision_mask = 14
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]

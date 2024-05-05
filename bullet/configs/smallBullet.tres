@@ -7,7 +7,7 @@
 
 [resource]
 script = ExtResource("1_qtp4u")
-bulletDamage = 2
+bulletDamage = 1
 magazineSize = -1
 reloadTime = 1.0
 displayTexture = ExtResource("2_ae2sb")

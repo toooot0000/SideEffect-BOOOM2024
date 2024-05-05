@@ -1,14 +1,19 @@
-[gd_scene load_steps=28 format=3 uid="uid://l825ae460lwx"]
+[gd_scene load_steps=33 format=3 uid="uid://l825ae460lwx"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_edicv"]
 [ext_resource type="Texture2D" uid="uid://3kcafr6ubypi" path="res://img/bg.png" id="1_fyxfo"]
 [ext_resource type="Shader" path="res://shaders/circle.gdshader" id="2_vsuno"]
+[ext_resource type="Resource" uid="uid://cp0rjl7xtgn4v" path="res://bullet/configs/smallBulletWithBigBlue.tres" id="3_wbnl4"]
 [ext_resource type="Script" path="res://BG.gd" id="4_5d2x7"]
+[ext_resource type="Resource" uid="uid://co4xmy76lviw5" path="res://bullet/configs/smallBulletWithBlue.tres" id="4_ix6di"]
 [ext_resource type="PackedScene" uid="uid://bf18to5tse1bg" path="res://player/player.tscn" id="4_y4vg7"]
 [ext_resource type="PackedScene" uid="uid://c658qp2dtj8lx" path="res://enemy/spawner/enemySpawner.tscn" id="5_8bgcd"]
+[ext_resource type="Resource" uid="uid://cgi6lldpbjcrh" path="res://bullet/configs/strongBulletWithBigRed.tres" id="5_antbn"]
 [ext_resource type="Script" path="res://enemy/enemySpawnerManager.gd" id="5_u2n4j"]
 [ext_resource type="Script" path="res://ui/ui.gd" id="6_d4hxr"]
+[ext_resource type="Resource" uid="uid://bvlfq3jriyo82" path="res://bullet/configs/strongBulletWithBigBlue.tres" id="6_owngb"]
 [ext_resource type="PackedScene" uid="uid://xgniktnq5h3y" path="res://enemy/inst/blueSlime.tscn" id="7_v6epm"]
+[ext_resource type="Resource" uid="uid://b3qjeg3qjmkv8" path="res://bullet/configs/smallBullet.tres" id="9_51uf7"]
 [ext_resource type="Resource" uid="uid://dlo7rvu1r41g7" path="res://bullet/configs/strongBullet.tres" id="9_0857n"]
 [ext_resource type="PackedScene" uid="uid://cip8qhdh6aftm" path="res://ui/points/pointItem.tscn" id="11_fi257"]
 [ext_resource type="PackedScene" uid="uid://bsxvwgk0nac82" path="res://ui/cards/cards.tscn" id="11_u2sko"]
@@ -77,6 +82,8 @@ shader_parameter/inset = 0.0
 [node name="Game" type="Node2D"]
 script = ExtResource("1_edicv")
 _radius = 250
+_initlevelTarget = 50
+_bullets = Array[Resource("res://bullet/bulletConfig.gd")]([ExtResource("9_51uf7"), ExtResource("3_wbnl4"), ExtResource("4_ix6di"), ExtResource("9_0857n"), ExtResource("6_owngb"), ExtResource("5_antbn")])
 
 [node name="BG" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_qmdp5")
@@ -93,7 +100,7 @@ enemyScene = ExtResource("7_v6epm")
 
 [node name="Player" parent="." instance=ExtResource("4_y4vg7")]
 spd = 120.0
-initBullet = ExtResource("9_0857n")
+initBullet = ExtResource("9_51uf7")
 
 [node name="UI" type="Control" parent="."]
 layout_mode = 3

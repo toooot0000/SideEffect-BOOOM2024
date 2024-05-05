@@ -44,6 +44,7 @@ func _connectSignals():
 
 func _on_game_game_over():
 	$GameOver.visible = true
+	$GameOver/Label2.text = "你坚持了%.2f秒，总共拿到了%d分。" % [G.shared.playerLifeTime, G.shared.playerLifePoint]
 
 
 func _on_game_game_start():
