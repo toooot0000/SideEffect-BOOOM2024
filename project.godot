@@ -32,3 +32,9 @@ window/size/resizable=false
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/resources_spreadsheet_view/plugin.cfg")
+
+[gui]
+
+theme/custom_font="res://fonts/Chusung-220206.ttf"
+theme/default_font_antialiasing=0
+theme/default_font_hinting=2

@@ -140,7 +140,8 @@ func start():
 
 
 func _on_player_point_changed_from_to(_old:Variant, newPoint:Variant):
-	playerLifePoint += newPoint - _old
+	if newPoint > _old:
+		playerLifePoint += newPoint - _old
 	if newPoint >= _currentTargetPoint:
 		_state = State.Pause
 		levelClear.emit()
