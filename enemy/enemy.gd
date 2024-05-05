@@ -15,8 +15,9 @@ var hp = 5:
 		hpBar.value = hp / float(hpUplimit) * 100
 		if hp <= 0:
 			animator.play("die")
+			$Label.text = "+%d" % enemyConfig.point
 			await animator.animation_finished
-			G.player.point += 5
+			G.player.point += enemyConfig.point
 			queue_free()
 
 

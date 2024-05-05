@@ -18,3 +18,4 @@ func spawnEnemyFrom(bullet: Bullet):
 	await enemy.ready
 	enemy.hpUplimit = config.enemyLife
 	enemy.hp = config.enemyLife
+	enemy.enemyConfig = config

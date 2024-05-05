@@ -10,6 +10,10 @@ var spawnGlobalPosition: Vector2
 
 signal shouldSpawnEnemyAt(position)
 
+func _process(_delta):
+	if G.state != G.State.Idle:
+		queue_free()
+
 func cross(v:Vector2, vup: Vector3 = Vector3.BACK) -> Vector2:
 	var ret = Vector3(v.x, v.y, 0).cross(vup)
 	ret = Vector2(ret.x, ret.y).normalized()

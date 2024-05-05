@@ -341,6 +341,7 @@ text = "退出游戏"
 script = ExtResource("19_jdxc1")
 
 [node name="LevelClear" type="Panel" parent="UI" node_paths=PackedStringArray("cards")]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -465,7 +466,6 @@ material = SubResource("ShaderMaterial_as8d3")
 layout_mode = 2
 
 [node name="Main" type="Panel" parent="UI"]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -501,7 +501,7 @@ offset_bottom = 263.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
-text = "WASD： 移动；鼠标左键：射击
+text = "WASD： 移动；鼠标左键：射击；Tab：切换子弹
 你射出的子弹会变成敌人，打败敌人会获得分数
 尽可能获得高分吧！"
 horizontal_alignment = 1
