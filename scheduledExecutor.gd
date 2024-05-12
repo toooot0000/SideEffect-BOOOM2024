@@ -2,17 +2,16 @@ extends Node
 class_name ScheduleExecutor
 
 class ExecuteItem:
-	var startTimestamp: int
-	var deadlineTimestamp: int
+	var timer := 0.0
+	var totalTime := 0.0
 	var id: String
 	var relatedNode: Node
 	# (currentTime) -> Void
 	var block: Callable
 	
 	func start(delayTimeInSec: float, task: Callable, executor: ScheduleExecutor = null):
-		startTimestamp = Time.get_ticks_msec()
-		deadlineTimestamp = startTimestamp + round(delayTimeInSec * 1000)
 		block = task
+		totalTime = delayTimeInSec
 		if executor:
 			executor.scheduled.append(self)
 		else:
@@ -20,8 +19,17 @@ class ExecuteItem:
 
 var scheduled: Array[ExecuteItem] = []
 
-func _process(_delta):
-	var cur = Time.get_ticks_msec()
+func _process(delta):
 	for i in scheduled:
-		if cur < i.deadlineTimestamp:
-			i.block.callv([cur])
+		i.timer += delta
+		if i.timer >= i.totalTime:
+			i.block.call()
+	
+	scheduled = scheduled.filter(func(item):
+		return item.timer < item.totalTime	
+	)
+
+func forceExecuteAll():
+	for i in scheduled:
+		i.block.call()
+	scheduled.clear()

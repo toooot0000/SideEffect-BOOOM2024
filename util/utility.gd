@@ -55,3 +55,8 @@ static func makeGetter(obj: Object, name: String) -> Callable:
 static func rand(arr: Array):
 	var index = randi_range(0, len(arr)-1)
 	return arr[index]
+
+static func randInCicle(center: Vector2, radius: float) -> Vector2:
+	var r = radius * sqrt(randf())
+	var theta = randf() * 2 * PI
+	return Vector2(center.x + r * cos(theta), center.y + r*sin(theta))

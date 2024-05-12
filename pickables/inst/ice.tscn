@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://2qu4nff8e0if"]
+
+[ext_resource type="Texture2D" uid="uid://d22f8sbayokbj" path="res://img/pickables/ice.png" id="1_5fqpl"]
+[ext_resource type="Script" path="res://pickables/pickable.gd" id="2_56g41"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_aqr7h"]
+radius = 14.0
+
+[node name="Sprite2D" type="Sprite2D"]
+position = Vector2(467, 262)
+texture = ExtResource("1_5fqpl")
+script = ExtResource("2_56g41")
+type = 2
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_aqr7h")
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]

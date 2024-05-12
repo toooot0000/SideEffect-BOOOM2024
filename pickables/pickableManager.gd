@@ -1,12 +1,7 @@
 extends  Node2D
 class_name PickableManager
 
-class PickableScenes:
-	extends Resource
-	var type: Pickable.Type
-	var scene: PackedScene
-
-@export var packedScenes: Array[PickableScenes]
+@export var packedScenes: Array[PickableScene]
 
 var activePickables: Array[Pickable.Type] = []
 
@@ -18,6 +13,19 @@ func _init():
 	else:
 		shared = self
 
+func _ready():
+	await G.shared.ready
+	EnemySpawnerManager.shared.enemySpawned.connect(func(enemy: Enemy):
+		enemy.didDie.connect(func():
+			if randf() < 0.1:
+				randPickable()
+		, CONNECT_ONE_SHOT)
+	)
+
+
+func randPickable():
+	generatePickable(U.rand([Pickable.Type.Star, Pickable.Type.Ice, Pickable.Type.Heart]))
+
 func generatePickable(type: Pickable.Type):
 	var packedScene :PackedScene
 	for i in packedScenes:
@@ -26,7 +34,7 @@ func generatePickable(type: Pickable.Type):
 			break
 	if !packedScene:
 		return
-	var inst = packedScene.instantiate()
-	
+	var inst = packedScene.instantiate() as Node2D
+	inst.global_position = U.randInCicle(G.center, G.radius)
 	add_child(inst)
 

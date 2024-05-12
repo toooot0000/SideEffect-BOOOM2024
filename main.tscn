@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://l825ae460lwx"]
+[gd_scene load_steps=42 format=3 uid="uid://l825ae460lwx"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_edicv"]
 [ext_resource type="Texture2D" uid="uid://3kcafr6ubypi" path="res://img/bg.png" id="1_fyxfo"]
@@ -13,13 +13,19 @@
 [ext_resource type="Script" path="res://ui/ui.gd" id="6_d4hxr"]
 [ext_resource type="Resource" uid="uid://bvlfq3jriyo82" path="res://bullet/configs/strongBulletWithBigBlue.tres" id="6_owngb"]
 [ext_resource type="PackedScene" uid="uid://xgniktnq5h3y" path="res://enemy/inst/blueSlime.tscn" id="7_v6epm"]
+[ext_resource type="Script" path="res://scheduledExecutor.gd" id="8_3yqjm"]
+[ext_resource type="Script" path="res://pickables/pickableManager.gd" id="8_qc7v6"]
+[ext_resource type="Script" path="res://pickables/pickablePair.gd" id="9_0xog2"]
 [ext_resource type="Resource" uid="uid://b3qjeg3qjmkv8" path="res://bullet/configs/smallBullet.tres" id="9_51uf7"]
 [ext_resource type="Resource" uid="uid://dlo7rvu1r41g7" path="res://bullet/configs/strongBullet.tres" id="9_0857n"]
 [ext_resource type="PackedScene" uid="uid://cip8qhdh6aftm" path="res://ui/points/pointItem.tscn" id="11_fi257"]
 [ext_resource type="PackedScene" uid="uid://bsxvwgk0nac82" path="res://ui/cards/cards.tscn" id="11_u2sko"]
 [ext_resource type="Script" path="res://ui/cards/bulletStack.gd" id="12_cb1vx"]
+[ext_resource type="PackedScene" uid="uid://bxlre2md64ctx" path="res://pickables/inst/heart.tscn" id="13_s0xon"]
 [ext_resource type="Script" path="res://ui/countDown/countDown.gd" id="14_7k8gi"]
+[ext_resource type="PackedScene" uid="uid://dijv2w8yyxa4a" path="res://pickables/inst/star.tscn" id="14_jwxb4"]
 [ext_resource type="Script" path="res://util/shaker.gd" id="15_2qrwi"]
+[ext_resource type="PackedScene" uid="uid://2qu4nff8e0if" path="res://pickables/inst/ice.tscn" id="15_btsbd"]
 [ext_resource type="StyleBox" uid="uid://b12m3whupcw2e" path="res://ui/commonUIStyle.tres" id="15_h32ag"]
 [ext_resource type="StyleBox" uid="uid://db8sle3o7nkad" path="res://ui/commonButtonStyle.tres" id="16_6ggvg"]
 [ext_resource type="StyleBox" uid="uid://xl3v4grsbh6x" path="res://ui/commonButtonStylePressed.tres" id="17_wfln6"]
@@ -37,6 +43,21 @@ shader_parameter/ripplePositions = null
 shader_parameter/rippleTimes = null
 shader_parameter/reRipplePositions = null
 shader_parameter/reRippleTimes = null
+
+[sub_resource type="Resource" id="Resource_pcery"]
+script = ExtResource("9_0xog2")
+type = 0
+scene = ExtResource("13_s0xon")
+
+[sub_resource type="Resource" id="Resource_jhhv2"]
+script = ExtResource("9_0xog2")
+type = 1
+scene = ExtResource("14_jwxb4")
+
+[sub_resource type="Resource" id="Resource_vkyqw"]
+script = ExtResource("9_0xog2")
+type = 2
+scene = ExtResource("15_btsbd")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yegdu"]
 bg_color = Color(1, 1, 1, 1)
@@ -85,6 +106,9 @@ _radius = 250
 _initlevelTarget = 50
 _bullets = Array[Resource("res://bullet/bulletConfig.gd")]([ExtResource("9_51uf7"), ExtResource("3_wbnl4"), ExtResource("4_ix6di"), ExtResource("9_0857n"), ExtResource("6_owngb"), ExtResource("5_antbn")])
 
+[node name="ScheduleExecutor" type="Node" parent="."]
+script = ExtResource("8_3yqjm")
+
 [node name="BG" type="Sprite2D" parent="."]
 material = SubResource("ShaderMaterial_qmdp5")
 position = Vector2(578, 297)
@@ -92,6 +116,10 @@ scale = Vector2(1.88, 1.78167)
 texture = ExtResource("1_fyxfo")
 script = ExtResource("4_5d2x7")
 metadata/_edit_lock_ = true
+
+[node name="PickableManager" type="Node2D" parent="."]
+script = ExtResource("8_qc7v6")
+packedScenes = Array[ExtResource("9_0xog2")]([SubResource("Resource_pcery"), SubResource("Resource_jhhv2"), SubResource("Resource_vkyqw")])
 
 [node name="EnemySpawnerManager" type="Node2D" parent="."]
 script = ExtResource("5_u2n4j")

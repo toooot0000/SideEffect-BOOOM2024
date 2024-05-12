@@ -82,7 +82,13 @@ var startTime := 0:
 var __state := State.Launch
 var _state: State:
 	set(v):
+		var o = __state
 		U.makeGetter(self, "__state").call(v)
+
+		match o:
+			State.Idle:
+				_scheduler.forceExecuteAll()
+			
 		match v:
 			State.End:
 				gameOver.emit()
@@ -121,8 +127,7 @@ func _process(_delta):
 	if _state != State.Idle:
 		return
 	playerLifeTime += _delta
-	var cur = Time.get_ticks_msec()
-	_remainingTime = (60.0 - (cur - startTime)/1000.0)
+	_remainingTime -= _delta
 	if _remainingTime > 0:
 		return
 	_state = State.End
@@ -140,6 +145,7 @@ func start():
 	player.didAddNewBullet.emit(player.bulletInfo, player.bulletInfo[-1])
 
 	_currentTargetPoint = _initlevelTarget
+	_remainingTime = 60.0
 
 	startTime = Time.get_ticks_msec()
 
@@ -187,6 +193,7 @@ func _on_next_lv_btn_pressed():
 
 	startTime = Time.get_ticks_msec()
 	_currentTargetPoint += _levelTargetGrowth
+	_remainingTime = 60.0
 
 	_state = State.Idle
 	enterNewLevel.emit()

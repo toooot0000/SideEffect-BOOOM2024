@@ -8,6 +8,8 @@ class_name Enemy
 @onready var sprite  := $Sprite as Sprite2D
 @onready var colored := preload("res://mats/colored.tres").duplicate() as ShaderMaterial
 
+signal didDie
+
 var enemyConfig: EnemyConfig
 var hpUplimit = 5
 var _tweenHolder = U.TweenHolder.new() 
@@ -21,6 +23,7 @@ var hp = 5:
 			$Label.text = "+%d" % (enemyConfig.point * G.player.pointFactor)
 			await animator.animation_finished
 			G.player.point += enemyConfig.point * G.player.pointFactor
+			didDie.emit()
 			queue_free()
 
 

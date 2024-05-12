@@ -69,6 +69,7 @@ var bulletInfo: Array[BulletInfo] = []
 var _reloadTimer := 0.0
 
 var pointFactor := 1
+var damageFactor := 1
 
 func _ready():
 	await UI.shared.ready
@@ -168,8 +169,8 @@ func _checkKickBack():
 
 
 func _startKickBack():
-	hp -= 1
-	var enemy = _overlappingEnemies[-1]
+	var enemy = _overlappingEnemies[-1] as Enemy
+	hp -= 1 * damageFactor
 	kickBackDir = position - enemy.position
 	kickBackTimer = 0
 	$Sprite.modulate = Color.RED
