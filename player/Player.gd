@@ -68,6 +68,7 @@ var _overlappingEnemies : Array[Enemy] = []
 var bulletInfo: Array[BulletInfo] = []
 var _reloadTimer := 0.0
 
+var pointFactor := 1
 
 func _ready():
 	await UI.shared.ready

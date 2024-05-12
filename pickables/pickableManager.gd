@@ -1,14 +1,32 @@
 extends  Node2D
 class_name PickableManager
 
-@export var packedScene: Array[PackedScene]
+class PickableScenes:
+	extends Resource
+	var type: Pickable.Type
+	var scene: PackedScene
 
-var _pickables: Array[Pickable] = []
+@export var packedScenes: Array[PickableScenes]
 
-func _process(delta):
+var activePickables: Array[Pickable.Type] = []
 
-	pass
+static var shared: PickableManager
+
+func _init():
+	if shared: 
+		queue_free()
+	else:
+		shared = self
 
 func generatePickable(type: Pickable.Type):
+	var packedScene :PackedScene
+	for i in packedScenes:
+		if i.type == type:
+			packedScene = i.scene
+			break
+	if !packedScene:
+		return
+	var inst = packedScene.instantiate()
+	
+	add_child(inst)
 
-	pass

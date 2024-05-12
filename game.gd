@@ -9,6 +9,7 @@ class_name G
 @onready var _center :Node2D = $BG
 @onready var _player :Player = $Player
 @onready var _enemySpawnerManager: EnemySpawnerManager = $EnemySpawnerManager
+@onready var _scheduler : ScheduleExecutor = $ScheduleExecutor
 
 static var shared: G
 
@@ -67,6 +68,10 @@ static var remainingTime: float:
 	get:
 		return shared._remainingTime
 
+static var scheduler: ScheduleExecutor:
+	get:
+		return shared._scheduler
+
 
 var startTime := 0:
 	set(v):
@@ -124,11 +129,15 @@ func _process(_delta):
 
 func start():
 	
+	for ch in ($UI/BulletStack/Container).get_children():
+		ch.queue_free()
+
 	player.hpLimit = 10
 	player.hp = 10
 	player.point = 0
 	player.global_position = center
 	player.bulletInfo = [Player.BulletInfo.new(player.initBullet, -1)]
+	player.didAddNewBullet.emit(player.bulletInfo, player.bulletInfo[-1])
 
 	_currentTargetPoint = _initlevelTarget
 

@@ -5,19 +5,22 @@ class_name Enemy
 
 @onready var hpBar: ProgressBar = $ProgressBar
 @onready var animator: AnimationPlayer = $AnimationPlayer
+@onready var sprite  := $Sprite as Sprite2D
+@onready var colored := preload("res://mats/colored.tres").duplicate() as ShaderMaterial
 
 var enemyConfig: EnemyConfig
 var hpUplimit = 5
- 
+var _tweenHolder = U.TweenHolder.new() 
+
 var hp = 5:
 	set(value):
 		hp = value
 		hpBar.value = hp / float(hpUplimit) * 100
 		if hp <= 0:
 			animator.play("die")
-			$Label.text = "+%d" % enemyConfig.point
+			$Label.text = "+%d" % (enemyConfig.point * G.player.pointFactor)
 			await animator.animation_finished
-			G.player.point += enemyConfig.point
+			G.player.point += enemyConfig.point * G.player.pointFactor
 			queue_free()
 
 
@@ -55,3 +58,18 @@ func _on_area_2d_area_entered(area:Area2D):
 	var bullet = area.get_parent() as Bullet
 	if bullet != null:
 		hp -= bullet.config.bulletDamage
+
+		var prevMat = sprite.material
+		sprite.material = colored
+		colored.set_shader_parameter("color", Color.RED)
+		var tween := _tweenHolder.create(self)
+		tween.tween_method(func(intense):
+			var c := Color.RED
+			c.a = intense
+			colored.set_shader_parameter("color", c)
+			, 1, 0, 0.1
+		)
+		tween.tween_callback(func():
+			sprite.material = prevMat	
+		).set_delay(0.1)
+	

@@ -1,5 +1,17 @@
 class_name U # for Utility
 
+
+class TweenHolder:
+	var _tween: Tween
+
+	func create(by: Node) -> Tween:
+		if _tween:
+			if _tween.is_valid():
+				_tween.kill()	
+		_tween = by.get_tree().create_tween()
+		return _tween
+
+
 static func getAllFilePaths(path: String) -> Array[String]:  
 	var file_paths: Array[String] = []  
 	var dir = DirAccess.open(path)  

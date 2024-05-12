@@ -15,16 +15,24 @@ func _on_area_2d_area_entered(area:Area2D):
 	match type:
 		Type.Heart:
 			G.player.hp = G.player.hpLimit
-			for e in get_tree().get_nodes_in_group("enemy"):
-				var enemy = e as Enemy
-				enemy.hp = enemy.enemyConfig.enemyLife
-		Type.Star:
-			
-			pass
-		Type.Ice:
-			Engine.time_scale = 0.5
-			await get_tree().create_timer(2).timeout
-			Engine.time_scale = 1
-			pass
 
+		Type.Star:
+			G.player.pointFactor *= 2
+			var task = ScheduleExecutor.ExecuteItem.new()
+			task.start(10, func():
+				var ind = PickableManager.shared.activePickables.find(Type.Star)
+				if ind != -1:
+					PickableManager.shared.activePickables.remove_at(ind)
+				G.player.pointFactor /= 2
+			)
+			PickableManager.shared.activePickables.append(type)
+
+		Type.Ice:
+			Engine.time_scale *= 0.8
+			var task = ScheduleExecutor.ExecuteItem.new()
+			task.start(5, func():
+				Engine.time_scale /= 0.8
+			)
+
+	queue_free()
 
