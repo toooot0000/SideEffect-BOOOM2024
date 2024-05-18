@@ -32,10 +32,21 @@ func ripple(ripplePosition: Vector2):
 	rippleTimes[rippleInd] = 0
 	shMat.set_shader_parameter("ripplePositions", ripplePositions)
 
+
+func rippleAtRad(rad: float):
+	ripplePositions[rippleInd] = rad
+	rippleTimes[rippleInd] = 0
+	shMat.set_shader_parameter("ripplePositions", ripplePositions)
+
 func reRipple(ripplePosition: Vector2):
 	reRippleInd = (reRippleInd + 1) % 5
 	var rad = (ripplePosition - position).angle_to(Vector2.RIGHT)
 	reRipplePositions[rippleInd] = -rad
+	reRippleTimes[rippleInd] = 0
+	shMat.set_shader_parameter("reRipplePositions", reRipplePositions)
+
+func reRippleAtRad(rad: float):
+	reRipplePositions[rippleInd] = rad
 	reRippleTimes[rippleInd] = 0
 	shMat.set_shader_parameter("reRipplePositions", reRipplePositions)
 

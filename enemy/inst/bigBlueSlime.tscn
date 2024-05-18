@@ -1,7 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://7y5dpj0uw4c1"]
+[gd_scene load_steps=17 format=3 uid="uid://7y5dpj0uw4c1"]
 
 [ext_resource type="Script" path="res://enemy/enemy.gd" id="1_v42tw"]
 [ext_resource type="Texture2D" uid="uid://dtpo6fkoeln7y" path="res://img/enemies/bigBlueSlime.png" id="2_oesxc"]
+[ext_resource type="Shader" path="res://shaders/outline.gdshader" id="3_byvwd"]
+[ext_resource type="Texture2D" uid="uid://b4drnf7jrwl31" path="res://img/circle-white50x50.png" id="4_bo3ab"]
 
 [sub_resource type="Animation" id="Animation_51yfi"]
 length = 0.001
@@ -45,6 +47,18 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SubViewportContainer/SubViewport/GPUParticles2D:emitting")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_5mam3"]
@@ -129,6 +143,35 @@ corner_radius_top_right = 2
 corner_radius_bottom_right = 2
 corner_radius_bottom_left = 2
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_euv45"]
+shader = ExtResource("3_byvwd")
+shader_parameter/thickness = 3.0
+shader_parameter/color = Color(0, 0, 0, 1)
+
+[sub_resource type="Curve" id="Curve_7raet"]
+max_value = 100.0
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.996032, 62.187), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_jrnku"]
+curve = SubResource("Curve_7raet")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_w8d23"]
+particle_flag_disable_z = true
+angle_min = -180.0
+angle_max = 180.0
+direction = Vector3(1, 1, 0)
+spread = 180.0
+initial_velocity_min = 120.0
+initial_velocity_max = 140.0
+gravity = Vector3(0, 0, 0)
+damping_min = 10.0
+damping_max = 10.0
+damping_curve = SubResource("CurveTexture_jrnku")
+scale_min = 0.2
+scale_max = 0.4
+scale_over_velocity_max = 0.5
+
 [node name="Enemy" type="Node2D" groups=["enemy"]]
 script = ExtResource("1_v42tw")
 
@@ -138,6 +181,7 @@ libraries = {
 }
 
 [node name="Sprite" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0)
 texture = ExtResource("2_oesxc")
 
 [node name="Area2D" type="Area2D" parent="."]
@@ -157,6 +201,32 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_xxrlg")
 step = 0.0
 value = 46.94
 show_percentage = false
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="."]
+texture_filter = 1
+material = SubResource("ShaderMaterial_euv45")
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(100, 100)
+render_target_update_mode = 4
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="SubViewportContainer/SubViewport"]
+texture_filter = 1
+position = Vector2(50, 50)
+emitting = false
+amount = 20
+process_material = SubResource("ParticleProcessMaterial_w8d23")
+texture = ExtResource("4_bo3ab")
+lifetime = 0.2
+one_shot = true
+speed_scale = 1.2
+explosiveness = 1.0
 
 [node name="Label" type="Label" parent="."]
 modulate = Color(1, 1, 1, 0)

@@ -66,12 +66,6 @@ func _on_area_2d_area_entered(area:Area2D):
 		sprite.material = colored
 		colored.set_shader_parameter("color", Color.RED)
 		var tween := _tweenHolder.create(self)
-		tween.tween_method(func(intense):
-			var c := Color.RED
-			c.a = intense
-			colored.set_shader_parameter("color", c)
-			, 1, 0, 0.1
-		)
 		tween.tween_callback(func():
 			sprite.material = prevMat	
 		).set_delay(0.1)

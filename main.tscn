@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://l825ae460lwx"]
+[gd_scene load_steps=53 format=3 uid="uid://l825ae460lwx"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_edicv"]
 [ext_resource type="Texture2D" uid="uid://3kcafr6ubypi" path="res://img/bg.png" id="1_fyxfo"]
@@ -33,6 +33,9 @@
 [ext_resource type="Script" path="res://ui/levelClear/levelClear.gd" id="19_8vfjg"]
 [ext_resource type="Script" path="res://ui/commonBtn.gd" id="19_jdxc1"]
 [ext_resource type="Texture2D" uid="uid://ceugc71teyroh" path="res://img/16x6.png" id="22_hk71w"]
+[ext_resource type="Texture2D" uid="uid://bp1j5hjcdc3he" path="res://img/bullets/bullet.png" id="34_mgg08"]
+[ext_resource type="Texture2D" uid="uid://dabs4d1gbgsqm" path="res://img/Player.png" id="35_exfkf"]
+[ext_resource type="Texture2D" uid="uid://d11mrp3rjayw7" path="res://img/arrow.png" id="36_h8v1m"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qmdp5"]
 shader = ExtResource("2_vsuno")
@@ -100,11 +103,257 @@ shader_parameter/y_rot = 8.55e-06
 shader_parameter/x_rot = 8.55e-06
 shader_parameter/inset = 0.0
 
+[sub_resource type="Animation" id="Animation_hsox5"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TItle:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(445, 249)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TItle:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("BG/Output:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(132.447, 5.61271)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("BG/Player:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.968627)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("BG/Arrow:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_6mn4m"]
+resource_name = "title"
+length = 2.0
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BG/Path2D/PathFollow2D:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.17, 0.4, 1.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 0.0, 1.0]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("BG")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.6, 1.5),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [0.0],
+"method": &"rippleAtRad"
+}, {
+"args": [3.14],
+"method": &"reRippleAtRad"
+}]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("BG/Arrow:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.31, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(25, 3.9289), Vector2(15, 3.929), Vector2(25, 3.9289)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("BG/Path2D/PathFollow2D/Sprite2D:modulate")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.39, 0.4, 1.5, 1.51),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("BG/Output:emitting")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.56, 1.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, true]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("TItle:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(1.52, 1.62),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(344, 265), Vector2(445, 265)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("TItle:scale")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(1.52, 1.62),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(1, 1)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("TItle:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0, 1.52, 1.62),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("BG/Output:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0.56, 1.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(136.702, 5.61271), Vector2(-121.277, 2.24508)]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("BG/Player:modulate")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(1.52, 1.58),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.968627), Color(1, 1, 1, 0)]
+}
+tracks/10/type = "value"
+tracks/10/imported = false
+tracks/10/enabled = true
+tracks/10/path = NodePath("BG/Arrow:modulate")
+tracks/10/interp = 1
+tracks/10/loop_wrap = true
+tracks/10/keys = {
+"times": PackedFloat32Array(1.5, 1.58),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4vvsa"]
+_data = {
+"RESET": SubResource("Animation_hsox5"),
+"title": SubResource("Animation_6mn4m")
+}
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vdtld"]
+shader = ExtResource("2_vsuno")
+shader_parameter/radiusInPixel = 200.0
+shader_parameter/thicknessInPixel = 3.0
+shader_parameter/normaledCenter = Vector2(0.5, 0.5)
+shader_parameter/ripplePositions = null
+shader_parameter/rippleTimes = null
+shader_parameter/reRipplePositions = null
+shader_parameter/reRippleTimes = null
+
+[sub_resource type="Curve2D" id="Curve2D_h61k7"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 39.3617, 2.80635, -29.3043, 0, 29.3043, 0, 120.213, 3.92889, 0.590928, 29.1924, -0.590928, -29.1924, 156.915, -29.7474, 27.6137, 24.9751, -27.6137, -24.9751, 107.447, -123.48, 47.2952, 2.00256, -47.2952, -2.00256, -1.06384, -158.278, 28.7408, -22.0019, -28.7408, 22.0019, -129.255, -129.654, -1.19411, -32.1303, 1.19411, 32.1303, -175.532, -39.289, 0, 0, 0, 0, -123.936, -1.68381)
+}
+point_count = 8
+
+[sub_resource type="Curve" id="Curve_71vxf"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.506996), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_jg5nr"]
+curve = SubResource("Curve_71vxf")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_0cu5e"]
+particle_flag_disable_z = true
+spread = 60.84
+initial_velocity_min = 400.0
+initial_velocity_max = 400.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.6
+scale_curve = SubResource("CurveTexture_jg5nr")
+
 [node name="Game" type="Node2D"]
 script = ExtResource("1_edicv")
 _radius = 250
 _initlevelTarget = 50
 _bullets = Array[Resource("res://bullet/bulletConfig.gd")]([ExtResource("9_51uf7"), ExtResource("3_wbnl4"), ExtResource("4_ix6di"), ExtResource("9_0857n"), ExtResource("6_owngb"), ExtResource("5_antbn")])
+
+[node name="Shaker" type="Timer" parent="."]
+script = ExtResource("15_2qrwi")
 
 [node name="ScheduleExecutor" type="Node" parent="."]
 script = ExtResource("8_3yqjm")
@@ -510,15 +759,71 @@ grow_vertical = 2
 theme_override_styles/panel = ExtResource("15_h32ag")
 metadata/_edit_lock_ = true
 
-[node name="Label" type="Label" parent="UI/Main"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/Main"]
+libraries = {
+"": SubResource("AnimationLibrary_4vvsa")
+}
+autoplay = "title"
+speed_scale = 1.2
+
+[node name="BG" type="Sprite2D" parent="UI/Main"]
+material = SubResource("ShaderMaterial_vdtld")
+position = Vector2(578, 297)
+scale = Vector2(1.88, 1.78167)
+texture = ExtResource("1_fyxfo")
+script = ExtResource("4_5d2x7")
+metadata/_edit_lock_ = true
+
+[node name="Path2D" type="Path2D" parent="UI/Main/BG"]
+position = Vector2(0, 2.24508)
+curve = SubResource("Curve2D_h61k7")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="UI/Main/BG/Path2D"]
+position = Vector2(-123.936, -1.68381)
+rotation = 0.62982
+progress = 674.142
+
+[node name="Sprite2D" type="Sprite2D" parent="UI/Main/BG/Path2D/PathFollow2D"]
+modulate = Color(1, 1, 1, 0)
+texture = ExtResource("34_mgg08")
+
+[node name="Player" type="Sprite2D" parent="UI/Main/BG"]
+modulate = Color(1, 1, 1, 0.968627)
+scale = Vector2(0.655, 0.655)
+texture = ExtResource("35_exfkf")
+
+[node name="Arrow" type="Sprite2D" parent="UI/Main/BG"]
+position = Vector2(25, 3.9289)
+scale = Vector2(0.655, 0.655)
+texture = ExtResource("36_h8v1m")
+
+[node name="Output" type="GPUParticles2D" parent="UI/Main/BG"]
+texture_filter = 3
+position = Vector2(132.447, 5.61271)
+scale = Vector2(0.6, 0.6)
+emitting = false
+amount = 10
+process_material = SubResource("ParticleProcessMaterial_0cu5e")
+texture = ExtResource("22_hk71w")
+lifetime = 0.1
+one_shot = true
+explosiveness = 0.95
+randomness = 0.5
+
+[node name="TItle" type="Label" parent="UI/Main"]
 layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_left = -3.5
-offset_top = 37.0
-offset_right = -3.5
-offset_bottom = 124.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -131.5
+offset_top = -75.0
+offset_right = 143.5
+offset_bottom = 26.0001
 grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(0, 50)
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 50
 text = "Side Effect"
@@ -526,6 +831,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Label2" type="Label" parent="UI/Main"]
+visible = false
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -543,6 +849,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="StartBtn" type="Button" parent="UI/Main"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.387
@@ -569,6 +876,7 @@ text = "开始游戏"
 script = ExtResource("19_jdxc1")
 
 [node name="QuitBtn" type="Button" parent="UI/Main"]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.388
@@ -592,6 +900,22 @@ theme_override_styles/hover = ExtResource("16_6ggvg")
 theme_override_styles/pressed = ExtResource("17_wfln6")
 text = "退出游戏"
 script = ExtResource("19_jdxc1")
+
+[node name="Label" type="Label" parent="UI/Main"]
+visible = false
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = -4.99927
+offset_top = 74.0008
+offset_right = -4.99927
+offset_bottom = 161.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "Side Effect"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Pause" type="Panel" parent="UI"]
 visible = false
