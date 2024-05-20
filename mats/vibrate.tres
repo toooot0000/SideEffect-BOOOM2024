@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://dva0wxubngljd"]
+
+[ext_resource type="Shader" uid="uid://44gitrhxuop4" path="res://shaders/vibrate.tres" id="1_gijeq"]
+
+[resource]
+shader = ExtResource("1_gijeq")
+shader_parameter/RandomOffset = 1.0
+shader_parameter/Frequency = 10.0
+shader_parameter/Range = 1.0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=3 uid="uid://l825ae460lwx"]
+[gd_scene load_steps=79 format=3 uid="uid://l825ae460lwx"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_edicv"]
 [ext_resource type="Texture2D" uid="uid://3kcafr6ubypi" path="res://img/bg.png" id="1_fyxfo"]
@@ -36,6 +36,13 @@
 [ext_resource type="Texture2D" uid="uid://bp1j5hjcdc3he" path="res://img/bullets/bullet.png" id="34_mgg08"]
 [ext_resource type="Texture2D" uid="uid://dabs4d1gbgsqm" path="res://img/Player.png" id="35_exfkf"]
 [ext_resource type="Texture2D" uid="uid://d11mrp3rjayw7" path="res://img/arrow.png" id="36_h8v1m"]
+[ext_resource type="Script" path="res://ui/mainTitle.gd" id="37_teewy"]
+[ext_resource type="Material" uid="uid://dva0wxubngljd" path="res://mats/vibrate.tres" id="38_ba7kt"]
+[ext_resource type="Script" path="res://util/effects/moveWithMouse.gd" id="38_ktrh0"]
+[ext_resource type="Material" uid="uid://bvnuu4bbvogcm" path="res://mats/reverse.tres" id="40_6vdy6"]
+[ext_resource type="Texture2D" uid="uid://bhnhcla8c0jl2" path="res://img/ui/arrow-bg.png" id="40_anafo"]
+[ext_resource type="Texture2D" uid="uid://dj0jh0e4sue2q" path="res://img/ui/arrow.png" id="41_0jhls"]
+[ext_resource type="Script" path="res://ui/reverseButton.gd" id="41_h1u30"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qmdp5"]
 shader = ExtResource("2_vsuno")
@@ -46,6 +53,9 @@ shader_parameter/ripplePositions = null
 shader_parameter/rippleTimes = null
 shader_parameter/reRipplePositions = null
 shader_parameter/reRippleTimes = null
+shader_parameter/floatingFreqency = 1.0
+shader_parameter/floatingRange = 1.0
+shader_parameter/floatingTimeFactor = 0.5
 
 [sub_resource type="Resource" id="Resource_pcery"]
 script = ExtResource("9_0xog2")
@@ -242,10 +252,10 @@ tracks/5/path = NodePath("TItle:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
-"times": PackedFloat32Array(1.52, 1.62),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(1.52, 1.58, 1.61, 1.63),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(344, 265), Vector2(445, 265)]
+"values": [Vector2(344, 265), Vector2(450, 265), Vector2(440, 265), Vector2(445, 265)]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
@@ -254,7 +264,7 @@ tracks/6/path = NodePath("TItle:scale")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(1.52, 1.62),
+"times": PackedFloat32Array(1.52, 1.58),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(0, 0), Vector2(1, 1)]
@@ -266,7 +276,7 @@ tracks/7/path = NodePath("TItle:modulate")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
-"times": PackedFloat32Array(0, 1.52, 1.62),
+"times": PackedFloat32Array(0, 1.52, 1.63),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
@@ -278,8 +288,8 @@ tracks/8/path = NodePath("BG/Output:position")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
-"times": PackedFloat32Array(0.56, 1.5),
-"transitions": PackedFloat32Array(1, 1),
+"times": PackedFloat32Array(0.56, 0.97),
+"transitions": PackedFloat32Array(1, 1e-05),
 "update": 0,
 "values": [Vector2(136.702, 5.61271), Vector2(-121.277, 2.24508)]
 }
@@ -307,12 +317,244 @@ tracks/10/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
 }
+tracks/11/type = "value"
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/path = NodePath("TItle/MoveWithMouse:active")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/keys = {
+"times": PackedFloat32Array(1.66),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/12/type = "value"
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/path = NodePath("StartArrow:modulate")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/keys = {
+"times": PackedFloat32Array(1.59, 1.63),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4vvsa"]
 _data = {
 "RESET": SubResource("Animation_hsox5"),
 "title": SubResource("Animation_6mn4m")
 }
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_uipc4"]
+input_name = "time"
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_yydim"]
+output_port_for_preview = 0
+default_input_values = [0, Vector2(0, 0), 1, Vector2(0, 0)]
+op_type = 0
+operator = 2
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_72gqe"]
+output_port_for_preview = 0
+default_input_values = [0, Vector2(0, 0), 1, Vector2(0, 0)]
+op_type = 0
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_n2bx4"]
+input_name = "vertex"
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_2kkdi"]
+default_input_values = [0, 0.0, 1, 1.0]
+operator = 2
+
+[sub_resource type="VisualShaderNodeFloatFunc" id="VisualShaderNodeFloatFunc_nsekq"]
+function = 14
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_ccjmu"]
+parameter_name = "Frequency"
+default_value_enabled = true
+default_value = 10.0
+
+[sub_resource type="VisualShaderNodeRandomRange" id="VisualShaderNodeRandomRange_tasw1"]
+output_port_for_preview = 0
+default_input_values = [0, Vector3(1, 1, 1), 1, 0.0, 2, 6.283]
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_0ihqp"]
+default_input_values = [0, 0.0, 1, 3600.0]
+operator = 4
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_banal"]
+
+[sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_f7uco"]
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_t7ym4"]
+parameter_name = "RandomOffset"
+default_value_enabled = true
+
+[sub_resource type="VisualShaderNodeRandomRange" id="VisualShaderNodeRandomRange_gmd7w"]
+output_port_for_preview = 0
+default_input_values = [0, Vector3(1, 2, 1), 1, 0.0, 2, 1.0]
+
+[sub_resource type="VisualShaderNodeFloatFunc" id="VisualShaderNodeFloatFunc_n6he0"]
+function = 1
+
+[sub_resource type="VisualShaderNodeFloatFunc" id="VisualShaderNodeFloatFunc_oh11e"]
+function = 0
+
+[sub_resource type="VisualShaderNodeVectorCompose" id="VisualShaderNodeVectorCompose_1c7xo"]
+output_port_for_preview = 0
+op_type = 0
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_463ux"]
+parameter_name = "Range"
+default_value_enabled = true
+default_value = 200.0
+
+[sub_resource type="VisualShader" id="VisualShader_dbnsq"]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+uniform float RandomOffset = 0;
+uniform float Frequency = 10;
+uniform float Range = 200;
+
+
+
+
+// 3D Noise with friendly permission by Inigo Quilez
+vec3 hash_noise_range( vec3 p ) {
+	p *= mat3(vec3(127.1, 311.7, -53.7), vec3(269.5, 183.3, 77.1), vec3(-301.7, 27.3, 215.3));
+	return 2.0 * fract(fract(p)*4375.55) -1.;
+}
+
+
+void vertex() {
+// FloatParameter:23
+	float n_out23p0 = RandomOffset;
+
+
+// Input:10
+	float n_out10p0 = TIME;
+
+
+// FloatParameter:19
+	float n_out19p0 = Frequency;
+
+
+// FloatOp:17
+	float n_out17p0 = n_out10p0 * n_out19p0;
+
+
+// FloatOp:20
+	float n_in20p1 = 3600.00000;
+	float n_out20p0 = mod(n_out17p0, n_in20p1);
+
+
+// FloatFunc:18
+	float n_out18p0 = floor(n_out20p0);
+
+
+// FloatOp:22
+	float n_out22p0 = n_out23p0 + n_out18p0;
+
+
+// RandomRange:2
+	float n_in2p1 = 0.00000;
+	float n_in2p2 = 6.28300;
+	float n_out2p0 = mix(n_in2p1, n_in2p2, hash_noise_range(vec3(n_out22p0)).x);
+
+
+// FloatFunc:4
+	float n_out4p0 = cos(n_out2p0);
+
+
+// FloatFunc:5
+	float n_out5p0 = sin(n_out2p0);
+
+
+// VectorCompose:6
+	vec2 n_out6p0 = vec2(n_out4p0, n_out5p0);
+
+
+// FloatOp:21
+	float n_out21p0 = n_out18p0 + n_out2p0;
+
+
+// FloatParameter:7
+	float n_out7p0 = Range;
+
+
+// RandomRange:3
+	float n_in3p1 = 0.00000;
+	float n_out3p0 = mix(n_in3p1, n_out7p0, hash_noise_range(vec3(n_out21p0)).x);
+
+
+// VectorOp:13
+	vec2 n_out13p0 = n_out6p0 * vec2(n_out3p0);
+
+
+// Input:15
+	vec2 n_out15p0 = VERTEX;
+
+
+// VectorOp:14
+	vec2 n_out14p0 = n_out13p0 + n_out15p0;
+
+
+// Output:0
+	VERTEX = n_out14p0;
+
+
+}
+"
+graph_offset = Vector2(-653.119, 125.699)
+mode = 1
+flags/light_only = false
+nodes/vertex/0/position = Vector2(1560, 340)
+nodes/vertex/2/node = SubResource("VisualShaderNodeRandomRange_tasw1")
+nodes/vertex/2/position = Vector2(-180, 160)
+nodes/vertex/3/node = SubResource("VisualShaderNodeRandomRange_gmd7w")
+nodes/vertex/3/position = Vector2(360, 680)
+nodes/vertex/4/node = SubResource("VisualShaderNodeFloatFunc_n6he0")
+nodes/vertex/4/position = Vector2(140, 280)
+nodes/vertex/5/node = SubResource("VisualShaderNodeFloatFunc_oh11e")
+nodes/vertex/5/position = Vector2(140, 440)
+nodes/vertex/6/node = SubResource("VisualShaderNodeVectorCompose_1c7xo")
+nodes/vertex/6/position = Vector2(520, 320)
+nodes/vertex/7/node = SubResource("VisualShaderNodeFloatParameter_463ux")
+nodes/vertex/7/position = Vector2(-680, 680)
+nodes/vertex/10/node = SubResource("VisualShaderNodeInput_uipc4")
+nodes/vertex/10/position = Vector2(-1240, 320)
+nodes/vertex/13/node = SubResource("VisualShaderNodeVectorOp_yydim")
+nodes/vertex/13/position = Vector2(860, 400)
+nodes/vertex/14/node = SubResource("VisualShaderNodeVectorOp_72gqe")
+nodes/vertex/14/position = Vector2(1171.49, 328.133)
+nodes/vertex/15/node = SubResource("VisualShaderNodeInput_n2bx4")
+nodes/vertex/15/position = Vector2(740, 940)
+nodes/vertex/17/node = SubResource("VisualShaderNodeFloatOp_2kkdi")
+nodes/vertex/17/position = Vector2(-880, 360)
+nodes/vertex/18/node = SubResource("VisualShaderNodeFloatFunc_nsekq")
+nodes/vertex/18/position = Vector2(-540, 380)
+nodes/vertex/19/node = SubResource("VisualShaderNodeFloatParameter_ccjmu")
+nodes/vertex/19/position = Vector2(-1200, 440)
+nodes/vertex/20/node = SubResource("VisualShaderNodeFloatOp_0ihqp")
+nodes/vertex/20/position = Vector2(-720, 380)
+nodes/vertex/21/node = SubResource("VisualShaderNodeFloatOp_banal")
+nodes/vertex/21/position = Vector2(160, 560)
+nodes/vertex/22/node = SubResource("VisualShaderNodeFloatOp_f7uco")
+nodes/vertex/22/position = Vector2(-360, 200)
+nodes/vertex/23/node = SubResource("VisualShaderNodeFloatParameter_t7ym4")
+nodes/vertex/23/position = Vector2(-960, 120)
+nodes/vertex/connections = PackedInt32Array(4, 0, 6, 0, 5, 0, 6, 1, 7, 0, 3, 2, 6, 0, 13, 0, 13, 0, 14, 0, 15, 0, 14, 1, 14, 0, 0, 0, 2, 0, 5, 0, 2, 0, 4, 0, 10, 0, 17, 0, 19, 0, 17, 1, 17, 0, 20, 0, 20, 0, 18, 0, 18, 0, 21, 0, 2, 0, 21, 1, 21, 0, 3, 0, 23, 0, 22, 0, 18, 0, 22, 1, 22, 0, 2, 0, 3, 0, 13, 1)
+nodes/fragment/0/position = Vector2(2180, 340)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_el78b"]
+shader = SubResource("VisualShader_dbnsq")
+shader_parameter/RandomOffset = 3.0
+shader_parameter/Frequency = 10.0
+shader_parameter/Range = 1.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vdtld"]
 shader = ExtResource("2_vsuno")
@@ -323,6 +565,9 @@ shader_parameter/ripplePositions = null
 shader_parameter/rippleTimes = null
 shader_parameter/reRipplePositions = null
 shader_parameter/reRippleTimes = null
+shader_parameter/floatingFreqency = 3.0
+shader_parameter/floatingRange = 2.8
+shader_parameter/floatingTimeFactor = 0.1
 
 [sub_resource type="Curve2D" id="Curve2D_h61k7"]
 _data = {
@@ -759,6 +1004,12 @@ grow_vertical = 2
 theme_override_styles/panel = ExtResource("15_h32ag")
 metadata/_edit_lock_ = true
 
+[node name="BG2" type="Sprite2D" parent="UI/Main"]
+position = Vector2(578, 297)
+scale = Vector2(1.88, 1.78167)
+texture = ExtResource("1_fyxfo")
+metadata/_edit_lock_ = true
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="UI/Main"]
 libraries = {
 "": SubResource("AnimationLibrary_4vvsa")
@@ -766,7 +1017,52 @@ libraries = {
 autoplay = "title"
 speed_scale = 1.2
 
+[node name="StartArrow" type="TextureRect" parent="UI/Main"]
+texture_filter = 3
+material = SubResource("ShaderMaterial_el78b")
+layout_mode = 1
+offset_left = 762.0
+offset_top = 444.0
+offset_right = 788.0
+offset_bottom = 500.0
+rotation = 0.733926
+texture = ExtResource("41_0jhls")
+stretch_mode = 2
+
+[node name="CanvasGroup" type="CanvasGroup" parent="UI/Main/StartArrow"]
+material = ExtResource("40_6vdy6")
+position = Vector2(4.90679, 0.960861)
+
+[node name="StartButton" type="TextureButton" parent="UI/Main/StartArrow/CanvasGroup" node_paths=PackedStringArray("group")]
+offset_right = 187.0
+offset_bottom = 54.0
+texture_normal = ExtResource("40_anafo")
+script = ExtResource("41_h1u30")
+group = NodePath("..")
+
+[node name="Label" type="Label" parent="UI/Main/StartArrow/CanvasGroup/StartButton"]
+material = ExtResource("38_ba7kt")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -51.5457
+offset_top = -24.0271
+offset_right = 73.4543
+offset_bottom = 26.9729
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(0, 50)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "Start"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="BG" type="Sprite2D" parent="UI/Main"]
+self_modulate = Color(1, 1, 1, 0)
 material = SubResource("ShaderMaterial_vdtld")
 position = Vector2(578, 297)
 scale = Vector2(1.88, 1.78167)
@@ -789,6 +1085,7 @@ texture = ExtResource("34_mgg08")
 
 [node name="Player" type="Sprite2D" parent="UI/Main/BG"]
 modulate = Color(1, 1, 1, 0.968627)
+position = Vector2(0, 2.24508)
 scale = Vector2(0.655, 0.655)
 texture = ExtResource("35_exfkf")
 
@@ -811,6 +1108,7 @@ explosiveness = 0.95
 randomness = 0.5
 
 [node name="TItle" type="Label" parent="UI/Main"]
+material = ExtResource("38_ba7kt")
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -829,24 +1127,11 @@ theme_override_font_sizes/font_size = 50
 text = "Side Effect"
 horizontal_alignment = 1
 vertical_alignment = 1
+script = ExtResource("37_teewy")
 
-[node name="Label2" type="Label" parent="UI/Main"]
-visible = false
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_left = 1.0
-offset_top = 128.0
-offset_right = 1.0
-offset_bottom = 263.0
-grow_horizontal = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 30
-text = "WASD： 移动；鼠标左键：射击；Tab：切换子弹
-你射出的子弹会变成敌人，打败敌人会获得分数
-尽可能获得高分吧！"
-horizontal_alignment = 1
-vertical_alignment = 1
+[node name="MoveWithMouse" type="Node" parent="UI/Main/TItle"]
+script = ExtResource("38_ktrh0")
+active = true
 
 [node name="StartBtn" type="Button" parent="UI/Main"]
 visible = false
@@ -856,9 +1141,10 @@ anchor_left = 0.387
 anchor_top = 0.5
 anchor_right = 0.614
 anchor_bottom = 0.681
-offset_left = -0.240021
-offset_right = 0.219971
-offset_bottom = -0.188019
+offset_left = 686.789
+offset_top = -53.0
+offset_right = 687.249
+offset_bottom = -53.188
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -883,10 +1169,10 @@ anchor_left = 0.388
 anchor_top = 0.737
 anchor_right = 0.615
 anchor_bottom = 0.918
-offset_left = -0.26001
-offset_top = 0.123962
-offset_right = 0.200012
-offset_bottom = -0.0640259
+offset_left = -727.364
+offset_top = -206.576
+offset_right = -726.904
+offset_bottom = -206.764
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
@@ -900,22 +1186,6 @@ theme_override_styles/hover = ExtResource("16_6ggvg")
 theme_override_styles/pressed = ExtResource("17_wfln6")
 text = "退出游戏"
 script = ExtResource("19_jdxc1")
-
-[node name="Label" type="Label" parent="UI/Main"]
-visible = false
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_left = -4.99927
-offset_top = 74.0008
-offset_right = -4.99927
-offset_bottom = 161.0
-grow_horizontal = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 50
-text = "Side Effect"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="Pause" type="Panel" parent="UI"]
 visible = false
@@ -1041,6 +1311,8 @@ text = "退出游戏"
 [connection signal="pressedOn" from="UI/LevelClear/Buttons/NextLvBtn" to="UI" method="hide_dialog" binds= [NodePath("../..")]]
 [connection signal="gui_input" from="UI/LevelClear/Rewards/SubViewportContainer3" to="UI/LevelClear" method="_on_card2_gui_input"]
 [connection signal="gui_input" from="UI/LevelClear/Rewards/SubViewportContainer2" to="UI/LevelClear" method="_on_card1_gui_input"]
+[connection signal="mouse_entered" from="UI/Main/StartArrow/CanvasGroup/StartButton" to="UI/Main/StartArrow/CanvasGroup/StartButton" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="UI/Main/StartArrow/CanvasGroup/StartButton" to="UI/Main/StartArrow/CanvasGroup/StartButton" method="_on_mouse_exited"]
 [connection signal="pressed" from="UI/Main/StartBtn" to="." method="_on_start_btn_pressed"]
 [connection signal="pressedOn" from="UI/Main/StartBtn" to="UI" method="hide_dialog" binds= [NodePath("..")]]
 [connection signal="pressed" from="UI/Main/QuitBtn" to="." method="_on_quit_btn_pressed"]

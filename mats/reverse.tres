@@ -1,0 +1,7 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bvnuu4bbvogcm"]
+
+[ext_resource type="Shader" path="res://shaders/reverse.gdshader" id="1_8klpl"]
+
+[resource]
+shader = ExtResource("1_8klpl")
+shader_parameter/x = 0.0

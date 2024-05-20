@@ -13,6 +13,9 @@ uniform float ripplePositions[RippleLength];
 uniform float rippleTimes[RippleLength];
 uniform float reRipplePositions[RippleLength];
 uniform float reRippleTimes[RippleLength];
+uniform float floatingFreqency = 1;
+uniform float floatingRange = 1;
+uniform float floatingTimeFactor = 0.5;
 
 float stepRange(float front_edge, float back_edge, float a){
 	a = (a - front_edge)/(back_edge - front_edge);
@@ -51,6 +54,19 @@ float positionToOffset(float position, vec2 point){
 	return offset;
 }
 
+float floatingOffset(vec2 point) {
+	vec2 polar = toPolar(point);
+	float theta = getTheta(polar);
+	theta *= floatingFreqency;
+	float time = TIME * floatingTimeFactor;
+	float ret = cos(theta + time * 16.0) * cos(theta + time * 16.0);
+	ret += cos(theta + time * 32.0 + 1.0);
+	ret += cos((theta + PI + time) * 2.0 + time * 8.0);
+	ret += cos((theta + 0.5 + 0.2 * time) * 4.0 + time * 2.0) * 0.2;
+	ret /= 3.2;
+	return ret * float(floatingRange);
+}
+
 void fragment() {
 	
 	vec2 textSize = vec2(1.f) / SCREEN_PIXEL_SIZE;
@@ -73,7 +89,7 @@ void fragment() {
 		reRippleLength += ripple(offset, time) * 20.0f;
 	}
 	
-	float circle = drawCircle(point, radiusInPixel + rippleLength - reRippleLength, thicknessInPixel);
+	float circle = drawCircle(point, radiusInPixel + rippleLength - reRippleLength + floatingOffset(point), thicknessInPixel);
 	
-	COLOR = vec4(1) * (1.f - circle)  + vec4(0, 0, 0, 1) * circle;
+	COLOR = vec4(1,1,1,0) * (1.f - circle)  + vec4(0, 0, 0, 1) * circle;
 }
