@@ -1,4 +1,4 @@
-[gd_scene load_steps=79 format=3 uid="uid://l825ae460lwx"]
+[gd_scene load_steps=85 format=3 uid="uid://l825ae460lwx"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_edicv"]
 [ext_resource type="Texture2D" uid="uid://3kcafr6ubypi" path="res://img/bg.png" id="1_fyxfo"]
@@ -33,9 +33,12 @@
 [ext_resource type="Script" path="res://ui/levelClear/levelClear.gd" id="19_8vfjg"]
 [ext_resource type="Script" path="res://ui/commonBtn.gd" id="19_jdxc1"]
 [ext_resource type="Texture2D" uid="uid://ceugc71teyroh" path="res://img/16x6.png" id="22_hk71w"]
+[ext_resource type="Shader" uid="uid://bdxdbfsmwqsg1" path="res://shaders/mainBg.tres" id="34_0kxwh"]
 [ext_resource type="Texture2D" uid="uid://bp1j5hjcdc3he" path="res://img/bullets/bullet.png" id="34_mgg08"]
+[ext_resource type="Script" path="res://ArrowBg.gd" id="35_43bl6"]
 [ext_resource type="Texture2D" uid="uid://dabs4d1gbgsqm" path="res://img/Player.png" id="35_exfkf"]
 [ext_resource type="Texture2D" uid="uid://d11mrp3rjayw7" path="res://img/arrow.png" id="36_h8v1m"]
+[ext_resource type="Shader" uid="uid://d2tpbfhenvt1o" path="res://shaders/vibrate.tres" id="37_85ye3"]
 [ext_resource type="Script" path="res://ui/mainTitle.gd" id="37_teewy"]
 [ext_resource type="Material" uid="uid://dva0wxubngljd" path="res://mats/vibrate.tres" id="38_ba7kt"]
 [ext_resource type="Script" path="res://util/effects/moveWithMouse.gd" id="38_ktrh0"]
@@ -112,6 +115,15 @@ shader_parameter/fov = 100.996
 shader_parameter/y_rot = 8.55e-06
 shader_parameter/x_rot = 8.55e-06
 shader_parameter/inset = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o548a"]
+shader = ExtResource("34_0kxwh")
+shader_parameter/Color1 = Color(1, 1, 1, 1)
+shader_parameter/Color2 = Color(0.964706, 0.952941, 0.945098, 1)
+shader_parameter/Deg = 12.771
+shader_parameter/Sharpness = 0.345
+shader_parameter/TimeFactor = 0.03
+shader_parameter/Freqency = 30.0
 
 [sub_resource type="Animation" id="Animation_hsox5"]
 length = 0.001
@@ -509,7 +521,6 @@ void vertex() {
 
 }
 "
-graph_offset = Vector2(-653.119, 125.699)
 mode = 1
 flags/light_only = false
 nodes/vertex/0/position = Vector2(1560, 340)
@@ -553,6 +564,18 @@ nodes/fragment/0/position = Vector2(2180, 340)
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_el78b"]
 shader = SubResource("VisualShader_dbnsq")
 shader_parameter/RandomOffset = 3.0
+shader_parameter/Frequency = 10.0
+shader_parameter/Range = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_up518"]
+shader = SubResource("VisualShader_dbnsq")
+shader_parameter/RandomOffset = 10.0
+shader_parameter/Frequency = 10.0
+shader_parameter/Range = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ahksu"]
+shader = ExtResource("37_85ye3")
+shader_parameter/RandomOffset = 30.0
 shader_parameter/Frequency = 10.0
 shader_parameter/Range = 1.0
 
@@ -1005,9 +1028,12 @@ theme_override_styles/panel = ExtResource("15_h32ag")
 metadata/_edit_lock_ = true
 
 [node name="BG2" type="Sprite2D" parent="UI/Main"]
+material = SubResource("ShaderMaterial_o548a")
 position = Vector2(578, 297)
-scale = Vector2(1.88, 1.78167)
+scale = Vector2(1.56, 1.56)
 texture = ExtResource("1_fyxfo")
+script = ExtResource("35_43bl6")
+spd = 0.05
 metadata/_edit_lock_ = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="UI/Main"]
@@ -1034,6 +1060,7 @@ material = ExtResource("40_6vdy6")
 position = Vector2(4.90679, 0.960861)
 
 [node name="StartButton" type="TextureButton" parent="UI/Main/StartArrow/CanvasGroup" node_paths=PackedStringArray("group")]
+material = SubResource("ShaderMaterial_up518")
 offset_right = 187.0
 offset_bottom = 54.0
 texture_normal = ExtResource("40_anafo")
@@ -1041,7 +1068,7 @@ script = ExtResource("41_h1u30")
 group = NodePath("..")
 
 [node name="Label" type="Label" parent="UI/Main/StartArrow/CanvasGroup/StartButton"]
-material = ExtResource("38_ba7kt")
+material = SubResource("ShaderMaterial_ahksu")
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -1131,7 +1158,6 @@ script = ExtResource("37_teewy")
 
 [node name="MoveWithMouse" type="Node" parent="UI/Main/TItle"]
 script = ExtResource("38_ktrh0")
-active = true
 
 [node name="StartBtn" type="Button" parent="UI/Main"]
 visible = false
