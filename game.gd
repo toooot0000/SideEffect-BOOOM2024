@@ -10,6 +10,7 @@ class_name G
 @onready var _player :Player = $Player
 @onready var _enemySpawnerManager: EnemySpawnerManager = $EnemySpawnerManager
 @onready var _scheduler : ScheduleExecutor = $ScheduleExecutor
+@onready var _animPlayer = $AnimationPlayer as AnimationPlayer
 
 static var shared: G
 
@@ -197,3 +198,24 @@ func _on_next_lv_btn_pressed():
 
 	_state = State.Idle
 	enterNewLevel.emit()
+
+func _on_main_click_start():
+
+	for ch in ($UI/BulletStack/Container).get_children():
+		ch.queue_free()
+
+	player.hpLimit = 10
+	player.hp = 10
+	player.point = 0
+	player.global_position = center
+	player.bulletInfo = [Player.BulletInfo.new(player.initBullet, -1)]
+	player.didAddNewBullet.emit(player.bulletInfo, player.bulletInfo[-1])
+
+	_currentTargetPoint = _initlevelTarget
+	_animPlayer.play("start_game")
+	await _animPlayer.animation_finished
+
+	_remainingTime = 60.0
+	startTime = Time.get_ticks_msec()
+	gameStart.emit()
+	_state = State.Idle

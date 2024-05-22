@@ -11,7 +11,7 @@ extends Sprite2D
 # 		var dir = (pos - position).angle_to(Vector2.LEFT)
 # 		mat.set_shader_parameter("Deg", -dir)
 
-var cur := 0.0
+var cur := PI
 
 func _process(delta):
 	mat.set_shader_parameter("Deg", cur)
