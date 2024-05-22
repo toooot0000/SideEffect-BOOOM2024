@@ -1,4 +1,4 @@
-[gd_scene load_steps=85 format=3 uid="uid://l825ae460lwx"]
+[gd_scene load_steps=96 format=3 uid="uid://l825ae460lwx"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_edicv"]
 [ext_resource type="Texture2D" uid="uid://3kcafr6ubypi" path="res://img/bg.png" id="1_fyxfo"]
@@ -35,17 +35,21 @@
 [ext_resource type="Texture2D" uid="uid://ceugc71teyroh" path="res://img/16x6.png" id="22_hk71w"]
 [ext_resource type="Shader" uid="uid://bdxdbfsmwqsg1" path="res://shaders/mainBg.tres" id="34_0kxwh"]
 [ext_resource type="Texture2D" uid="uid://bp1j5hjcdc3he" path="res://img/bullets/bullet.png" id="34_mgg08"]
+[ext_resource type="Script" path="res://ui/main/main.gd" id="34_x0rhj"]
 [ext_resource type="Script" path="res://ArrowBg.gd" id="35_43bl6"]
 [ext_resource type="Texture2D" uid="uid://dabs4d1gbgsqm" path="res://img/Player.png" id="35_exfkf"]
+[ext_resource type="Shader" path="res://shaders/mainTransition.gdshader" id="35_hykq4"]
 [ext_resource type="Texture2D" uid="uid://d11mrp3rjayw7" path="res://img/arrow.png" id="36_h8v1m"]
 [ext_resource type="Shader" uid="uid://d2tpbfhenvt1o" path="res://shaders/vibrate.tres" id="37_85ye3"]
-[ext_resource type="Script" path="res://ui/mainTitle.gd" id="37_teewy"]
+[ext_resource type="Script" path="res://ui/main/mainTitle.gd" id="37_teewy"]
+[ext_resource type="Script" path="res://ui/main/transition.gd" id="38_3e8d0"]
 [ext_resource type="Material" uid="uid://dva0wxubngljd" path="res://mats/vibrate.tres" id="38_ba7kt"]
 [ext_resource type="Script" path="res://util/effects/moveWithMouse.gd" id="38_ktrh0"]
-[ext_resource type="Material" uid="uid://bvnuu4bbvogcm" path="res://mats/reverse.tres" id="40_6vdy6"]
 [ext_resource type="Texture2D" uid="uid://bhnhcla8c0jl2" path="res://img/ui/arrow-bg.png" id="40_anafo"]
 [ext_resource type="Texture2D" uid="uid://dj0jh0e4sue2q" path="res://img/ui/arrow.png" id="41_0jhls"]
-[ext_resource type="Script" path="res://ui/reverseButton.gd" id="41_h1u30"]
+[ext_resource type="Script" path="res://ui/main/reverseButton.gd" id="41_h1u30"]
+[ext_resource type="Shader" path="res://shaders/reverse.gdshader" id="41_wx033"]
+[ext_resource type="Script" path="res://ui/main/mainLine.gd" id="47_mgmgi"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_qmdp5"]
 shader = ExtResource("2_vsuno")
@@ -116,15 +120,6 @@ shader_parameter/y_rot = 8.55e-06
 shader_parameter/x_rot = 8.55e-06
 shader_parameter/inset = 0.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_o548a"]
-shader = ExtResource("34_0kxwh")
-shader_parameter/Color1 = Color(1, 1, 1, 1)
-shader_parameter/Color2 = Color(0.964706, 0.952941, 0.945098, 1)
-shader_parameter/Deg = 12.771
-shader_parameter/Sharpness = 0.345
-shader_parameter/TimeFactor = 0.03
-shader_parameter/Freqency = 30.0
-
 [sub_resource type="Animation" id="Animation_hsox5"]
 length = 0.001
 tracks/0/type = "value"
@@ -186,6 +181,131 @@ tracks/4/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Color(1, 1, 1, 1)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Line2D/Marker2D:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(148, 124)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Transition:x")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Line2D:modulate")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/8/type = "value"
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/path = NodePath("Transition:deg")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/9/type = "value"
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/path = NodePath("Line2D/Marker2D2:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(156, 129)]
+}
+
+[sub_resource type="Animation" id="Animation_elrxb"]
+resource_name = "click_start"
+length = 0.3
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Line2D/Marker2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(156, 129), Vector2(-432, -410)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Line2D:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Transition:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Transition:deg")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-0.695]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Line2D/Marker2D2:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(156, 129)]
 }
 
 [sub_resource type="Animation" id="Animation_6mn4m"]
@@ -336,7 +456,7 @@ tracks/11/path = NodePath("TItle/MoveWithMouse:active")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
-"times": PackedFloat32Array(1.66),
+"times": PackedFloat32Array(1.65),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
@@ -353,12 +473,100 @@ tracks/12/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
+tracks/13/type = "value"
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/path = NodePath("QuitArrow:modulate")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/keys = {
+"times": PackedFloat32Array(1.59, 1.63),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_lhgm8"]
+resource_name = "click_quit"
+length = 0.3
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Line2D/Marker2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.15),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-210, 129), Vector2(347, -431)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Line2D:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Transition:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.15, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Transition:deg")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.005]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Line2D/Marker2D2:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-211, 129)]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_4vvsa"]
 _data = {
 "RESET": SubResource("Animation_hsox5"),
+"click_quit": SubResource("Animation_lhgm8"),
+"click_start": SubResource("Animation_elrxb"),
 "title": SubResource("Animation_6mn4m")
 }
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o548a"]
+shader = ExtResource("34_0kxwh")
+shader_parameter/Color1 = Color(1, 1, 1, 1)
+shader_parameter/Color2 = Color(0.964706, 0.952941, 0.945098, 1)
+shader_parameter/Deg = 12.771
+shader_parameter/Sharpness = 0.345
+shader_parameter/TimeFactor = 0.03
+shader_parameter/Freqency = 30.0
 
 [sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_uipc4"]
 input_name = "time"
@@ -521,6 +729,7 @@ void vertex() {
 
 }
 "
+graph_offset = Vector2(2211.12, 176.616)
 mode = 1
 flags/light_only = false
 nodes/vertex/0/position = Vector2(1560, 340)
@@ -567,13 +776,33 @@ shader_parameter/RandomOffset = 3.0
 shader_parameter/Frequency = 10.0
 shader_parameter/Range = 1.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_up518"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cssi6"]
+shader = ExtResource("41_wx033")
+shader_parameter/x = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xko2y"]
 shader = SubResource("VisualShader_dbnsq")
 shader_parameter/RandomOffset = 10.0
 shader_parameter/Frequency = 10.0
 shader_parameter/Range = 0.0
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ahksu"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_uf1xh"]
+shader = ExtResource("37_85ye3")
+shader_parameter/RandomOffset = 30.0
+shader_parameter/Frequency = 10.0
+shader_parameter/Range = 1.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_20vn6"]
+shader = ExtResource("41_wx033")
+shader_parameter/x = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nl27x"]
+shader = SubResource("VisualShader_dbnsq")
+shader_parameter/RandomOffset = 10.0
+shader_parameter/Frequency = 10.0
+shader_parameter/Range = 0.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0k8ul"]
 shader = ExtResource("37_85ye3")
 shader_parameter/RandomOffset = 30.0
 shader_parameter/Frequency = 10.0
@@ -613,6 +842,11 @@ initial_velocity_max = 400.0
 gravity = Vector3(0, 0, 0)
 scale_min = 0.6
 scale_curve = SubResource("CurveTexture_jg5nr")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_elhda"]
+shader = ExtResource("35_hykq4")
+shader_parameter/degInRad = -0.69
+shader_parameter/x = 0.0
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_edicv")
@@ -1025,7 +1259,15 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = ExtResource("15_h32ag")
+script = ExtResource("34_x0rhj")
 metadata/_edit_lock_ = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/Main"]
+libraries = {
+"": SubResource("AnimationLibrary_4vvsa")
+}
+autoplay = "title"
+speed_scale = 1.2
 
 [node name="BG2" type="Sprite2D" parent="UI/Main"]
 material = SubResource("ShaderMaterial_o548a")
@@ -1036,31 +1278,37 @@ script = ExtResource("35_43bl6")
 spd = 0.05
 metadata/_edit_lock_ = true
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="UI/Main"]
-libraries = {
-"": SubResource("AnimationLibrary_4vvsa")
-}
-autoplay = "title"
-speed_scale = 1.2
+[node name="Line2D" type="Line2D" parent="UI/Main"]
+modulate = Color(1, 1, 1, 0)
+position = Vector2(616, 341)
+points = PackedVector2Array(-380, -356, 280, 243)
+default_color = Color(0, 0, 0, 1)
+script = ExtResource("47_mgmgi")
+
+[node name="Marker2D" type="Marker2D" parent="UI/Main/Line2D"]
+position = Vector2(148, 124)
+
+[node name="Marker2D2" type="Marker2D" parent="UI/Main/Line2D"]
+position = Vector2(156, 129)
 
 [node name="StartArrow" type="TextureRect" parent="UI/Main"]
 texture_filter = 3
 material = SubResource("ShaderMaterial_el78b")
 layout_mode = 1
-offset_left = 762.0
-offset_top = 444.0
-offset_right = 788.0
-offset_bottom = 500.0
-rotation = 0.733926
+offset_left = 770.0
+offset_top = 431.0
+offset_right = 796.0
+offset_bottom = 487.0
+rotation = 0.734676
 texture = ExtResource("41_0jhls")
 stretch_mode = 2
 
 [node name="CanvasGroup" type="CanvasGroup" parent="UI/Main/StartArrow"]
-material = ExtResource("40_6vdy6")
+material = SubResource("ShaderMaterial_cssi6")
 position = Vector2(4.90679, 0.960861)
 
 [node name="StartButton" type="TextureButton" parent="UI/Main/StartArrow/CanvasGroup" node_paths=PackedStringArray("group")]
-material = SubResource("ShaderMaterial_up518")
+material = SubResource("ShaderMaterial_xko2y")
 offset_right = 187.0
 offset_bottom = 54.0
 texture_normal = ExtResource("40_anafo")
@@ -1068,7 +1316,7 @@ script = ExtResource("41_h1u30")
 group = NodePath("..")
 
 [node name="Label" type="Label" parent="UI/Main/StartArrow/CanvasGroup/StartButton"]
-material = SubResource("ShaderMaterial_ahksu")
+material = SubResource("ShaderMaterial_uf1xh")
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -1088,6 +1336,52 @@ text = "Start"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="QuitArrow" type="TextureRect" parent="UI/Main"]
+texture_filter = 3
+material = SubResource("ShaderMaterial_el78b")
+layout_mode = 1
+offset_left = 430.0
+offset_top = 487.0
+offset_right = 456.0
+offset_bottom = 543.0
+rotation = 2.38714
+texture = ExtResource("41_0jhls")
+stretch_mode = 2
+
+[node name="CanvasGroup" type="CanvasGroup" parent="UI/Main/QuitArrow"]
+material = SubResource("ShaderMaterial_20vn6")
+position = Vector2(4.90679, 0.960861)
+
+[node name="QuitButton" type="TextureButton" parent="UI/Main/QuitArrow/CanvasGroup" node_paths=PackedStringArray("group")]
+material = SubResource("ShaderMaterial_nl27x")
+offset_right = 187.0
+offset_bottom = 54.0
+texture_normal = ExtResource("40_anafo")
+script = ExtResource("41_h1u30")
+group = NodePath("..")
+
+[node name="Label" type="Label" parent="UI/Main/QuitArrow/CanvasGroup/QuitButton"]
+material = SubResource("ShaderMaterial_0k8ul")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 56.964
+offset_top = -73.6218
+offset_right = 181.964
+offset_bottom = -22.6218
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 3.13643
+pivot_offset = Vector2(0, 50)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 50
+text = "Quit"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="BG" type="Sprite2D" parent="UI/Main"]
 self_modulate = Color(1, 1, 1, 0)
 material = SubResource("ShaderMaterial_vdtld")
@@ -1102,8 +1396,8 @@ position = Vector2(0, 2.24508)
 curve = SubResource("Curve2D_h61k7")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="UI/Main/BG/Path2D"]
-position = Vector2(-123.936, -1.68381)
-rotation = 0.62982
+position = Vector2(-123.936, -1.68382)
+rotation = 0.62978
 progress = 674.142
 
 [node name="Sprite2D" type="Sprite2D" parent="UI/Main/BG/Path2D/PathFollow2D"]
@@ -1212,6 +1506,14 @@ theme_override_styles/hover = ExtResource("16_6ggvg")
 theme_override_styles/pressed = ExtResource("17_wfln6")
 text = "退出游戏"
 script = ExtResource("19_jdxc1")
+
+[node name="Transition" type="Sprite2D" parent="UI/Main"]
+material = SubResource("ShaderMaterial_elhda")
+position = Vector2(578, 297)
+scale = Vector2(1.56, 1.56)
+texture = ExtResource("1_fyxfo")
+script = ExtResource("38_3e8d0")
+metadata/_edit_lock_ = true
 
 [node name="Pause" type="Panel" parent="UI"]
 visible = false
@@ -1337,8 +1639,12 @@ text = "退出游戏"
 [connection signal="pressedOn" from="UI/LevelClear/Buttons/NextLvBtn" to="UI" method="hide_dialog" binds= [NodePath("../..")]]
 [connection signal="gui_input" from="UI/LevelClear/Rewards/SubViewportContainer3" to="UI/LevelClear" method="_on_card2_gui_input"]
 [connection signal="gui_input" from="UI/LevelClear/Rewards/SubViewportContainer2" to="UI/LevelClear" method="_on_card1_gui_input"]
+[connection signal="button_up" from="UI/Main/StartArrow/CanvasGroup/StartButton" to="UI/Main" method="_on_start_button_button_up"]
 [connection signal="mouse_entered" from="UI/Main/StartArrow/CanvasGroup/StartButton" to="UI/Main/StartArrow/CanvasGroup/StartButton" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="UI/Main/StartArrow/CanvasGroup/StartButton" to="UI/Main/StartArrow/CanvasGroup/StartButton" method="_on_mouse_exited"]
+[connection signal="button_up" from="UI/Main/QuitArrow/CanvasGroup/QuitButton" to="UI/Main" method="_on_quit_button_button_up"]
+[connection signal="mouse_entered" from="UI/Main/QuitArrow/CanvasGroup/QuitButton" to="UI/Main/QuitArrow/CanvasGroup/QuitButton" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="UI/Main/QuitArrow/CanvasGroup/QuitButton" to="UI/Main/QuitArrow/CanvasGroup/QuitButton" method="_on_mouse_exited"]
 [connection signal="pressed" from="UI/Main/StartBtn" to="." method="_on_start_btn_pressed"]
 [connection signal="pressedOn" from="UI/Main/StartBtn" to="UI" method="hide_dialog" binds= [NodePath("..")]]
 [connection signal="pressed" from="UI/Main/QuitBtn" to="." method="_on_quit_btn_pressed"]
